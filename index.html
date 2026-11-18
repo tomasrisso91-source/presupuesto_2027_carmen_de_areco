@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Presupuesto 2027 · Carmen de Areco</title>
+  <meta name="description" content="Anteproyecto de presupuesto 2027 de la Municipalidad de Carmen de Areco: de dónde sale cada peso, en qué se gasta y cómo se compara con años anteriores.">
+  <meta property="og:title" content="Presupuesto 2027 · Carmen de Areco">
+  <meta property="og:description" content="De dónde sale cada peso, en qué se gasta y cómo se compara con años anteriores.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/">
+  <meta property="og:image" content="https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/img/compartir.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Presupuesto 2027 de Carmen de Areco: $18.032 millones">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/img/compartir.png">
+  <link rel="canonical" href="https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/">
+  <meta name="theme-color" content="#FBFCFC">
+  <link rel="icon" href="img/icono.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
+  <link rel="stylesheet" href="estilos.css?v=9">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="barra">
+    <div class="barra-in">
+      <a href="#inicio" class="marca" aria-label="Inicio"><img src="img/logo.png" alt="Municipio de Carmen de Areco" width="106" height="40"></a>
+      <nav class="indice" aria-label="Secciones">
+        <a href="#calculadora">Tu aporte</a>
+        <a href="#recursos">De dónde sale</a>
+        <a href="#recorrido">Recorrido</a>
+        <a href="#gastos">En qué se gasta</a>
+        <a href="#programas">Programas</a>
+        <a href="#cambios">Qué cambia</a>
+        <a href="#evolucion">Comparación</a>
+        <a href="#personal">Personal</a>
+        <a href="#datos">Datos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- APERTURA + CALCULADORA -->
+    <section class="apertura" id="inicio">
+      <div class="apertura-txt">
+        <h1>Presupuesto<br><span>2027</span></h1>
+        <p class="bajada">Carmen de Areco prevé recibir y gastar <strong data-v="total">—</strong> el año que viene: <strong data-v="por_hab">—</strong> por habitante. Acá podés ver de dónde sale cada peso, en qué se usa y cómo se compara con años anteriores.</p>
+        <p class="estado"><span class="sello">Anteproyecto</span> Propuesta del Departamento Ejecutivo, pendiente de tratamiento en el Honorable Concejo Deliberante.</p>
+      </div>
+
+      <div class="ticket-zona" id="calculadora">
+        <form class="ticket" id="ticket" aria-labelledby="ticket-titulo" autocomplete="off">
+          <p class="ticket-cab" id="ticket-titulo">Municipio de Carmen de Areco<span>Presupuesto 2027 · detalle por destino</span></p>
+          <label class="ticket-monto" for="monto">
+            <span>Si pusieras</span>
+            <span class="ticket-input"><span aria-hidden="true">$</span><input id="monto" name="monto" inputmode="numeric" value="10.000" aria-describedby="ticket-ayuda"></span>
+          </label>
+          <div class="ticket-rapido" role="group" aria-label="Montos de ejemplo">
+            <button type="button" data-monto="1000">$1.000</button>
+            <button type="button" data-monto="10000">$10.000</button>
+            <button type="button" data-monto="100000">$100.000</button>
+            <button type="button" data-hab>Lo de 1 habitante</button>
+          </div>
+          <p class="ticket-sub">así se repartiría:</p>
+          <ol class="ticket-lineas" id="ticket-lineas"></ol>
+          <p class="ticket-total"><span>Total</span><span id="ticket-total">—</span></p>
+          <p class="ticket-pie" id="ticket-ayuda">Reparto según el destino del gasto 2027, por finalidad y función. Es una proporción del presupuesto, no una boleta real.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
+    <section class="cap" id="recursos" aria-labelledby="t-recursos">
+      <div class="cap-cab">
+        <h2 id="t-recursos">De dónde sale la plata</h2>
+        <p class="cap-intro">El municipio tiene dos grandes fuentes de ingresos: lo que le envía la Provincia y lo que pagan los vecinos y las empresas del distrito en tasas, derechos y multas.</p>
+      </div>
+
+      <div class="pregunta">
+        <h3 class="preg">1. ¿Quién pone la plata?</h3>
+        <div class="cien" id="cien" role="img"></div>
+        <div class="quienes" id="quienes"></div>
+        <p class="nota" id="otros-origen"></p>
+      </div>
+
+      <div class="pregunta">
+        <h3 class="preg">2. ¿Se puede usar en cualquier cosa?</h3>
+        <div class="destino">
+          <div class="destino-barra" id="destino-barra" role="img"></div>
+          <div class="destino-txt">
+            <p><strong id="pct-libre">—</strong> es de <b>libre uso</b>: el municipio decide en qué gastarlo. Es la coparticipación y la mayoría de las tasas.</p>
+            <p><strong id="pct-fijo">—</strong> tiene <b>un destino fijado por ley u ordenanza</b> y solo puede gastarse en eso. Por ejemplo:</p>
+            <ul class="ejemplos" id="ejemplos-fijo"></ul>
+          </div>
+        </div>
+      </div>
+
+      <details class="plegable">
+        <summary>Ver los 67 recursos, uno por uno</summary>
+        <label class="buscar"><span class="sr">Buscar recurso</span><input type="search" id="buscar-rec" placeholder="Buscar un recurso"></label>
+        <div class="tabla-zona">
+          <table class="tabla tabla-rec" id="tabla-rec">
+            <thead><tr>
+              <th scope="col">Recurso</th>
+              <th scope="col">Lo aporta</th>
+              <th scope="col">Uso</th>
+              <th scope="col" class="num">Presupuesto 2027</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- RECORRIDO -->
+    <section class="cap" id="recorrido" aria-labelledby="t-recorrido">
+      <div class="cap-cab">
+        <h2 id="t-recorrido">De dónde sale la plata y adónde va</h2>
+        <p class="cap-intro">Cada franja es dinero que entra al municipio y termina en un área. Las franjas con rayas son recursos afectados: la norma que los crea obliga a gastarlos en un destino determinado.</p>
+      </div>
+      <figure class="fig flujo" id="flujo"></figure>
+      <p class="nota">Tocá un área para ver sus programas. Pasá el mouse sobre una franja para ver el monto.</p>
+    </section>
+
+    <!-- GASTOS -->
+    <section class="cap" id="gastos" aria-labelledby="t-gastos">
+      <div class="cap-cab">
+        <h2 id="t-gastos">En qué se gasta</h2>
+        <p class="cap-intro"><strong data-v="jur_top">—</strong> maneja <strong data-v="jur_top_pct">—</strong> del presupuesto: obras, calles, caminos, recolección y espacios verdes. El personal representa <strong data-v="pct_personal">—</strong> del gasto total.</p>
+      </div>
+      <div class="por-hab" id="por-hab" aria-label="Gasto por habitante">
+        <div class="ph-cifra"><span>Por habitante, en el año</span><b data-v="por_hab">—</b></div>
+        <div class="ph-cifra"><span>Por habitante, por mes</span><b data-v="por_hab_mes">—</b></div>
+        <div class="ph-cifra"><span>Lo que pagan vecinos y empresas, por habitante</span><b data-v="rec_mun_hab">—</b></div>
+        <p class="ph-nota">Calculado sobre los <span data-v="poblacion">—</span> habitantes del Censo 2022 (INDEC). La población de 2027 será algo mayor, así que el monto real por habitante será un poco menor.</p>
+      </div>
+      <div class="dos">
+        <div>
+          <h3>Por área de gobierno</h3>
+          <div class="filas" id="areas"></div>
+        </div>
+        <div>
+          <h3>Por tipo de gasto</h3>
+          <div class="filas" id="incisos"></div>
+          <p class="nota">Bienes de uso son obras y equipamiento. Transferencias son aportes a instituciones, becas y ayudas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAMAS -->
+    <section class="cap" id="programas" aria-labelledby="t-programas">
+      <div class="cap-cab">
+        <h2 id="t-programas">Programa por programa</h2>
+        <p class="cap-intro">Cada rectángulo es un programa o servicio municipal, y su tamaño es proporcional a lo que recibe. Tocá uno para ver en qué se gasta y con qué se paga.</p>
+      </div>
+      <div class="filtro" role="group" aria-label="Filtrar programas por área" id="filtro-areas"></div>
+      <figure class="fig mapa-zona">
+        <div class="mapa" id="mapa"></div>
+      </figure>
+      <aside class="ficha" id="ficha" hidden aria-live="polite">
+        <div class="ficha-cab">
+          <div>
+            <p class="ficha-area" id="ficha-area"></p>
+            <h3 id="ficha-titulo"></h3>
+            <p class="ficha-total" id="ficha-total"></p>
+          </div>
+          <button type="button" class="enlace" id="ficha-cerrar">Cerrar</button>
+        </div>
+        <div class="tres">
+          <div><h4>Tipo de gasto</h4><div class="filas chicas" id="ficha-incisos"></div></div>
+          <div><h4>Actividades</h4><div class="filas chicas" id="ficha-actividades"></div></div>
+          <div><h4>Se paga con</h4><div class="filas chicas" id="ficha-fuentes"></div></div>
+        </div>
+      </aside>
+      <details class="plegable">
+        <summary>Ver todos los programas en una tabla</summary>
+        <label class="buscar"><span class="sr">Buscar programa</span><input type="search" id="buscar-prog" placeholder="Buscar un programa o área"></label>
+        <div class="tabla-zona">
+          <table class="tabla" id="tabla-prog">
+            <thead><tr>
+              <th scope="col" data-orden="programa">Programa</th>
+              <th scope="col" class="num" data-orden="personal">Personal</th>
+              <th scope="col" class="num" data-orden="bys">Bienes y servicios</th>
+              <th scope="col" class="num" data-orden="uso">Bienes de uso</th>
+              <th scope="col" class="num" data-orden="transf">Transferencias y otros</th>
+              <th scope="col" class="num" data-orden="total" aria-sort="descending">Total</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- QUÉ CAMBIA EN 2027 -->
+    <section class="cap" id="cambios" aria-labelledby="t-cambios">
+      <div class="cap-cab">
+        <h2 id="t-cambios">Qué cambia en 2027</h2>
+        <p class="cap-intro" id="cambios-lectura">—</p>
+      </div>
+
+      <div class="dos-presup" id="dos-presup"></div>
+
+      <div class="novedades">
+        <h3>Las novedades</h3>
+        <ol class="nov-lista" id="nov-lista"></ol>
+      </div>
+
+      <div class="dos">
+        <div>
+          <h3>Por área, contra el cierre estimado de 2026</h3>
+          <div class="antes-despues" id="cmp-areas"></div>
+        </div>
+        <div>
+          <h3>Por tipo de gasto</h3>
+          <div class="antes-despues" id="cmp-incisos"></div>
+        </div>
+      </div>
+      <p class="clave-ad"><span><i class="ad-26"></i>Cierre estimado 2026, en pesos de 2027</span><span><i class="ad-27"></i>Anteproyecto 2027</span></p>
+      <p class="nota">El cierre de 2026 es una estimación: se conoce lo ejecutado hasta octubre, según SIMCO, y el resto se proyecta. Por área, lo ejecutado a octubre se proyecta al cierre con el ritmo de cada tipo de gasto. Los años anteriores son gasto ejecutado (devengado).</p>
+    </section>
+
+    <!-- EVOLUCIÓN REAL -->
+    <section class="cap cap-oscuro" id="evolucion" aria-labelledby="t-evolucion">
+      <div class="cap-cab">
+        <h2 id="t-evolucion">¿Es mucho o poco?</h2>
+        <p class="cap-intro" id="evo-lectura">—</p>
+      </div>
+      <div class="evo-controles">
+        <div class="seg" role="group" aria-label="Qué comparar" id="evo-serie">
+          <button type="button" data-serie="gasto">Gasto total</button>
+          <button type="button" data-serie="recursos">Recursos</button>
+          <button type="button" data-serie="i1">Personal</button>
+          <button type="button" data-serie="i23">Bienes y servicios</button>
+          <button type="button" data-serie="i4">Obras y equipamiento</button>
+          <button type="button" data-serie="i5">Transferencias</button>
+        </div>
+        <label class="interruptor">
+          <input type="checkbox" id="evo-nominal">
+          <span>Ver en pesos de cada año, sin ajustar por inflación</span>
+        </label>
+      </div>
+      <figure class="fig">
+        <div class="columnas" id="evo-grafico"></div>
+        <figcaption class="leyenda-evo">
+          <span><i class="m m-ej"></i>Gasto ejecutado</span>
+          <span><i class="m m-est"></i>2026: cierre estimado</span>
+          <span><i class="m m-pre"></i>2027: presupuesto</span>
+        </figcaption>
+      </figure>
+      <div class="evo-notas">
+        <p><strong>Cómo se calcula.</strong> Cada año se lleva a pesos promedio de 2027 con el IPC nacional de INDEC, mes por mes. Para lo que falta publicar se supone 2,2&nbsp;% mensual en octubre, noviembre y diciembre de 2026, y 21,9&nbsp;% de inflación en 2027, según el Relevamiento de Expectativas de Mercado del BCRA.</p>
+        <p><strong>Para leerlo bien.</strong> Los años anteriores muestran lo que efectivamente se gastó. 2027 es un presupuesto: durante el año suele ampliarse con nuevos recursos y modificaciones, así que la comparación tiende a mostrarlo más bajo de lo que termina siendo.</p>
+      </div>
+    </section>
+
+    <!-- PERSONAL -->
+    <section class="cap" id="personal" aria-labelledby="t-personal">
+      <div class="cap-cab">
+        <h2 id="t-personal">Quiénes trabajan en el municipio</h2>
+        <p class="cap-intro" id="personal-lectura">—</p>
+      </div>
+      <p class="clave"><span><i class="punto"></i>Cargo permanente</span><span><i class="punto hueco"></i>Cargo temporario</span></p>
+      <div class="gente" id="gente"></div>
+      <p class="nota">Cada punto es un cargo. El costo incluye sueldo, aguinaldo, adicionales, horas extras y aportes. No se publican datos individuales.</p>
+      <div class="deuda">
+        <h3>Deuda</h3>
+        <p id="deuda-txt">—</p>
+      </div>
+    </section>
+
+    <!-- DATOS -->
+    <section class="cap" id="datos" aria-labelledby="t-datos">
+      <div class="cap-cab">
+        <h2 id="t-datos">Los datos completos</h2>
+        <p class="cap-intro">Todas las cifras de esta página salen de las planillas finales del anteproyecto, cargadas en el sistema RAFAM, y de la ejecución publicada en SIMCO. Podés descargarlas y revisarlas.</p>
+      </div>
+      <div class="dos">
+        <div>
+          <h3>Descargas</h3>
+          <ul class="descargas">
+            <li><a href="datos/recursos.csv" download>Recursos 2027, partida por partida</a> <span>CSV · 67 filas</span></li>
+            <li><a href="datos/gastos.csv" download>Gastos 2027 por programa, fuente y partida</a> <span>CSV</span></li>
+            <li><a href="datos/cargos.csv" download>Cargos por área</a> <span>CSV</span></li>
+            <li><a href="datos/serie_real.csv" download>Serie 2019–2027 en pesos de 2027</a> <span>CSV</span></li>
+            <li><button type="button" class="enlace" id="imprimir">Imprimir o guardar en PDF</button> <span>Versión para el HCD</span></li>
+          </ul>
+        </div>
+        <dl class="glosario">
+          <div><dt>Anteproyecto</dt><dd>Es la propuesta del Departamento Ejecutivo. Se convierte en presupuesto cuando el Concejo Deliberante la aprueba por ordenanza.</dd></div>
+          <div><dt>Libre disponibilidad</dt><dd>Recursos que pueden gastarse en cualquier área, como la coparticipación y las tasas generales.</dd></div>
+          <div><dt>Afectado</dt><dd>Recursos con un destino fijado por ley u ordenanza, como el Fondo Educativo o la tasa de alumbrado.</dd></div>
+          <div><dt>Gasto ejecutado</dt><dd>Lo que el municipio efectivamente comprometió y recibió (devengado), según SIMCO.</dd></div>
+          <div><dt>Por habitante</dt><dd>Monto dividido por los 17.499 habitantes del partido según el Censo Nacional 2022 de INDEC.</dd></div>
+          <div><dt>Pesos de 2027</dt><dd>Montos de años anteriores ajustados por inflación para que se puedan comparar con el presupuesto 2027.</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <img src="img/logo.png" alt="" width="106" height="40">
+    <p>Municipalidad de Carmen de Areco · Secretaría de Hacienda y Finanzas.<br>Anteproyecto de presupuesto 2027. Importes en pesos.</p>
+  </footer>
+
+  <div class="globo" id="globo" role="tooltip" hidden></div>
+
+  <script src="datos/datos.js?v=9"></script>
+  <script src="datos/serie.js?v=9"></script>
+  <script src="datos/cambios.js?v=9"></script>
+  <script src="app.js?v=9"></script>
+</body>
+</html>

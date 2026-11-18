@@ -1,0 +1,68 @@
+﻿cod;nombre;importe;origen;afectado;rubro
+11.4.01.00;Coparticipación Pcial. de Impuesto Ley 10.559;6095000000;Provincial;False;Coparticipación y fondos provinciales
+11.4.02.00;Fondo para el fortalecimiento de Recurso Municipales;355000000;Provincial;False;Coparticipación y fondos provinciales
+11.4.03.00;Fondo Municipal de Inclusion Social;137000000;Provincial;False;Coparticipación y fondos provinciales
+11.4.05.00;Fondo Educativo;1583000000;Provincial;True;Coparticipación y fondos provinciales
+11.9.02.01;Contribucion 6% EDEN;171000000;Provincial;False;Impuestos y aportes provinciales
+11.9.02.02;Contribucion 6% CELCA;447000000;Provincial;False;Impuestos y aportes provinciales
+11.9.02.03;Contribucion 6% CEOPSA;2000000;Provincial;False;Impuestos y aportes provinciales
+11.9.02.04;Contribucion 6% Coop. Elec. Chacabuco Ltda;1000000;Provincial;False;Impuestos y aportes provinciales
+11.9.03.00;Juegos de azar;79000000;Provincial;False;Impuestos y aportes provinciales
+11.9.04.00;Inmobiliario Rural.Afectado;212000000;Provincial;True;Impuestos y aportes provinciales
+11.9.05.00;Inmobiliario Rural. No afectado;667000000;Provincial;False;Impuestos y aportes provinciales
+11.9.06.00;Ingresos Brutos. Ley 13010;41000000;Provincial;False;Impuestos y aportes provinciales
+11.9.07.01;Impuesto Automotor.Del ejercicio;51000000;Provincial;False;Impuestos y aportes provinciales
+11.9.07.02;Impuesto Automotor. Ejercicios Anteriores;45000000;Provincial;False;Impuestos y aportes provinciales
+12.1.01.01;Alumbrado ,Barrido  y Limpieza del Ejercicio;462000000;Municipal;False;Tasas municipales
+12.1.01.02;Alumbrado, barrido y Limpieza de Ejercicios Anteriores;140000000;Municipal;False;Tasas municipales
+12.1.01.03;Tasa Alumbrado Público;749000000;Municipal;True;Tasas municipales
+12.1.01.04;Contribucion de Fortalecimiento de la Seguridad;96000000;Municipal;True;Tasas municipales
+12.1.02.00;Servicios especiales de limpieza e Higiene;8000000;Municipal;False;Tasas municipales
+12.1.03.01;Servicios Rurales del ejercicio;1386000000;Municipal;False;Tasas municipales
+12.1.03.02;Servicios Rurales.Ejercicios Anteriores;274000000;Municipal;False;Tasas municipales
+12.1.03.05;Contribucion Fondo Bomberos Voluntarios;29000000;Municipal;True;Tasas municipales
+12.1.04.00;Habilitación de comercios e industrias;22000000;Municipal;False;Tasas municipales
+12.1.05.01;Inspección de seguridad e higiene.Del Ejercicio;359000000;Municipal;False;Tasas municipales
+12.1.05.02;Inspección de seguridad e higiene.De ejercicios anteriores;104000000;Municipal;False;Tasas municipales
+12.1.15.01;Serv. Sanitarios - Del ejercicio;621000000;Municipal;False;Tasas municipales
+12.1.15.02;Serv. Sanitarios - Ejercicios Anteriores;101000000;Municipal;False;Tasas municipales
+12.1.15.03;Serv. Sanitarios Mant. Ampliacion y Conexion;18000000;Municipal;True;Tasas municipales
+12.1.15.04;Contribucion para la prevencion Zoonótica;96000000;Municipal;True;Tasas municipales
+12.1.16.01;Marcas y Señales del ej.;198000000;Municipal;False;Tasas municipales
+12.1.17.01;Tasa Vial Urbana del Ejercicio;596000000;Municipal;True;Tasas municipales
+12.1.22.00;Contribucion por Mantenimiento de la Red de Transito Pesado;73000000;Municipal;True;Tasas municipales
+12.2.01.00;Espectáculos públicos;3000000;Municipal;False;Derechos municipales
+12.2.05.01;Derecho de Ocupación Via Publica LD;13000000;Municipal;False;Derechos municipales
+12.2.05.02;Derecho de Ocupación Via Publica Afectado GAS;119000000;Municipal;True;Derechos municipales
+12.2.08.00;Cementerio;21000000;Municipal;False;Derechos municipales
+12.2.10.00;Patentes de Rodados;12000000;Municipal;False;Derechos municipales
+12.2.11.00;Derechos de Construcción;100000000;Municipal;False;Derechos municipales
+12.2.13.00;Derecho de Uso de Espacios Aereos;55000000;Municipal;False;Derechos municipales
+12.2.17.01;Venta ambulante - libre disponibilidad;19000000;Municipal;False;Derechos municipales
+12.2.99.01;Derechos de oficina;112000000;Municipal;False;Derechos municipales
+12.6.02.00;Infracción a las Obligaciones Fiscales;135000000;Municipal;False;Multas e infracciones
+12.6.04.00;(10096/0) Infracciones normativas vigentes  y REBA;23000000;Municipal;True;Multas e infracciones
+12.6.05.00;Infraccion normativas vigentes y REBA ( de libre disp);25000000;Municipal;False;Multas e infracciones
+12.9.01.00;Balneario Municipal Ord. Nro.2355/08-Dec.733/08;73000000;Municipal;True;Otros ingresos municipales
+12.9.02.00;Ingresos Varios;8000000;Municipal;False;Otros ingresos municipales
+12.9.06.00;Seguridad Vial y Movilidad Urbana - Multas -;928000000;Municipal;False;Multas e infracciones
+16.2.01.04;Intereses por Fondos Comunes de Inversion;169000000;Municipal;False;Intereses de inversiones
+17.1.03.11;Donaciones Habitat y Banco de Tierras;12000000;Otros orígenes;True;Convenios y programas con destino específico
+17.5.01.01;Convenio Policia Comunal;127000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.04;Fiestas Populares Min Produccion Pba;29000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.07;Centro Día;29000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.08;Casa del Niño;155000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.09;Fondo de Fortalecimiento Programas Sociales;51000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.10;CEAMSE;32000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.12;Niñez y Adoles - Prog.Operadores de calle;17000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.13;Casa de Abrigo Niñez y Adolescencia;187000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.22;Juegos Buenos Aires;73000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.23;Plan Sumar;29000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.38;Ministerio de Desarrollo Social Prog. ENVION;26000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.41;Barrio Adentro;16000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.52;Programa Jugemos Piola (Niñez y Adolecencia PBA);16000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.60;Programa Centros Juveniles Dir. Juventud PBA;29000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.61;Programa Centros de Acompañamiento Socio Comunitario en Adicciones (C.A.S.A);31000000;Provincial;True;Convenios y programas con destino específico
+17.5.01.67;Fondo de Emergencia y Fortalecimiento de la Inversion Municipal (Ley N° 15.561, Art. 3, Inc A LD);105000000;Provincial;False;Convenios y programas con destino específico
+33.1.01.00;Recupero Anticipo a Jubilados;25000000;Municipal;False;Recupero de préstamos
+34.1.01.00;Recupero Crédito Viviendas;10000000;Municipal;False;Recupero de préstamos
