@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
-  <link rel="stylesheet" href="estilos.css?v=12">
+  <link rel="stylesheet" href="estilos.css?v=14">
 </head>
 <body>
   <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -33,11 +33,14 @@
       <nav class="indice" aria-label="Secciones">
         <a href="#calculadora">Tu aporte</a>
         <a href="#recursos">De dónde sale</a>
+        <a href="#tasas">Tasas</a>
         <a href="#recorrido">Recorrido</a>
         <a href="#gastos">En qué se gasta</a>
         <a href="#programas">Programas</a>
         <a href="#cambios">Qué cambia</a>
         <a href="#evolucion">Comparación</a>
+        <a href="#municipios">Otros municipios</a>
+        <a href="#seguimiento">Cómo va 2027</a>
         <a href="#personal">Personal</a>
         <a href="#datos">Datos</a>
       </nav>
@@ -69,7 +72,7 @@
           </div>
           <p class="ticket-sub">así se repartiría:</p>
           <ol class="ticket-lineas" id="ticket-lineas"></ol>
-          <p class="ticket-total"><span>Total</span><span id="ticket-total">—</span></p>
+          <p class="ticket-total" aria-live="polite"><span>Total</span><span id="ticket-total">—</span></p>
           <p class="ticket-pie" id="ticket-ayuda">Reparto según el destino del gasto 2027, por finalidad y función. Es una proporción del presupuesto, no una boleta real.</p>
         </form>
       </div>
@@ -116,6 +119,16 @@
           </table>
         </div>
       </details>
+    </section>
+
+    <!-- TASAS -->
+    <section class="cap" id="tasas" aria-labelledby="t-tasas">
+      <div class="cap-cab">
+        <h2 id="t-tasas">¿Qué paga mi tasa?</h2>
+        <p class="cap-intro">Las tasas municipales son lo que pagan vecinos y empresas a cambio de un servicio. Algunas son de libre uso; otras, por ordenanza, solo pueden gastarse en el servicio que las origina.</p>
+      </div>
+      <div class="tasas" id="lista-tasas"></div>
+      <p class="nota">Descripciones según la Ordenanza Fiscal 3318/2025, vigente al armar el presupuesto. Montos: recaudación prevista para 2027.</p>
     </section>
 
     <!-- RECORRIDO -->
@@ -229,7 +242,7 @@
     <section class="cap cap-oscuro" id="evolucion" aria-labelledby="t-evolucion">
       <div class="cap-cab">
         <h2 id="t-evolucion">¿Es mucho o poco?</h2>
-        <p class="cap-intro" id="evo-lectura">—</p>
+        <p class="cap-intro" id="evo-lectura" aria-live="polite">—</p>
       </div>
       <div class="evo-controles">
         <div class="seg" role="group" aria-label="Qué comparar" id="evo-serie">
@@ -240,6 +253,10 @@
           <button type="button" data-serie="i4">Obras y equipamiento</button>
           <button type="button" data-serie="i5">Transferencias</button>
         </div>
+        <label class="interruptor">
+          <input type="checkbox" id="evo-hab">
+          <span>Por habitante</span>
+        </label>
         <label class="interruptor">
           <input type="checkbox" id="evo-nominal">
           <span>Ver en pesos de cada año, sin ajustar por inflación</span>
@@ -254,9 +271,29 @@
         </figcaption>
       </figure>
       <div class="evo-notas">
-        <p><strong>Cómo se calcula.</strong> Cada año se lleva a pesos promedio de 2027 con el IPC nacional de INDEC, mes por mes. Para lo que falta publicar se supone 2,2&nbsp;% mensual en octubre, noviembre y diciembre de 2026, y 21,9&nbsp;% de inflación en 2027, según el Relevamiento de Expectativas de Mercado del BCRA.</p>
+        <p><strong>Cómo se calcula.</strong> Cada año se lleva a pesos promedio de 2027 con el IPC nacional de INDEC, mes por mes. Para lo que falta publicar se supone 2,2&nbsp;% mensual en octubre, noviembre y diciembre de 2026, y 21,9&nbsp;% de inflación en 2027, según el Relevamiento de Expectativas de Mercado del BCRA. Por habitante: la población de cada año se estima con el ritmo de crecimiento entre los censos 2010 y 2022, y se proyecta igual hasta 2027.</p>
         <p><strong>Para leerlo bien.</strong> De 2019 a 2025 se muestra lo que efectivamente se gastó. 2026 y 2027 son presupuestos: el de 2026 es el aprobado al inicio del año. Durante el año los presupuestos suelen ampliarse con nuevos recursos y modificaciones.</p>
       </div>
+    </section>
+
+    <!-- OTROS MUNICIPIOS -->
+    <section class="cap" id="municipios" aria-labelledby="t-municipios">
+      <div class="cap-cab">
+        <h2 id="t-municipios">Frente a otros municipios</h2>
+        <p class="cap-intro">Cinco indicadores que usa la Provincia para comparar las finanzas de los 135 municipios bonaerenses. Carmen de Areco en 2024, último año cerrado, al lado del conjunto de la Provincia en el mismo año.</p>
+      </div>
+      <div class="indicadores" id="indicadores"></div>
+      <p class="clave-ind"><span><i class="ki-cda"></i>Carmen de Areco 2024</span><span><i class="ki-prov"></i>Municipios bonaerenses 2024</span><span><i class="ki-27"></i>Carmen de Areco, presupuesto 2027</span></p>
+      <p class="nota">Referencia provincial: «Evolución de las Finanzas Municipales 2015–2024», Ministerio de Economía de la Provincia de Buenos Aires (agosto de 2025), valores consolidados. El consolidado pesa más a los municipios grandes, que suelen recaudar más por cuenta propia; un municipio rural chico tiende a quedar por debajo en recursos propios. Carmen de Areco 2024: ejecución en SIMCO. 2027 es un presupuesto, no una ejecución.</p>
+    </section>
+
+    <!-- SEGUIMIENTO 2027 -->
+    <section class="cap" id="seguimiento" aria-labelledby="t-seguimiento">
+      <div class="cap-cab">
+        <h2 id="t-seguimiento">Cómo va 2027</h2>
+        <p class="cap-intro" id="seg-lectura">—</p>
+      </div>
+      <div id="seg-contenido"></div>
     </section>
 
     <!-- PERSONAL -->
@@ -312,9 +349,16 @@
 
   <div class="globo" id="globo" role="tooltip" hidden></div>
 
-  <script src="datos/datos.js?v=12"></script>
-  <script src="datos/serie.js?v=12"></script>
-  <script src="datos/cambios.js?v=12"></script>
-  <script src="app.js?v=12"></script>
+  <script src="datos/datos.js?v=14"></script>
+  <script src="datos/serie.js?v=14"></script>
+  <script src="datos/cambios.js?v=14"></script>
+  <script src="datos/municipios.js?v=14"></script>
+  <script src="datos/ejecucion.js?v=14"></script>
+  <script src="app.js?v=14"></script>
+  <!-- Contador de visitas (GoatCounter, sin publicidad ni seguimiento de personas).
+       Para activarlo: crear una cuenta gratuita en https://www.goatcounter.com, elegir un código
+       (por ejemplo "presupuesto-cda") y reemplazar CODIGO abajo; después quitar las marcas de comentario.
+  <script data-goatcounter="https://CODIGO.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  -->
 </body>
 </html>

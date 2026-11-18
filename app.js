@@ -487,6 +487,71 @@
   }
   cambios();
 
+  /* ---------- ¿qué paga mi tasa? ---------- */
+  const TASAS = [
+    { n: 'Servicios rurales', quien: 'Los propietarios de campos, por hectárea.', que: 'Conservación, reparación y mejorado de los caminos rurales.', cods: ['12.1.03.01', '12.1.03.02'] },
+    { n: 'Alumbrado público', quien: 'Todos los inmuebles del partido.', que: 'El alumbrado de calles y espacios públicos.', cods: ['12.1.01.03'] },
+    { n: 'Servicios sanitarios', quien: 'Los inmuebles conectados a la red.', que: 'Agua corriente y cloacas, conexiones y reparaciones.', cods: ['12.1.15.01', '12.1.15.02', '12.1.15.03'] },
+    { n: 'Servicios urbanos', quien: 'Las propiedades urbanas, por metro de frente.', que: 'Barrido, limpieza, riego, plazas, espacios verdes y poda.', cods: ['12.1.01.01', '12.1.01.02'] },
+    { n: 'Tasa vial urbana', quien: 'Quien carga combustible en estaciones del partido.', que: 'Señalización, reparación y mejora de las calles.', cods: ['12.1.17.01'] },
+    { n: 'Seguridad e higiene', quien: 'Comercios, industrias y servicios, según sus ingresos.', que: 'Inspección de seguridad, higiene y ambiente de las actividades económicas.', cods: ['12.1.05.01', '12.1.05.02'] },
+    { n: 'Marcas y señales', quien: 'Productores ganaderos.', que: 'Control y registro de marcas y señales del ganado.', cods: ['12.1.16.01'] },
+    { n: 'Fortalecimiento de la seguridad', quien: 'Los contribuyentes de la tasa de servicios urbanos.', que: 'Seguridad pública.', cods: ['12.1.01.04'] },
+    { n: 'Prevención zoonótica', quien: 'Los contribuyentes de la tasa de servicios sanitarios.', que: 'Control de la población canina y felina: castraciones y vacunación.', cods: ['12.1.15.04'] },
+    { n: 'Red de tránsito pesado', quien: 'Usuarios de la red de tránsito pesado.', que: 'Mantenimiento de las calles por donde circulan camiones.', cods: ['12.1.22.00'] },
+    { n: 'Bomberos voluntarios', quien: 'Se cobra junto con las tasas.', que: 'Aporte al cuerpo de Bomberos Voluntarios.', cods: ['12.1.03.05'] },
+  ];
+  (function tasas() {
+    const cont = $('#lista-tasas');
+    const items = TASAS.map((t) => { const rs = R.filter((r) => t.cods.includes(r.cod)); return { ...t, v: sum(rs, (r) => r.importe), fijo: rs.some((r) => r.afectado) }; }).filter((t) => t.v > 0).sort((x, y) => y.v - x.v);
+    const max = Math.max(...items.map((t) => t.v));
+    items.forEach((t) => {
+      const art = el('article', 'tasa', null, cont);
+      const cab = el('div', 'tasa-cab', null, art);
+      el('h3', null, t.n, cab);
+      el('span', 'tasa-uso ' + (t.fijo ? 'fijo' : 'libre'), t.fijo ? 'Destino fijo' : 'Libre uso', cab);
+      const m = el('p', 'tasa-m', null, art); el('b', null, M(t.v), m); m.append(' en 2027 · ' + '$' + nf0.format(Math.round(t.v / POBLACION)) + ' por habitante');
+      const b = el('div', 'tasa-bar' + (t.fijo ? ' trama' : ''), null, art); b.style.width = (t.v / max) * 100 + '%';
+      const dl = el('dl', null, null, art);
+      el('dt', null, 'Quién la paga', dl); el('dd', null, t.quien, dl);
+      el('dt', null, 'Qué cubre', dl); el('dd', null, t.que, dl);
+    });
+  })();
+
+  /* ---------- frente a otros municipios ---------- */
+  (function municipios() {
+    const MU = window.MUNICIPIOS; if (!MU) return;
+    const cont = $('#indicadores');
+    MU.indicadores.forEach((i) => {
+      const art = el('article', 'ind', null, cont);
+      el('h3', null, i.n, art);
+      el('p', 'ind-d', i.d, art);
+      const max = Math.max(i.local2024, i.provincia2024, i.local2027 || 0) * 1.15;
+      const fila = (cls, n, v) => { const f = el('div', 'ind-f ' + cls, null, art); el('span', 'ind-n', n, f); const t = el('span', 'ind-t', null, f); const b = el('i', null, null, t); b.style.width = (v / max) * 100 + '%'; el('b', 'ind-v', P(v), f); };
+      fila('ki-cda', 'Carmen de Areco 2024', i.local2024);
+      fila('ki-prov', 'Provincia 2024', i.provincia2024);
+      if (i.local2027 != null) fila('ki-27', 'Presupuesto 2027', i.local2027);
+    });
+  })();
+
+  /* ---------- cómo va 2027 ---------- */
+  (function seguimiento() {
+    const E = window.EJECUCION; const lect = $('#seg-lectura'); const cont = $('#seg-contenido');
+    if (!E || !E.disponible) {
+      lect.textContent = 'Esta sección va a mostrar, cada trimestre, cuánto del presupuesto ya se gastó y cuánto se recaudó.';
+      const av = el('div', 'seg-vacio', null, cont);
+      el('b', null, 'Primer informe: ' + (E ? E.proximo : 'abril de 2027'), av);
+      el('p', null, 'Con datos al ' + (E ? E.corte : '31 de marzo de 2027') + ', a partir de la ejecución que el municipio informa en SIMCO.', av);
+      return;
+    }
+    lect.textContent = 'Datos a ' + E.corte + '. Transcurrió ' + P(E.avance_tiempo) + ' del año.';
+    const f = (n, ej, pr, extra) => { const d = el('div', 'seg-f', null, cont); const top = el('div', 'fila-top', null, d); el('span', 'l', n, top); el('span', 'v', P(ej / pr) + ' · ' + M(ej) + ' de ' + M(pr), top); const b = el('div', 'seg-b', null, d); const i = el('i', null, null, b); i.style.width = Math.min(100, (ej / pr) * 100) + '%'; const mk = el('span', 'seg-hoy', null, b); mk.style.left = E.avance_tiempo * 100 + '%'; if (extra) el('p', 'sub', extra, d); };
+    f('Gasto total', E.gasto.ejecutado, E.gasto.presupuesto);
+    f('Recursos percibidos', E.recursos.percibido, E.recursos.presupuesto);
+    E.areas.filter((x) => x.presupuesto).forEach((x) => f(areaCorto(x.nombre), x.ejecutado, x.presupuesto));
+    el('p', 'nota', 'La línea vertical marca la parte del año transcurrida.', cont);
+  })();
+
   /* ---------- evolución en pesos de 2027 ---------- */
   const SERIES = {
     gasto: { n: 'el gasto total', f: (r, real) => r[real ? 'gasto_real' : 'gasto_nominal'] },
@@ -500,12 +565,18 @@
   const nominal = $('#evo-nominal');
   $$('#evo-serie button').forEach((b) => b.addEventListener('click', () => { serie = b.dataset.serie; evolucion(); }));
   nominal.addEventListener('change', () => evolucion());
+  const porHabEl = $('#evo-hab'); porHabEl.addEventListener('change', () => evolucion());
+  // Población por año: crecimiento geométrico entre los censos 2010 (14.692) y 2022 (17.499), proyectado igual hasta 2027
+  const TASA_POB = Math.pow(17499 / 14692, 1 / 12) - 1;
+  const poblacion = (anio) => 17499 * Math.pow(1 + TASA_POB, anio - 2022);
 
   function evolucion() {
     $$('#evo-serie button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.serie === serie)));
     const real = !nominal.checked;
     const def = SERIES[serie];
-    const datos = S.filas.map((r) => ({ anio: r.anio, tipo: r.tipo, v: def.f(r, real) }));
+    const ph = porHabEl.checked;
+    const datos = S.filas.map((r) => ({ anio: r.anio, tipo: r.tipo, v: def.f(r, real) / (ph ? poblacion(r.anio) : 1) }));
+    const MF = (v) => (ph ? '$' + nf0.format(Math.round(v)) : M(v));
     const cont = $('#evo-grafico');
     const W = Math.max(300, cont.clientWidth || 800);
     const H = W < 600 ? 330 : 410;
@@ -545,17 +616,17 @@
       const cx = m.l + paso * i + paso / 2; const x = cx - ancho / 2;
       const fill = d.tipo === 'presupuesto' ? '#4FC3E6' : d.tipo === 'presupuesto_2026' ? 'url(#rayado)' : '#5E7FAE';
       const col = sv('rect', { class: 'col', x, width: ancho, y: yv(d.v), height: Math.max(0, yv(0) - yv(d.v)), rx: 3, fill }, svg);
-      col.addEventListener('pointermove', (e) => mostrarGlobo(e, String(d.anio) + (d.tipo === 'presupuesto_2026' ? ' (presupuesto aprobado)' : d.tipo === 'presupuesto' ? ' (presupuesto)' : ''), M(d.v) + (real ? ' en pesos de 2027' : ' en pesos de ese año')));
+      col.addEventListener('pointermove', (e) => mostrarGlobo(e, String(d.anio) + (d.tipo === 'presupuesto_2026' ? ' (presupuesto aprobado)' : d.tipo === 'presupuesto' ? ' (presupuesto)' : ''), MF(d.v) + (ph ? ' por habitante' : '') + (real ? ' en pesos de 2027' : ' en pesos de ese año')));
       col.addEventListener('pointerleave', ocultarGlobo);
       const val = sv('text', { class: 'val', x: cx, y: yv(d.v) - 8, 'text-anchor': 'middle' }, svg);
       const mm = d.v / 1e6;
       const corto = W < 640;
-      val.textContent = corto ? nf1.format(mm / 1000) : nf0.format(mm);
+      val.textContent = ph ? nf0.format(d.v / 1000) : (corto ? nf1.format(mm / 1000) : nf0.format(mm));
       if (corto) val.setAttribute('font-size', '11.5');
       const an = sv('text', { class: 'anio', x: cx, y: H - 8, 'text-anchor': 'middle' }, svg); an.textContent = W < 420 ? "'" + String(d.anio).slice(2) : d.anio;
     });
     const u = sv('text', { x: 0, y: 12 }, svg);
-    u.textContent = (W < 640 ? 'Miles de millones' : 'Millones') + (real ? ' de pesos de 2027' : ' de pesos de cada año');
+    u.textContent = ph ? 'Miles de pesos por habitante' + (real ? ', en pesos de 2027' : ', de cada año') : (W < 640 ? 'Miles de millones' : 'Millones') + (real ? ' de pesos de 2027' : ' de pesos de cada año');
 
     // lectura
     const v27 = datos.find((d) => d.anio === 2027).v; const v26 = datos.find((d) => d.anio === 2026).v; const v25 = datos.find((d) => d.anio === 2025).v;
@@ -569,9 +640,9 @@
       el('strong', null, cambio(v27, v26), lect);
       lect.append(' que el presupuesto aprobado para 2026 y ');
       el('strong', null, cambio(v27, v25), lect);
-      lect.append(' que lo ejecutado en 2025. El año más alto de la serie fue ' + pico.anio + ', con ' + M(pico.v) + ' en pesos de 2027.');
+      lect.append(' que lo ejecutado en 2025. El año más alto de la serie fue ' + pico.anio + ', con ' + MF(pico.v) + (ph ? ' por habitante' : '') + ' en pesos de 2027.');
     } else {
-      lect.append('En pesos de cada año los montos parecen crecer siempre: de ' + M(datos[0].v) + ' en 2019 a ' + M(v27) + ' en 2027. Es casi todo inflación. ');
+      lect.append('En pesos de cada año los montos parecen crecer siempre: de ' + MF(datos[0].v) + ' en 2019 a ' + MF(v27) + ' en 2027. Es casi todo inflación. ');
       el('strong', null, 'Desactivá el interruptor para ver la comparación real.', lect);
     }
   }
@@ -603,7 +674,7 @@
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) enlaces.forEach((a) => { const on = a.getAttribute('href') === '#' + e.target.id; a.classList.toggle('activo', on); if (on) { const nav = a.parentElement; nav.scrollTo({ left: Math.max(0, a.offsetLeft - nav.clientWidth / 2 + a.offsetWidth / 2), behavior: 'smooth' }); } });
     }), { rootMargin: '-35% 0px -60% 0px' });
-    ['calculadora', 'recursos', 'recorrido', 'gastos', 'programas', 'cambios', 'evolucion', 'personal', 'datos'].forEach((id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+    ['calculadora', 'recursos', 'tasas', 'recorrido', 'gastos', 'programas', 'cambios', 'evolucion', 'municipios', 'seguimiento', 'personal', 'datos'].forEach((id) => { const s = document.getElementById(id); if (s) io.observe(s); });
   }
 
   const btnImp = $('#imprimir'); if (btnImp) btnImp.addEventListener('click', () => window.print());
