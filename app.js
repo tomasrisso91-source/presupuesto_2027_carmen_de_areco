@@ -15,6 +15,17 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const el = (tag, cls, txt, parent) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; if (parent) parent.append(e); return e; };
+  // Movimiento: se respeta "reducir movimiento" del sistema; ?animar en la dirección lo fuerza para revisar
+  const MOV = !matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).has('animar');
+  function tween(e, desde, hasta, fmt, dur = 900) {
+    if (!MOV) { e.textContent = fmt(hasta); return; }
+    const id = (e._tw || 0) + 1; e._tw = id; const t0 = performance.now();
+    const paso = (t) => { if (e._tw !== id) return; const p = Math.min(1, (t - t0) / dur); const k = 1 - Math.pow(1 - p, 3); e.textContent = fmt(desde + (hasta - desde) * k); if (p < 1) requestAnimationFrame(paso); else e.textContent = fmt(hasta); };
+    requestAnimationFrame(paso);
+    setTimeout(() => { if (e._tw === id) e.textContent = fmt(hasta); }, dur + 400);
+  }
+  const ico = (name, parent, cls) => { const i = document.createElement('i'); i.dataset.lucide = name; i.setAttribute('aria-hidden', 'true'); if (cls) i.className = cls; parent.prepend(i); return i; };
+  const iconos = () => { if (window.lucide) window.lucide.createIcons({ attrs: { 'stroke-width': 1.8 } }); };
   const sum = (a, f) => a.reduce((t, x) => t + f(x), 0);
   const groupSum = (rows, key, val = (r) => r.importe) => { const m = new Map(); rows.forEach((r) => { const k = key(r); m.set(k, (m.get(k) || 0) + val(r)); }); return [...m.entries()]; };
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -34,20 +45,20 @@
 
   /* Destinos del ticket: funciones del clasificador agrupadas en lenguaje llano */
   const DESTINOS = [
-    { n: 'Obras, calles y caminos', f: ['Planeamiento y desarrollo urbano'], c: 'var(--azul)' },
-    { n: 'Limpieza, residuos y espacios verdes', f: ['Recolección de residuos, barrido y limpieza', 'Otros servivicios urbanos', 'Ecología y medio ambiente'], c: 'var(--agua)' },
-    { n: 'Administración y recaudación', f: ['Administración Fiscal'], c: 'var(--gris)' },
-    { n: 'Educación', f: ['Educación elemental', 'Educación superior y universitaria'], c: 'var(--turquesa)' },
-    { n: 'Salud', f: ['Salud'], c: 'var(--verde)' },
-    { n: 'Seguridad y tránsito', f: ['Seguridad interior'], c: 'var(--marino)' },
-    { n: 'Acción social, niñez y juventud', f: ['Promoción y asistencia social'], c: 'var(--lima)' },
-    { n: 'Gobierno, inspección y comunicación', f: ['Dirección superior ejecutiva', 'Judicial', 'Información y estadísticas básicas'], c: 'var(--gris)' },
-    { n: 'Turismo, cultura y deporte', f: ['Comercio, turismo y otros servicios', 'Cultura (incluye culto)', 'Deporte y recreación'], c: 'var(--verde)' },
-    { n: 'Alumbrado público', f: ['Alumbrado público'], c: 'var(--lima)' },
-    { n: 'Agua y cloacas', f: ['Agua potable y alcantarillado'], c: 'var(--turquesa)' },
-    { n: 'Concejo Deliberante', f: ['Legislativa'], c: 'var(--gris)' },
-    { n: 'Deuda', f: ['Servicios de la deuda pública (intereses y'], c: 'var(--marino)' },
-    { n: 'Cementerio', f: ['Cementerios'], c: 'var(--agua)' },
+    { n: 'Obras, calles y caminos', icon: 'construction', f: ['Planeamiento y desarrollo urbano'], c: 'var(--azul)' },
+    { n: 'Limpieza, residuos y espacios verdes', icon: 'recycle', f: ['Recolección de residuos, barrido y limpieza', 'Otros servivicios urbanos', 'Ecología y medio ambiente'], c: 'var(--agua)' },
+    { n: 'Administración y recaudación', icon: 'landmark', f: ['Administración Fiscal'], c: 'var(--gris)' },
+    { n: 'Educación', icon: 'graduation-cap', f: ['Educación elemental', 'Educación superior y universitaria'], c: 'var(--turquesa)' },
+    { n: 'Salud', icon: 'heart-pulse', f: ['Salud'], c: 'var(--verde)' },
+    { n: 'Seguridad y tránsito', icon: 'shield', f: ['Seguridad interior'], c: 'var(--marino)' },
+    { n: 'Acción social, niñez y juventud', icon: 'hand-heart', f: ['Promoción y asistencia social'], c: 'var(--lima)' },
+    { n: 'Gobierno, inspección y comunicación', icon: 'megaphone', f: ['Dirección superior ejecutiva', 'Judicial', 'Información y estadísticas básicas'], c: 'var(--gris)' },
+    { n: 'Turismo, cultura y deporte', icon: 'trophy', f: ['Comercio, turismo y otros servicios', 'Cultura (incluye culto)', 'Deporte y recreación'], c: 'var(--verde)' },
+    { n: 'Alumbrado público', icon: 'lamp', f: ['Alumbrado público'], c: 'var(--lima)' },
+    { n: 'Agua y cloacas', icon: 'droplets', f: ['Agua potable y alcantarillado'], c: 'var(--turquesa)' },
+    { n: 'Concejo Deliberante', icon: 'gavel', f: ['Legislativa'], c: 'var(--gris)' },
+    { n: 'Deuda', icon: 'banknote', f: ['Servicios de la deuda pública (intereses y'], c: 'var(--marino)' },
+    { n: 'Cementerio', icon: 'flower-2', f: ['Cementerios'], c: 'var(--agua)' },
   ];
 
   /* ---------- totales ---------- */
@@ -63,6 +74,7 @@
   const POBLACION = 17499;
   const pesos = (v) => '$' + nf0.format(Math.round(v));
   const valores = {
+    apaca: M(sum(G.filter((r) => r.actividad === 'Mantenimiento de caminos' && r.inciso === 5), (r) => r.importe)),
     por_hab: pesos(totGas / POBLACION), por_hab_mes: pesos(totGas / POBLACION / 12), rec_mun_hab: pesos(mun / POBLACION), poblacion: nf0.format(POBLACION),
     total: M(totGas), pct_prov: P(prov / totRec), pct_mun: P(mun / totRec), pct_afec: P(afec / totRec),
     pct_personal: P(pers / totGas), jur_top: 'La Secretaría de ' + areaCorto(porArea[0][0]), jur_top_pct: P(porArea[0][1] / totGas),
@@ -89,7 +101,7 @@
       const f = el('div', 'fila', null, cont);
       const top = el('div', 'fila-top', null, f);
       el('span', 'l', it.n, top);
-      const v = el('span', 'v', M(it.v), top);
+      const v = el('span', 'v', null, top); el('span', 'vm', M(it.v), v);
       if (o.total) el('small', null, P(it.v / o.total), v);
       const b = el('div', 'barra-f', null, f);
       (it.partes || [{ v: it.v, c: it.c, trama: it.trama }]).forEach((p) => {
@@ -108,20 +120,27 @@
   if (Math.abs(sinAsignar) > 1e6) destinos.push({ n: 'Otros', v: sinAsignar, c: 'var(--gris)' });
   const inMonto = $('#monto');
   const leerMonto = () => { const n = Number(String(inMonto.value).replace(/[^\d]/g, '')); return Number.isFinite(n) ? Math.min(n, 1e12) : 0; };
-  function ticket() {
+  let previos = [];
+  function ticket(desdeCero) {
     const monto = leerMonto();
     const brutos = destinos.map((d) => (monto * d.v) / totGas);
     const base = brutos.map(Math.floor);
     let resto = Math.round(monto - sum(base, (x) => x));
     brutos.map((b, i) => [b - base[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (resto > 0) { base[i] += 1; resto -= 1; } });
-    const ol = $('#ticket-lineas'); ol.replaceChildren();
-    destinos.forEach((d, i) => {
-      const li = el('li', null, null, ol);
-      const c = el('i', 'c', null, li); c.style.background = d.c;
-      const n = el('span', 'n', null, li); el('span', null, d.n, n);
-      el('span', 'v', '$' + nf0.format(base[i]), li);
-    });
-    $('#ticket-total').textContent = '$' + nf0.format(monto);
+    const ol = $('#ticket-lineas');
+    const pesosF = (x) => '$' + nf0.format(Math.round(x));
+    if (!ol.children.length) {
+      destinos.forEach((d) => {
+        const li = el('li', null, null, ol);
+        const c = el('i', 'c', null, li); c.dataset.lucide = d.icon || 'circle'; c.setAttribute('aria-hidden', 'true'); c.style.color = d.c;
+        const n = el('span', 'n', null, li); el('span', null, d.n, n);
+        el('span', 'v', '$0', li);
+      });
+      iconos();
+    }
+    $$('#ticket-lineas .v').forEach((v, i) => tween(v, desdeCero ? 0 : (previos[i] || 0), base[i], pesosF, desdeCero ? 1300 + i * 60 : 450));
+    tween($('#ticket-total'), desdeCero ? 0 : (previos.total || 0), monto, pesosF, desdeCero ? 1300 : 450);
+    previos = base.slice(); previos.total = monto;
     $$('.ticket-rapido button').forEach((b) => b.classList.toggle('activo', b.hasAttribute('data-hab') ? monto === Math.round(totGas / POBLACION) : Number(b.dataset.monto) === monto));
   }
   inMonto.addEventListener('input', () => {
@@ -129,11 +148,11 @@
     const pos = inMonto.value.length - inMonto.selectionStart;
     inMonto.value = n ? nf0.format(n) : '';
     const p = Math.max(0, inMonto.value.length - pos); inMonto.setSelectionRange(p, p);
-    ticket();
+    ticket(false);
   });
-  $$('.ticket-rapido button').forEach((b) => b.addEventListener('click', () => { inMonto.value = nf0.format(b.hasAttribute('data-hab') ? Math.round(totGas / POBLACION) : Number(b.dataset.monto)); ticket(); }));
+  $$('.ticket-rapido button').forEach((b) => b.addEventListener('click', () => { inMonto.value = nf0.format(b.hasAttribute('data-hab') ? Math.round(totGas / POBLACION) : Number(b.dataset.monto)); ticket(true); }));
   $('#ticket').addEventListener('submit', (e) => e.preventDefault());
-  ticket();
+  ticket(true);
 
   /* ---------- recursos ---------- */
   // Grupos en lenguaje llano, por código de recurso (clasificador RAFAM)
@@ -167,7 +186,7 @@
   LADOS.forEach((l, i) => {
     const col = el('div', 'quien', null, quienes); col.style.setProperty('--c', l.c);
     const cab = el('div', 'quien-cab', null, col);
-    el('p', 'quien-n', l.n + ' ' + l.d, cab);
+    const qn = el('p', 'quien-n', null, cab); ico(l.k === 'prov' ? 'landmark' : 'users', qn, 'ico-in'); qn.append(l.n + ' ' + l.d);
     const big = el('p', 'quien-cien', null, cab); el('b', null, '$' + cien[i], big); big.append(' de cada $100');
     el('p', 'quien-m', M(totLado[i]) + ' en el año', cab);
     const items = GRUPOS_REC.filter((g) => g.lado === l.k).map((g) => ({ g, v: sum(R.filter((r) => ladoDe(r) === l.k && grupoDe(r) === g), (r) => r.importe) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v);
@@ -403,6 +422,7 @@
     $('#ficha-total').textContent = M(p.total) + ' · ' + P(p.total / totGas) + ' del presupuesto';
     filas($('#ficha-incisos'), groupSum(p.filas, (r) => r.inciso).sort((a, b) => a[0] - b[0]).map(([i, v]) => ({ n: incNom[i], v, c: INC_C[i] })), { total: p.total });
     filas($('#ficha-actividades'), groupSum(p.filas, (r) => r.actividad || 'Conducción y gestión del programa').sort((a, b) => b[1] - a[1]).map(([n, v]) => ({ n, v, c: areaC(p.area) })), { total: p.total });
+    setTimeout(() => $$('#ficha .vm').forEach((e) => { const n = parseFloat(e.textContent.replace(/[^\d,]/g, '').replace(',', '.')); const conMil = e.textContent.includes('mil'); if (isFinite(n)) tween(e, 0, n, (x) => '$' + (conMil ? nf0.format(x) + ' mil' : (n >= 100 ? nf0 : nf1).format(x) + ' M'), 1000); }), 0);
     filas($('#ficha-fuentes'), groupSum(p.filas, (r) => r.fuente_nombre).sort((a, b) => b[1] - a[1]).map(([n, v]) => ({ n, v, c: 'var(--gris)', trama: !n.startsWith('Rentas') })), { total: p.total });
     if (desplazar && f.getBoundingClientRect().top > innerHeight * 0.75) f.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
   }
@@ -435,16 +455,21 @@
     const var26 = t.p2027 / t.b2026_real - 1, var25 = t.p2027 / t.e2025_real - 1;
     const signo = (v) => P(Math.abs(v)) + (v >= 0 ? ' mayor' : ' menor');
     const lect = $('#cambios-lectura'); lect.replaceChildren();
-    lect.append('Descontada la inflación, el presupuesto 2027 es ');
-    el('strong', null, signo(var26), lect);
-    lect.append(' que el presupuesto aprobado para 2026 y ');
-    el('strong', null, signo(var25), lect);
-    lect.append(' que lo ejecutado en 2025. Abajo, qué cambia en la organización y cómo se reparte entre áreas y tipos de gasto.');
+    const varC = t.p2027 / t.c2026_real - 1;
+    lect.append('Depende contra qué se compare. El presupuesto de 2026 se aprobó por ' + M(t.b2026_nominal) + ' y durante el año se amplió: se estima que cerrará en unos ' + M(t.c2026_nominal) + '. Por eso, descontada la inflación, el de 2027 es mayor que lo aprobado para 2026, pero menor que lo que realmente se va a gastar este año.');
+    const dc = $('#dos-comparaciones'); dc.replaceChildren();
+    [[var26, 'contra el presupuesto aprobado para 2026', 'Presupuesto contra presupuesto: lo que se autorizó al comenzar cada año.'],
+     [varC, 'contra lo que se estima gastar en 2026', 'Incluye las ampliaciones del año. Muestra cuánto cambian de verdad los recursos disponibles.']].forEach(([v, n, d]) => {
+      const c = el('div', 'cmp ' + (v >= 0 ? 'sube' : 'baja'), null, dc);
+      const big = el('p', 'cmp-v', null, c); el('span', 'cmp-flecha', v >= 0 ? '▲' : '▼', big); big.append((v >= 0 ? '+' : '−') + P(Math.abs(v)));
+      el('p', 'cmp-n', n, c); el('p', 'cmp-d', d, c);
+    });
 
     const dp = $('#dos-presup'); dp.replaceChildren();
     const items = [
       { n: 'Ejecutado en 2025', d: M(t.e2025_nominal) + ' en pesos de 2025', v: t.e2025_real, cls: 'dp-26' },
-      { n: 'Presupuesto aprobado 2026', d: M(t.b2026_nominal) + ' en pesos de 2026', v: t.b2026_real, cls: 'dp-cierre' },
+      { n: 'Presupuesto aprobado 2026', d: M(t.b2026_nominal) + ' en pesos de 2026', v: t.b2026_real, cls: 'dp-apr' },
+      { n: 'Lo que se estima gastar en 2026', d: M(t.c2026_nominal) + ' en pesos de 2026, con las ampliaciones del año', v: t.c2026_real, cls: 'dp-cierre' },
       { n: 'Anteproyecto 2027', d: 'Lo que se propone ahora', v: t.p2027, cls: 'dp-27' },
     ];
     const max = Math.max(...items.map((i) => i.v));
@@ -461,12 +486,12 @@
     const r22 = ['Residuos urbanos y disposición final', 'Residuos no convencionales', 'Residuos sólidos urbanos y recolección diferenciada'];
     const fe = R.find((r) => r.cod === '11.4.05.00');
     const NOV = [
-      { t: 'Se incorpora Defensa Civil', d: 'Es un área que venía funcionando dentro de Seguridad y ahora se institucionaliza como programa aparte, con ' + M(act('Defensa Civil')) + ' para 2027.' },
-      { t: 'La recolección de residuos se divide en tres', d: 'Para ver y analizar mejor el costo de cada servicio: ' + r22.map((n) => n.charAt(0).toLowerCase() + n.slice(1) + ' (' + M(act(n)) + ')').join(', ') + '.' },
-      fe && { t: 'Fondo Educativo: ' + M(fe.importe), d: 'Viene de la Provincia y solo puede usarse en educación.' },
+      { icon: 'siren', t: 'Se incorpora Defensa Civil', d: 'Es un área que venía funcionando dentro de Seguridad y ahora se institucionaliza como programa aparte, con ' + M(act('Defensa Civil')) + ' para 2027.' },
+      { icon: 'recycle', t: 'La recolección de residuos se divide en tres', d: 'Para ver y analizar mejor el costo de cada servicio: ' + r22.map((n) => n.charAt(0).toLowerCase() + n.slice(1) + ' (' + M(act(n)) + ')').join(', ') + '.' },
+      fe && { icon: 'book-open', t: 'Fondo Educativo: ' + M(fe.importe), d: 'Viene de la Provincia y solo puede usarse en educación.' },
     ].filter(Boolean);
     const ol = $('#nov-lista'); ol.replaceChildren();
-    NOV.forEach((n) => { const li = el('li', null, null, ol); el('b', null, n.t, li); el('p', null, n.d, li); });
+    NOV.forEach((n) => { const li = el('li', null, null, ol); const b = el('b', null, null, li); ico(n.icon, b, 'ico-in'); b.append(n.t); el('p', null, n.d, li); });
 
     const ad = (cont, filasAD, colorDe) => {
       cont.replaceChildren();
@@ -489,17 +514,17 @@
 
   /* ---------- ¿qué paga mi tasa? ---------- */
   const TASAS = [
-    { n: 'Servicios rurales', quien: 'Los propietarios de campos, por hectárea.', que: 'Conservación, reparación y mejorado de los caminos rurales.', cods: ['12.1.03.01', '12.1.03.02'] },
-    { n: 'Alumbrado público', quien: 'Todos los inmuebles del partido.', que: 'El alumbrado de calles y espacios públicos.', cods: ['12.1.01.03'] },
-    { n: 'Servicios sanitarios', quien: 'Los inmuebles conectados a la red.', que: 'Agua corriente y cloacas, conexiones y reparaciones.', cods: ['12.1.15.01', '12.1.15.02', '12.1.15.03'] },
-    { n: 'Servicios urbanos', quien: 'Las propiedades urbanas, por metro de frente.', que: 'Barrido, limpieza, riego, plazas, espacios verdes y poda.', cods: ['12.1.01.01', '12.1.01.02'] },
-    { n: 'Tasa vial urbana', quien: 'Quien carga combustible en estaciones del partido.', que: 'Señalización, reparación y mejora de las calles.', cods: ['12.1.17.01'] },
-    { n: 'Seguridad e higiene', quien: 'Comercios, industrias y servicios, según sus ingresos.', que: 'Inspección de seguridad, higiene y ambiente de las actividades económicas.', cods: ['12.1.05.01', '12.1.05.02'] },
-    { n: 'Marcas y señales', quien: 'Productores ganaderos.', que: 'Control y registro de marcas y señales del ganado.', cods: ['12.1.16.01'] },
-    { n: 'Fortalecimiento de la seguridad', quien: 'Los contribuyentes de la tasa de servicios urbanos.', que: 'Seguridad pública.', cods: ['12.1.01.04'] },
-    { n: 'Prevención zoonótica', quien: 'Los contribuyentes de la tasa de servicios sanitarios.', que: 'Control de la población canina y felina: castraciones y vacunación.', cods: ['12.1.15.04'] },
-    { n: 'Red de tránsito pesado', quien: 'Usuarios de la red de tránsito pesado.', que: 'Mantenimiento de las calles por donde circulan camiones.', cods: ['12.1.22.00'] },
-    { n: 'Bomberos voluntarios', quien: 'Se cobra junto con las tasas.', que: 'Aporte al cuerpo de Bomberos Voluntarios.', cods: ['12.1.03.05'] },
+    { icon: 'tractor', n: 'Servicios rurales', quien: 'Los propietarios de campos, por hectárea.', que: 'Conservación, reparación y mejorado de los caminos rurales.', cods: ['12.1.03.01', '12.1.03.02'] },
+    { icon: 'lightbulb', n: 'Alumbrado público', quien: 'Todos los inmuebles del partido.', que: 'El alumbrado de calles y espacios públicos.', cods: ['12.1.01.03'] },
+    { icon: 'droplets', n: 'Servicios sanitarios', quien: 'Los inmuebles conectados a la red.', que: 'Agua corriente y cloacas, conexiones y reparaciones.', cods: ['12.1.15.01', '12.1.15.02', '12.1.15.03'] },
+    { icon: 'trees', n: 'Servicios urbanos', quien: 'Las propiedades urbanas, por metro de frente.', que: 'Barrido, limpieza, riego, plazas, espacios verdes y poda.', cods: ['12.1.01.01', '12.1.01.02'] },
+    { icon: 'fuel', n: 'Tasa vial urbana', quien: 'Quien carga combustible en estaciones del partido.', que: 'Señalización, reparación y mejora de las calles.', cods: ['12.1.17.01'] },
+    { icon: 'store', n: 'Seguridad e higiene', quien: 'Comercios, industrias y servicios, según sus ingresos.', que: 'Inspección de seguridad, higiene y ambiente de las actividades económicas.', cods: ['12.1.05.01', '12.1.05.02'] },
+    { icon: 'tag', n: 'Marcas y señales', quien: 'Productores ganaderos.', que: 'Control y registro de marcas y señales del ganado.', cods: ['12.1.16.01'] },
+    { icon: 'shield-check', n: 'Fortalecimiento de la seguridad', quien: 'Los contribuyentes de la tasa de servicios urbanos.', que: 'Seguridad pública.', cods: ['12.1.01.04'] },
+    { icon: 'paw-print', n: 'Prevención zoonótica', quien: 'Los contribuyentes de la tasa de servicios sanitarios.', que: 'Control de la población canina y felina: castraciones y vacunación.', cods: ['12.1.15.04'] },
+    { icon: 'truck', n: 'Red de tránsito pesado', quien: 'Usuarios de la red de tránsito pesado.', que: 'Mantenimiento de las calles por donde circulan camiones.', cods: ['12.1.22.00'] },
+    { icon: 'flame', n: 'Bomberos voluntarios', quien: 'Se cobra junto con las tasas.', que: 'Aporte al cuerpo de Bomberos Voluntarios.', cods: ['12.1.03.05'] },
   ];
   (function tasas() {
     const cont = $('#lista-tasas');
@@ -508,7 +533,7 @@
     items.forEach((t) => {
       const art = el('article', 'tasa', null, cont);
       const cab = el('div', 'tasa-cab', null, art);
-      el('h3', null, t.n, cab);
+      const h3 = el('h3', null, null, cab); ico(t.icon, h3, 'ico-in'); h3.append(t.n);
       el('span', 'tasa-uso ' + (t.fijo ? 'fijo' : 'libre'), t.fijo ? 'Destino fijo' : 'Libre uso', cab);
       const m = el('p', 'tasa-m', null, art); el('b', null, M(t.v), m); m.append(' en 2027 · ' + '$' + nf0.format(Math.round(t.v / POBLACION)) + ' por habitante');
       const b = el('div', 'tasa-bar' + (t.fijo ? ' trama' : ''), null, art); b.style.width = (t.v / max) * 100 + '%';
@@ -616,6 +641,7 @@
       const cx = m.l + paso * i + paso / 2; const x = cx - ancho / 2;
       const fill = d.tipo === 'presupuesto' ? '#4FC3E6' : d.tipo === 'presupuesto_2026' ? 'url(#rayado)' : '#5E7FAE';
       const col = sv('rect', { class: 'col', x, width: ancho, y: yv(d.v), height: Math.max(0, yv(0) - yv(d.v)), rx: 3, fill }, svg);
+      col.style.animationDelay = (i * 70) + 'ms';
       col.addEventListener('pointermove', (e) => mostrarGlobo(e, String(d.anio) + (d.tipo === 'presupuesto_2026' ? ' (presupuesto aprobado)' : d.tipo === 'presupuesto' ? ' (presupuesto)' : ''), MF(d.v) + (ph ? ' por habitante' : '') + (real ? ' en pesos de 2027' : ' en pesos de ese año')));
       col.addEventListener('pointerleave', ocultarGlobo);
       const val = sv('text', { class: 'val', x: cx, y: yv(d.v) - 8, 'text-anchor': 'middle' }, svg);
@@ -625,6 +651,9 @@
       if (corto) val.setAttribute('font-size', '11.5');
       const an = sv('text', { class: 'anio', x: cx, y: H - 8, 'text-anchor': 'middle' }, svg); an.textContent = W < 420 ? "'" + String(d.anio).slice(2) : d.anio;
     });
+    if (MOV && document.getElementById('evolucion').classList.contains('visto')) {
+      $$('#evo-grafico .val').forEach((t) => { const txt = t.textContent; const dec = txt.includes(',') ? 1 : 0; const n = parseFloat(txt.replace(/\./g, '').replace(',', '.')); const f = new Intl.NumberFormat('es-AR', { minimumFractionDigits: dec, maximumFractionDigits: dec }); if (isFinite(n)) tween(t, 0, n, (x) => f.format(x), 1000); });
+    }
     const u = sv('text', { x: 0, y: 12 }, svg);
     u.textContent = ph ? 'Miles de pesos por habitante' + (real ? ', en pesos de 2027' : ', de cada año') : (W < 640 ? 'Miles de millones' : 'Millones') + (real ? ' de pesos de 2027' : ' de pesos de cada año');
 
@@ -678,6 +707,55 @@
   }
 
   const btnImp = $('#imprimir'); if (btnImp) btnImp.addEventListener('click', () => window.print());
+
+  /* ---------- íconos de secciones y descargas ---------- */
+  const ICO_SEC = { recursos: 'landmark', tasas: 'receipt', recorrido: 'workflow', gastos: 'wallet', programas: 'layout-grid', cambios: 'git-compare-arrows', evolucion: 'trending-up', municipios: 'map', seguimiento: 'activity', personal: 'users', datos: 'database' };
+  Object.entries(ICO_SEC).forEach(([id, n]) => { const h2 = document.querySelector('#' + id + ' h2'); if (h2) ico(n, h2, 'ico-sec'); });
+  $$('.descargas li').forEach((li, i, all) => ico(i === all.length - 1 ? 'printer' : (li.textContent.includes('QR') ? 'qr-code' : 'download'), li, 'ico-in'));
+
+  /* ---------- animaciones (solo si el usuario no pidió reducir el movimiento) ---------- */
+  // ?animar en la dirección las muestra aunque el sistema pida reducir el movimiento (para revisar)
+  const conMovimiento = (!matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).has('animar')) && 'IntersectionObserver' in window;
+  const numeroDe = (s) => { const m = s.match(/-?[\d.]+(,\d+)?/); return m ? { txt: m[0], v: parseFloat(m[0].replace(/\./g, '').replace(',', '.')), dec: (m[1] || '').length ? m[1].length - 1 : 0 } : null; };
+  function contar(e) {
+    if (e.dataset.contando) return; e.dataset.contando = '1';
+    const final = e.textContent; const n = numeroDe(final); if (!n || !isFinite(n.v) || n.v === 0) return;
+    setTimeout(() => { e.textContent = final; }, 1900); // por si el navegador pausa la animación
+    const f = new Intl.NumberFormat('es-AR', { minimumFractionDigits: n.dec, maximumFractionDigits: n.dec });
+    const t0 = performance.now(); const dur = 1600;
+    const paso = (t) => { const p = Math.min(1, (t - t0) / dur); const k = 1 - Math.pow(1 - p, 4); e.textContent = final.replace(n.txt, f.format(n.v * k)); if (p < 1) requestAnimationFrame(paso); else e.textContent = final; };
+    requestAnimationFrame(paso);
+  }
+  if (conMovimiento) {
+    document.documentElement.classList.add('anim');
+    const CONTAR = '.bajada strong, .ph-cifra b, .cmp-v, .dp-v, .quien-cien b, .lg .n > span:first-child, .fila-top .vm, .ql-v, .ind-v, .tasa-m b, .pila-l b, .fl-v, .lp-m, #evo-grafico .val';
+    const ioA = new IntersectionObserver((es) => es.forEach((en) => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add('visto'); ioA.unobserve(en.target);
+      en.target.querySelectorAll(CONTAR).forEach(contar);
+    }), { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    $$('.apertura, .cap').forEach((s) => ioA.observe(s));
+    // resguardo: si el observador se demora, mostrar igual lo que ya está en pantalla
+    const revisar = () => $$('.apertura:not(.visto), .cap:not(.visto)').forEach((s) => {
+      const r = s.getBoundingClientRect();
+      if (r.top < innerHeight * 0.92 && r.bottom > 0) { s.classList.add('visto'); s.querySelectorAll(CONTAR).forEach(contar); }
+    });
+    addEventListener('scroll', revisar, { passive: true });
+    const vigia = setInterval(() => { revisar(); if (!document.querySelector('.cap:not(.visto)')) clearInterval(vigia); }, 700);
+    // índice de cada elemento dentro de su lista, para la cascada
+    const LISTAS = '.fila, .quien, .quien-lista li, .tasa, .ind, .nov-lista li, .ad, .dp, .cmp, .area-g, .lp-grupo, .seg-f, .descargas li, .glosario > div, .lg > div, .pila, .ph-cifra, .ejemplos li, .evo-notas p, .ticket-lineas li, .mapa .grupo';
+    const escalonarItems = () => $$(LISTAS).forEach((e) => { let i = 0, s = e; while ((s = s.previousElementSibling)) i++; e.style.setProperty('--i', Math.min(i, 14)); });
+    escalonarItems();
+    let pendiente; new MutationObserver(() => { clearTimeout(pendiente); pendiente = setTimeout(escalonarItems, 30); }).observe($('main'), { childList: true, subtree: true });
+    // barra de lectura y profundidad de la apertura
+    const raiz = document.documentElement; const ap = $('.apertura'); let pedido = false;
+    const alDesplazar = () => { pedido = false; const max = raiz.scrollHeight - innerHeight; raiz.style.setProperty('--prog', max > 0 ? (scrollY / max).toFixed(4) : 0); if (scrollY < innerHeight * 1.5) ap.style.setProperty('--sy', scrollY.toFixed(1)); };
+    addEventListener('scroll', () => { if (!pedido) { pedido = true; requestAnimationFrame(alDesplazar); } }, { passive: true });
+    alDesplazar();
+    // las columnas de la evolución suben de a una
+    addEventListener('beforeprint', () => $$('.apertura, .cap').forEach((s) => s.classList.add('visto')));
+  }
+  iconos();
 
   /* ---------- dibujo inicial y al cambiar el ancho ---------- */
   function todo() { recorrido(); dibujarMapa(); ficha(); tabla(); evolucion(); }
