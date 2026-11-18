@@ -259,6 +259,7 @@ main { overflow-x: clip; }
 
 .pie { max-width: var(--ancho); margin: clamp(56px, 8vw, 96px) auto 0; padding: 28px var(--gutter) calc(40px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--linea); display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 14px; color: var(--tinta-2); }
 .pie img { height: 36px; width: auto; }
+.pie .pie-qr { display: none; }
 
 /* globo de ayuda */
 .globo { position: fixed; z-index: 60; pointer-events: none; max-width: 260px; background: var(--tinta); color: var(--papel); padding: 8px 11px; border-radius: 7px; font-size: 13.5px; line-height: 1.35; box-shadow: 0 8px 22px -6px rgba(0, 0, 0, .35); }
@@ -281,6 +282,7 @@ main { overflow-x: clip; }
   .cap-cab { break-after: avoid; }
   .fila, .ad, .nov-lista li, .quien, .area-g, .dp { break-inside: avoid; }
   .pie { margin-top: 18pt; }
+  .pie .pie-qr { display: block; height: 26mm; width: 26mm; margin-left: auto; background: #fff; padding: 0; }
 }
 
 

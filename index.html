@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
-  <link rel="stylesheet" href="estilos.css?v=9">
+  <link rel="stylesheet" href="estilos.css?v=10">
 </head>
 <body>
   <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -288,6 +288,7 @@
             <li><a href="datos/gastos.csv" download>Gastos 2027 por programa, fuente y partida</a> <span>CSV</span></li>
             <li><a href="datos/cargos.csv" download>Cargos por área</a> <span>CSV</span></li>
             <li><a href="datos/serie_real.csv" download>Serie 2019–2027 en pesos de 2027</a> <span>CSV</span></li>
+            <li><a href="img/qr.png" download="QR-presupuesto-2027-carmen-de-areco.png">Código QR al sitio</a> <span>PNG · también en <a href="img/qr.svg" download>SVG</a></span></li>
             <li><button type="button" class="enlace" id="imprimir">Imprimir o guardar en PDF</button> <span>Versión para el HCD</span></li>
           </ul>
         </div>
@@ -305,14 +306,15 @@
 
   <footer class="pie">
     <img src="img/logo.png" alt="" width="106" height="40">
+    <img class="pie-qr" src="img/qr.svg" alt="Código QR al sitio del presupuesto" width="96" height="96">
     <p>Municipalidad de Carmen de Areco · Secretaría de Hacienda y Finanzas.<br>Anteproyecto de presupuesto 2027. Importes en pesos.</p>
   </footer>
 
   <div class="globo" id="globo" role="tooltip" hidden></div>
 
-  <script src="datos/datos.js?v=9"></script>
-  <script src="datos/serie.js?v=9"></script>
-  <script src="datos/cambios.js?v=9"></script>
-  <script src="app.js?v=9"></script>
+  <script src="datos/datos.js?v=10"></script>
+  <script src="datos/serie.js?v=10"></script>
+  <script src="datos/cambios.js?v=10"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
