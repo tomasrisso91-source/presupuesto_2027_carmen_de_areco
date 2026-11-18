@@ -377,3 +377,8 @@ main { overflow-x: clip; }
 .ph-cifra b { font: 700 clamp(24px, 3vw, 34px) var(--f-cifra); letter-spacing: -.02em; }
 .ph-nota { grid-column: 1 / -1; font-size: 13.5px; color: var(--tinta-2); padding: 0 0 14px; }
 @media (max-width: 720px) { .por-hab { grid-template-columns: 1fr; } .ph-cifra + .ph-cifra { padding-left: 0; border-left: 0; border-top: 1px solid var(--linea); } }
+
+/* períodos de contexto en el gráfico de evolución */
+.columnas .periodo { fill: rgba(232, 162, 58, .07); stroke: rgba(232, 162, 58, .55); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.columnas .periodo-t { fill: #E8A23A; font-weight: 700; font-size: 13.5px; }
+@media print { .columnas .periodo { fill: #FFF6E8; stroke: #C98612; } .columnas .periodo-t { fill: #8A5A08; } }

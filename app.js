@@ -508,8 +508,8 @@
     const datos = S.filas.map((r) => ({ anio: r.anio, tipo: r.tipo, v: def.f(r, real) }));
     const cont = $('#evo-grafico');
     const W = Math.max(300, cont.clientWidth || 800);
-    const H = W < 600 ? 300 : 380;
-    const m = { t: 28, r: 4, b: 30, l: 4 };
+    const H = W < 600 ? 330 : 410;
+    const m = { t: 62, r: 4, b: 30, l: 4 };
     const max = Math.max(...datos.map((d) => d.v)) * 1.08;
     const n = datos.length; const paso = (W - m.l - m.r) / n; const ancho = Math.min(68, paso * 0.68);
     const yv = (v) => m.t + (H - m.t - m.b) * (1 - v / max);
@@ -527,6 +527,20 @@
     sv('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: css('--oscuro'), 'stroke-width': 2.2 }, pat);
     [0.25, 0.5, 0.75].forEach((f) => sv('line', { class: 'rej', x1: 0, x2: W, y1: yv(max / 1.08 * f), y2: yv(max / 1.08 * f) }, svg));
     sv('line', { class: 'rej', x1: 0, x2: W, y1: yv(0), y2: yv(0) }, svg);
+    // Períodos de contexto: franja detrás de las columnas, con su nombre arriba
+    const PERIODOS = [
+      { desde: 2020, hasta: 2021, n: 'Pandemia de COVID-19', corto: 'COVID-19' },
+      { desde: 2024, hasta: 2027, n: 'Gobierno nacional de Javier Milei', corto: 'Gob. Milei' },
+    ];
+    PERIODOS.forEach((p) => {
+      const i0 = datos.findIndex((x) => x.anio === p.desde), i1 = datos.findIndex((x) => x.anio === p.hasta);
+      if (i0 < 0 || i1 < 0) return;
+      const x0 = m.l + paso * i0 + 3, x1 = m.l + paso * (i1 + 1) - 3;
+      sv('rect', { class: 'periodo', x: x0, y: m.t - 30, width: x1 - x0, height: yv(0) - (m.t - 30), rx: 6 }, svg);
+      const t = sv('text', { class: 'periodo-t', x: x0 + 9, y: m.t - 12 }, svg);
+      t.textContent = p.n;
+      if (t.getComputedTextLength() > x1 - x0 - 14) t.textContent = p.corto;
+    });
     datos.forEach((d, i) => {
       const cx = m.l + paso * i + paso / 2; const x = cx - ancho / 2;
       const fill = d.tipo === 'presupuesto' ? '#4FC3E6' : d.tipo === 'presupuesto_2026' ? 'url(#rayado)' : '#5E7FAE';
