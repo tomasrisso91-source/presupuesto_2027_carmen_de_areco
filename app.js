@@ -432,19 +432,19 @@
   function cambios() {
     if (!CB) return;
     const t = CB.total;
-    const var26 = t.p2027 / t.c2026_real - 1, var25 = t.p2027 / t.e2025_real - 1;
+    const var26 = t.p2027 / t.b2026_real - 1, var25 = t.p2027 / t.e2025_real - 1;
     const signo = (v) => P(Math.abs(v)) + (v >= 0 ? ' mayor' : ' menor');
     const lect = $('#cambios-lectura'); lect.replaceChildren();
     lect.append('Descontada la inflación, el presupuesto 2027 es ');
     el('strong', null, signo(var26), lect);
-    lect.append(' que lo que se estima gastar en 2026 y ');
+    lect.append(' que el presupuesto aprobado para 2026 y ');
     el('strong', null, signo(var25), lect);
     lect.append(' que lo ejecutado en 2025. Abajo, qué cambia en la organización y cómo se reparte entre áreas y tipos de gasto.');
 
     const dp = $('#dos-presup'); dp.replaceChildren();
     const items = [
       { n: 'Ejecutado en 2025', d: M(t.e2025_nominal) + ' en pesos de 2025', v: t.e2025_real, cls: 'dp-26' },
-      { n: 'Cierre estimado 2026', d: M(t.c2026_nominal) + ' en pesos de 2026', v: t.c2026_real, cls: 'dp-cierre' },
+      { n: 'Presupuesto aprobado 2026', d: M(t.b2026_nominal) + ' en pesos de 2026', v: t.b2026_real, cls: 'dp-cierre' },
       { n: 'Anteproyecto 2027', d: 'Lo que se propone ahora', v: t.p2027, cls: 'dp-27' },
     ];
     const max = Math.max(...items.map((i) => i.v));
@@ -470,16 +470,16 @@
 
     const ad = (cont, filasAD, colorDe) => {
       cont.replaceChildren();
-      const mx = Math.max(...filasAD.flatMap((f) => [f.c2026_real, f.p2027]));
-      filasAD.filter((f) => f.c2026_real || f.p2027).forEach((f) => {
+      const mx = Math.max(...filasAD.flatMap((f) => [f.b2026_real, f.p2027]));
+      filasAD.filter((f) => f.b2026_real || f.p2027).forEach((f) => {
         const r = el('div', 'ad', null, cont); r.style.setProperty('--c', colorDe(f.nombre));
         const top = el('div', 'ad-top', null, r); el('span', 'ad-n', f.nombre, top);
         const v = f.var_vs_2026;
         if (v != null) el('span', 'ad-var ' + (v >= 0 ? 'sube' : 'baja'), (v >= 0 ? '▲ +' : '▼ −') + P(Math.abs(v)), top);
         const b = el('div', 'ad-bars', null, r);
-        const b1 = el('i', 'ad-26', null, b); b1.style.width = (f.c2026_real / mx) * 100 + '%';
+        const b1 = el('i', 'ad-26', null, b); b1.style.width = (f.b2026_real / mx) * 100 + '%';
         const b2 = el('i', 'ad-27', null, b); b2.style.width = (f.p2027 / mx) * 100 + '%';
-        el('p', 'ad-m', M(f.c2026_real) + ' → ' + M(f.p2027), r);
+        el('p', 'ad-m', M(f.b2026_real) + ' → ' + M(f.p2027), r);
       });
     };
     ad($('#cmp-areas'), [...CB.areas].sort((a, b) => b.p2027 - a.p2027).map((a) => ({ ...a, nombre: areaCorto(a.nombre) })), (n) => areaC(Object.keys(AREA).find((k) => areaCorto(k) === n)));
@@ -529,9 +529,9 @@
     sv('line', { class: 'rej', x1: 0, x2: W, y1: yv(0), y2: yv(0) }, svg);
     datos.forEach((d, i) => {
       const cx = m.l + paso * i + paso / 2; const x = cx - ancho / 2;
-      const fill = d.tipo === 'presupuesto' ? '#4FC3E6' : d.tipo === 'estimado' ? 'url(#rayado)' : '#5E7FAE';
+      const fill = d.tipo === 'presupuesto' ? '#4FC3E6' : d.tipo === 'presupuesto_2026' ? 'url(#rayado)' : '#5E7FAE';
       const col = sv('rect', { class: 'col', x, width: ancho, y: yv(d.v), height: Math.max(0, yv(0) - yv(d.v)), rx: 3, fill }, svg);
-      col.addEventListener('pointermove', (e) => mostrarGlobo(e, String(d.anio) + (d.tipo === 'estimado' ? ' (cierre estimado)' : d.tipo === 'presupuesto' ? ' (presupuesto)' : ''), M(d.v) + (real ? ' en pesos de 2027' : ' en pesos de ese año')));
+      col.addEventListener('pointermove', (e) => mostrarGlobo(e, String(d.anio) + (d.tipo === 'presupuesto_2026' ? ' (presupuesto aprobado)' : d.tipo === 'presupuesto' ? ' (presupuesto)' : ''), M(d.v) + (real ? ' en pesos de 2027' : ' en pesos de ese año')));
       col.addEventListener('pointerleave', ocultarGlobo);
       const val = sv('text', { class: 'val', x: cx, y: yv(d.v) - 8, 'text-anchor': 'middle' }, svg);
       const mm = d.v / 1e6;
@@ -553,7 +553,7 @@
       const nombre = def.n;
       lect.append('Descontada la inflación, ' + nombre + ' previst' + (pl ? (def.f2 ? 'as' : 'os') : 'o') + ' para 2027 ' + (pl ? 'son ' : 'es '));
       el('strong', null, cambio(v27, v26), lect);
-      lect.append(' que el cierre estimado de 2026 y ');
+      lect.append(' que el presupuesto aprobado para 2026 y ');
       el('strong', null, cambio(v27, v25), lect);
       lect.append(' que lo ejecutado en 2025. El año más alto de la serie fue ' + pico.anio + ', con ' + M(pico.v) + ' en pesos de 2027.');
     } else {
