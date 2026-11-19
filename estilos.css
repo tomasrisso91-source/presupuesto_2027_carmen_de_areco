@@ -2982,7 +2982,7 @@ svg.ico-sec {
   width: 18px;
   height: 18px;
 }
-@media (max-width: 760px) {
+@media (max-width: 1279px) {
   .menu-btn {
     display: inline-flex;
   }
@@ -2997,7 +2997,7 @@ svg.ico-sec {
     margin: 0;
     padding: 6px 0 12px;
     mask-image: none;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 6px;
     max-height: calc(100dvh - 90px);
     overflow-y: auto;
@@ -3399,5 +3399,42 @@ body {
   .ps-barra span {
     white-space: normal;
     font-size: 12.5px;
+  }
+}
+
+/* =========== escritorio: menú completo, contenido más ancho y títulos compactos =========== */
+@media (min-width: 1280px) {
+  .barra-in {
+    max-width: 1440px;
+    gap: 20px;
+  }
+  .indice {
+    padding: 0 4px;
+    mask-image: none;
+    -webkit-mask-image: none;
+    overflow: visible;
+  }
+  .indice a {
+    padding: 7px 9px;
+    font-size: 14px;
+  }
+}
+@media (min-width: 1600px) {
+  :root {
+    --ancho: 1280px;
+  }
+  .barra-in {
+    max-width: var(--ancho);
+  }
+}
+.cap-cab {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+}
+.cap h2 {
+  font-size: clamp(30px, 4vw, 46px);
+}
+@media (max-width: 820px) {
+  .cap-cab {
+    grid-template-columns: 1fr;
   }
 }
