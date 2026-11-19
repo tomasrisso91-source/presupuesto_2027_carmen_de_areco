@@ -157,7 +157,7 @@
   /* ---------- recursos ---------- */
   // Grupos en lenguaje llano, por código de recurso (clasificador RAFAM)
   const GRUPOS_REC = [
-    { lado: 'prov', n: 'Coparticipación', d: 'La parte de los impuestos provinciales que se reparte entre los municipios.', t: (c) => c === '11.4.01.00' },
+    { lado: 'prov', n: 'Coparticipación', d: 'La parte de los impuestos provinciales que le corresponde a los municipios.', t: (c) => c === '11.4.01.00' },
     { lado: 'prov', n: 'Fondo Educativo', d: 'Solo puede usarse en educación.', t: (c) => c === '11.4.05.00' },
     { lado: 'prov', n: 'Impuestos provinciales compartidos', d: 'Inmobiliario rural, automotor, ingresos brutos, juegos de azar y el 6 % de la energía eléctrica.', t: (c) => c.startsWith('11.9') },
     { lado: 'prov', n: 'Otros fondos provinciales', d: 'Fortalecimiento de recursos, inclusión social y Fondo de Inversión Municipal.', t: (c) => ['11.4.02.00', '11.4.03.00', '17.5.01.67'].includes(c) },
@@ -171,8 +171,8 @@
   const ladoDe = (r) => (r.origen === 'Provincial' ? 'prov' : r.origen === 'Municipal' ? 'mun' : 'otro');
   const grupoDe = (r) => GRUPOS_REC.find((g) => g.lado === ladoDe(r) && g.t(r.cod));
   const LADOS = [
-    { k: 'prov', n: 'La Provincia', d: 'envía', c: 'var(--turquesa)' },
-    { k: 'mun', n: 'Vecinos y empresas', d: 'pagan', c: 'var(--azul)' },
+    { k: 'prov', n: 'La Provincia', etq: 'De la Provincia le corresponden a Carmen de Areco', c: 'var(--turquesa)' },
+    { k: 'mun', n: 'Vecinos y empresas', etq: 'Vecinos y empresas contribuyen', c: 'var(--azul)' },
   ];
   // de cada $100, con método del mayor resto para que sume 100
   const cienDe = (vals) => { const b = vals.map((v) => Math.floor((v / totRec) * 100)); let f = 100 - sum(b, (x) => x); vals.map((v, i) => [(v / totRec) * 100 - b[i], i]).sort((x, y) => y[0] - x[0]).forEach(([, i]) => { if (f > 0) { b[i] += 1; f -= 1; } }); return b; };
@@ -186,7 +186,7 @@
   LADOS.forEach((l, i) => {
     const col = el('div', 'quien', null, quienes); col.style.setProperty('--c', l.c);
     const cab = el('div', 'quien-cab', null, col);
-    const qn = el('p', 'quien-n', null, cab); ico(l.k === 'prov' ? 'landmark' : 'users', qn, 'ico-in'); qn.append(l.n + ' ' + l.d);
+    const qn = el('p', 'quien-n', null, cab); ico(l.k === 'prov' ? 'landmark' : 'users', qn, 'ico-in'); qn.append(l.etq);
     const big = el('p', 'quien-cien', null, cab); el('b', null, '$' + cien[i], big); big.append(' de cada $100');
     el('p', 'quien-m', M(totLado[i]) + ' en el año', cab);
     const items = GRUPOS_REC.filter((g) => g.lado === l.k).map((g) => ({ g, v: sum(R.filter((r) => ladoDe(r) === l.k && grupoDe(r) === g), (r) => r.importe) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v);
@@ -199,7 +199,7 @@
       el('p', 'ql-d', g.d, li);
     });
   });
-  if (otros) $('#otros-origen').textContent = 'Además, ' + M(otros) + ' llegan por donaciones al Hábitat y Banco de Tierras.';
+  if (otros) $('#otros-origen').textContent = 'Además, ' + M(otros) + ' provienen de otros recursos destinados al Hábitat y Banco de Tierras.';
 
   const fijo = afec, libre = totRec - afec;
   $('#pct-libre').textContent = '$' + Math.round((libre / totRec) * 100) + ' de cada $100';
@@ -218,8 +218,8 @@
     const nrm = (s) => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     [...R].filter((r) => !filtroRec || nrm(r.nombre + ' ' + r.cod).includes(nrm(filtroRec))).sort((a, b) => b.importe - a.importe).forEach((r) => {
       const tr = el('tr', null, null, tb);
-      const td = el('td', null, nombreLlano(r.nombre), tr); el('small', null, r.cod + ' · ' + ((grupoDe(r) || {}).n || 'Donaciones'), td);
-      el('td', null, ladoDe(r) === 'prov' ? 'Provincia' : ladoDe(r) === 'mun' ? 'Vecinos y empresas' : 'Donaciones', tr);
+      const td = el('td', null, nombreLlano(r.nombre), tr); el('small', null, r.cod + ' · ' + ((grupoDe(r) || {}).n || 'Otros recursos'), td);
+      el('td', null, ladoDe(r) === 'prov' ? 'Provincia' : ladoDe(r) === 'mun' ? 'Vecinos y empresas' : 'Otros recursos', tr);
       el('td', null, r.afectado ? 'Destino fijo' : 'Libre', tr);
       el('td', 'num', M(r.importe), tr);
     });
@@ -228,7 +228,7 @@
   tablaRec();
 
   /* ---------- recorrido: quién pone → uso → área ---------- */
-  const QUIEN = { prov: 'La Provincia', mun: 'Vecinos y empresas', otro: 'Donaciones' };
+  const QUIEN = { prov: 'La Provincia', mun: 'Vecinos y empresas', otro: 'Otros recursos' };
   const QCOL = { prov: 'var(--turquesa)', mun: 'var(--azul)', otro: 'var(--lima)' };
   const USO = { libre: 'Libre uso', fijo: 'Destino fijo' };
   const tramoA = new Map(); // quién|uso -> monto
@@ -257,11 +257,11 @@
         const l = el('ul', 'pila-l', null, f);
         items.forEach((i) => { const li = el('li', null, null, l); const sw = el('i', i.trama ? 'trama' : '', null, li); sw.style.backgroundColor = i.c; el('span', null, i.n, li); el('b', null, M(i.v), li); });
       };
-      pila('Quién la pone', izq.map((q) => ({ n: QUIEN[q], v: valA(q), c: QCOL[q] })));
+      pila('Quién aporta los recursos', izq.map((q) => ({ n: QUIEN[q], v: valA(q), c: QCOL[q] })));
       el('div', 'pila-flecha', '↓', cont).setAttribute('aria-hidden', 'true');
-      pila('Cómo se puede usar', med.map((u) => ({ n: USO[u], v: valM(u), c: 'var(--gris)', trama: u === 'fijo' })));
+      pila('Cómo pueden utilizarse', med.map((u) => ({ n: USO[u], v: valM(u), c: 'var(--gris)', trama: u === 'fijo' })));
       el('div', 'pila-flecha', '↓', cont).setAttribute('aria-hidden', 'true');
-      pila('Qué área la gasta', der.map((a) => ({ n: areaCorto(a), v: valD(a), c: areaC(a) })));
+      pila('A qué área se destinan', der.map((a) => ({ n: areaCorto(a), v: valD(a), c: areaC(a) })));
       return;
     }
 
@@ -269,7 +269,7 @@
     const H = Math.round(Math.max(440, Math.min(560, W * 0.46)));
     const k = (H - pad * (der.length - 1)) / totRec;
     const xs = [lw, lw + (W - lw - rw - nw) / 2, W - rw - nw];
-    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H + top * 2}`, width: '100%', role: 'img', 'aria-label': 'Recorrido del dinero: quién lo pone, si es de libre uso o tiene destino fijo, y qué área lo gasta.' }, cont);
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H + top * 2}`, width: '100%', role: 'img', 'aria-label': 'Recorrido de los recursos: quién los aporta, si son de libre uso o tienen destino fijo, y a qué área se destinan.' }, cont);
     const defs = svgEl('defs', {}, svg);
     const pat = svgEl('pattern', { id: 'raya-flujo', width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
     const ln = svgEl('line', { x1: 0, y1: 0, x2: 0, y2: 6, 'stroke-width': 2.4 }, pat); ln.style.stroke = 'var(--papel)'; ln.style.strokeOpacity = '.85';
@@ -451,26 +451,22 @@
   const CB = window.CAMBIOS;
   function cambios() {
     if (!CB) return;
-    const t = CB.total;
-    const var26 = t.p2027 / t.b2026_real - 1, var25 = t.p2027 / t.e2025_real - 1;
-    const signo = (v) => P(Math.abs(v)) + (v >= 0 ? ' mayor' : ' menor');
-    const lect = $('#cambios-lectura'); lect.replaceChildren();
-    const varC = t.p2027 / t.c2026_real - 1;
-    lect.append('Depende contra qué se compare. El presupuesto de 2026 se aprobó por ' + M(t.b2026_nominal) + ' y durante el año se amplió: se estima que cerrará en unos ' + M(t.c2026_nominal) + '. Por eso, descontada la inflación, el de 2027 es mayor que lo aprobado para 2026, pero menor que lo que realmente se va a gastar este año.');
+    const t = CB.total, infl = CB.meta.inflacion_2027;
+    const sg = (v) => (v >= 0 ? '+' : '−') + P(Math.abs(v));
+    $('#cambios-lectura').textContent = 'El presupuesto 2027 se formuló con una inflación estimada del ' + P(infl) + ', a la que se suman la estacionalidad, el crecimiento esperado de la actividad y las particularidades de cada recurso. Por eso, frente a la proyección de cierre del ejercicio 2026, que cierra en equilibrio en ' + M(t.rec_c2026) + ', los recursos y los gastos de 2027 crecen ' + P(t.rec_var) + ' en términos nominales.';
     const dc = $('#dos-comparaciones'); dc.replaceChildren();
-    [[var26, 'contra el presupuesto aprobado para 2026', 'Presupuesto contra presupuesto: lo que se autorizó al comenzar cada año.'],
-     [varC, 'contra lo que se estima gastar en 2026', 'Incluye las ampliaciones del año. Muestra cuánto cambian de verdad los recursos disponibles.']].forEach(([v, n, d]) => {
+    [[t.rec_var, 'Recursos', M(t.rec_c2026) + ' proyectados al cierre de 2026 → ' + M(t.rec_p2027) + ' en 2027.'],
+     [t.gas_var, 'Gastos', M(t.gas_c2026) + ' proyectados al cierre de 2026 → ' + M(t.gas_p2027) + ' en 2027.']].forEach(([v, n, d]) => {
       const c = el('div', 'cmp ' + (v >= 0 ? 'sube' : 'baja'), null, dc);
-      const big = el('p', 'cmp-v', null, c); el('span', 'cmp-flecha', v >= 0 ? '▲' : '▼', big); big.append((v >= 0 ? '+' : '−') + P(Math.abs(v)));
-      el('p', 'cmp-n', n, c); el('p', 'cmp-d', d, c);
+      const big = el('p', 'cmp-v', null, c); el('span', 'cmp-flecha', v >= 0 ? '▲' : '▼', big); big.append(sg(v));
+      el('p', 'cmp-n', n + ', frente a la proyección de cierre 2026', c); el('p', 'cmp-d', d, c);
     });
 
     const dp = $('#dos-presup'); dp.replaceChildren();
     const items = [
-      { n: 'Ejecutado en 2025', d: M(t.e2025_nominal) + ' en pesos de 2025', v: t.e2025_real, cls: 'dp-26' },
-      { n: 'Presupuesto aprobado 2026', d: M(t.b2026_nominal) + ' en pesos de 2026', v: t.b2026_real, cls: 'dp-apr' },
-      { n: 'Lo que se estima gastar en 2026', d: M(t.c2026_nominal) + ' en pesos de 2026, con las ampliaciones del año', v: t.c2026_real, cls: 'dp-cierre' },
-      { n: 'Anteproyecto 2027', d: 'Lo que se propone ahora', v: t.p2027, cls: 'dp-27' },
+      { n: 'Presupuesto aprobado 2026', d: 'Crédito inicial autorizado al comenzar el ejercicio. Se muestra como referencia.', v: t.b2026, cls: 'dp-apr' },
+      { n: 'Proyección de cierre 2026', d: 'Ejecución de enero a octubre más lo proyectado para noviembre y diciembre, en equilibrio con los recursos.', v: t.gas_c2026, cls: 'dp-cierre' },
+      { n: 'Anteproyecto 2027', d: 'Lo que se propone ahora.', v: t.gas_p2027, cls: 'dp-27' },
     ];
     const max = Math.max(...items.map((i) => i.v));
     items.forEach((i) => {
@@ -479,7 +475,8 @@
       const b = el('div', 'dp-bar', null, f); const fi = el('i', null, null, b); fi.style.width = (i.v / max) * 100 + '%';
       el('p', 'dp-d', i.d, f);
     });
-    el('p', 'nota', 'Todo en pesos promedio de 2027.', dp);
+    el('p', 'nota', 'Importes en pesos corrientes de cada año.', dp);
+    $('#cambios-metodo').textContent = 'Recursos 2026: proyección de cierre recurso por recurso, con la distribución provincial registrada y el ritmo de recaudación municipal. Gastos 2026: devengado de enero a octubre según SIMCO, más noviembre y diciembre estimados con el comportamiento de 2025; personal y deuda se proyectan completos y el resto se ajusta para cerrar en equilibrio con los recursos. Las variaciones son nominales: no descuentan la inflación.';
 
     // novedades confirmadas por la Secretaría de Hacienda
     const act = (n) => sum(G.filter((g) => g.actividad === n), (g) => g.importe);
@@ -495,24 +492,28 @@
 
     const ad = (cont, filasAD, colorDe) => {
       cont.replaceChildren();
-      const mx = Math.max(...filasAD.flatMap((f) => [f.b2026_real, f.p2027]));
-      filasAD.filter((f) => f.b2026_real || f.p2027).forEach((f) => {
+      const mx = Math.max(...filasAD.flatMap((f) => [f.c2026, f.p2027]));
+      filasAD.filter((f) => f.c2026 || f.p2027).forEach((f) => {
         const r = el('div', 'ad', null, cont); r.style.setProperty('--c', colorDe(f.nombre));
         const top = el('div', 'ad-top', null, r); el('span', 'ad-n', f.nombre, top);
-        const v = f.var_vs_2026;
+        const v = f.var;
         if (v != null) el('span', 'ad-var ' + (v >= 0 ? 'sube' : 'baja'), (v >= 0 ? '▲ +' : '▼ −') + P(Math.abs(v)), top);
         const b = el('div', 'ad-bars', null, r);
-        const b1 = el('i', 'ad-26', null, b); b1.style.width = (f.b2026_real / mx) * 100 + '%';
+        const b1 = el('i', 'ad-26', null, b); b1.style.width = (f.c2026 / mx) * 100 + '%';
         const b2 = el('i', 'ad-27', null, b); b2.style.width = (f.p2027 / mx) * 100 + '%';
-        el('p', 'ad-m', M(f.b2026_real) + ' → ' + M(f.p2027), r);
+        el('p', 'ad-m', M(f.c2026) + ' → ' + M(f.p2027), r);
+        if (f.desc) el('p', 'ad-desc', f.desc, r);
       });
     };
-    ad($('#cmp-areas'), [...CB.areas].sort((a, b) => b.p2027 - a.p2027).map((a) => ({ ...a, nombre: areaCorto(a.nombre) })), (n) => areaC(Object.keys(AREA).find((k) => areaCorto(k) === n)));
+    const LCOL = { prov: 'var(--turquesa)', mun: 'var(--azul)', otro: 'var(--lima)' };
+    ad($('#cmp-recursos'), CB.recursos, (n) => LCOL[(CB.recursos.find((r) => r.nombre === n) || {}).lado] || 'var(--azul)');
+    const DCOL = { infra: 'var(--azul)', comun: 'var(--turquesa)', gob: 'var(--lima)' };
+    ad($('#cmp-areas'), CB.destinos, (n) => DCOL[(CB.destinos.find((d) => d.nombre === n) || {}).clave] || 'var(--azul)');
     ad($('#cmp-incisos'), CB.incisos, (n) => INC_C[Object.values(incNom).indexOf(n) + 1] || 'var(--azul)');
   }
   cambios();
 
-  /* ---------- ¿qué paga mi tasa? ---------- */
+  /* ---------- ¿qué financian las tasas? ---------- */
   const TASAS = [
     { icon: 'tractor', n: 'Servicios rurales', quien: 'Los propietarios de campos, por hectárea.', que: 'Conservación, reparación y mejorado de los caminos rurales.', cods: ['12.1.03.01', '12.1.03.02'] },
     { icon: 'lightbulb', n: 'Alumbrado público', quien: 'Todos los inmuebles del partido.', que: 'El alumbrado de calles y espacios públicos.', cods: ['12.1.01.03'] },
@@ -559,22 +560,60 @@
     });
   })();
 
-  /* ---------- cómo va 2027 ---------- */
-  (function seguimiento() {
-    const E = window.EJECUCION; const lect = $('#seg-lectura'); const cont = $('#seg-contenido');
-    if (!E || !E.disponible) {
-      lect.textContent = 'Esta sección va a mostrar, cada trimestre, cuánto del presupuesto ya se gastó y cuánto se recaudó.';
-      const av = el('div', 'seg-vacio', null, cont);
-      el('b', null, 'Primer informe: ' + (E ? E.proximo : 'abril de 2027'), av);
-      el('p', null, 'Con datos al ' + (E ? E.corte : '31 de marzo de 2027') + ', a partir de la ejecución que el municipio informa en SIMCO.', av);
-      return;
-    }
-    lect.textContent = 'Datos a ' + E.corte + '. Transcurrió ' + P(E.avance_tiempo) + ' del año.';
-    const f = (n, ej, pr, extra) => { const d = el('div', 'seg-f', null, cont); const top = el('div', 'fila-top', null, d); el('span', 'l', n, top); el('span', 'v', P(ej / pr) + ' · ' + M(ej) + ' de ' + M(pr), top); const b = el('div', 'seg-b', null, d); const i = el('i', null, null, b); i.style.width = Math.min(100, (ej / pr) * 100) + '%'; const mk = el('span', 'seg-hoy', null, b); mk.style.left = E.avance_tiempo * 100 + '%'; if (extra) el('p', 'sub', extra, d); };
-    f('Gasto total', E.gasto.ejecutado, E.gasto.presupuesto);
-    f('Recursos percibidos', E.recursos.percibido, E.recursos.presupuesto);
-    E.areas.filter((x) => x.presupuesto).forEach((x) => f(areaCorto(x.nombre), x.ejecutado, x.presupuesto));
-    el('p', 'nota', 'La línea vertical marca la parte del año transcurrida.', cont);
+  /* ---------- los costos económicos de la era Milei ---------- */
+  (function milei() {
+    const D = window.MILEI; if (!D) return;
+    const r = D.resumen, F = D.filas, base = F.find((f) => f.anio === D.meta.base);
+    $('#milei-lectura').textContent = 'Desde 2024 el Gobierno nacional dejó de enviar fondos a los municipios, frenó la obra pública y la recesión redujo lo que llega desde la Provincia. Frente a 2023, Carmen de Areco cuenta con ' + M(r.perdida_promedio_anual) + ' menos por año. Sumados 2024 a 2027, son ' + M(r.perdida) + '.';
+    const cif = $('#mil-cifras'); cif.replaceChildren();
+    [[M(r.perdida), 'perdidos entre 2024 y 2027', 'Diferencia entre los recursos de cada año y los de 2023, en pesos de 2027.'],
+     ['$' + nf0.format(r.perdida_vecino), 'por vecino', 'Lo que dejó de recibir el municipio por cada habitante en esos cuatro años.'],
+     [M(r.nac_perdida), 'de transferencias nacionales', 'Promedio de ' + M(r.nac_base_anual) + ' por año entre 2020 y 2023; desde 2024, prácticamente cero.']].forEach(([v, n, d]) => {
+      const c = el('div', 'mil-c', null, cif); const p = el('p', 'mil-v', null, c); el('span', 'cmp-flecha', '▼', p); el('span', null, v, p);
+      el('p', 'mil-n', n, c); el('p', 'mil-d', d, c);
+    });
+
+    // columnas apiladas por origen, con la pérdida frente a 2023
+    const cols = $('#mil-cols'); cols.replaceChildren();
+    const mx = Math.max(...F.map((f) => Math.max(f.total, base.total)));
+    el('span', 'mil-ref', 'Nivel 2023 · ' + M(base.total), cols);
+    cols.setAttribute('aria-label', 'Recursos por año en pesos de 2027: ' + F.map((f) => f.anio + ' ' + M(f.total)).join('; '));
+    F.forEach((f, i) => {
+      const c = el('div', 'mil-col' + (D.meta.era.includes(f.anio) ? ' era' : ''), null, cols); c.style.animationDelay = (i * 70) + 'ms';
+      const pila = el('div', 'mil-pila', null, c); pila.style.setProperty('--ref', (base.total / mx) * 100 + '%'); el('span', 'mil-ref-l', null, pila);
+      if (f.perdida > 0) { const p = el('i', 'mk-perd', null, pila); p.style.height = (f.perdida / mx) * 100 + '%'; p.title = 'Pérdida frente a 2023: ' + M(f.perdida); }
+      [['mun', 'mk-mun'], ['prov', 'mk-prov'], ['nac', 'mk-nac']].forEach(([k, cls]) => { if (f[k] > 0) { const s = el('i', cls, null, pila); s.style.height = (f[k] / mx) * 100 + '%'; } });
+      el('b', 'mil-col-v', M(f.total), c);
+      el('span', 'mil-col-a', String(f.anio) + (f.anio === 2026 ? '*' : f.anio === 2027 ? '**' : ''), c);
+      el('span', 'mil-col-p', f.perdida > 0 ? '−' + M(f.perdida) : '·', c);
+    });
+
+    const nac = $('#mil-nac'); nac.replaceChildren();
+    const mn = Math.max(...F.map((f) => f.nac));
+    nac.setAttribute('aria-label', 'Transferencias nacionales por año: ' + F.map((f) => f.anio + ' ' + M(f.nac)).join('; '));
+    F.forEach((f) => {
+      const row = el('div', 'mil-nac-f', null, nac); el('span', 'a', String(f.anio), row);
+      const b = el('div', 'mil-nac-b', null, row); const fi = el('i', null, null, b); fi.style.width = Math.max(0.6, (f.nac / mn) * 100) + '%';
+      el('span', 'v', f.nac < 1e6 ? '$0' : M(f.nac), row);
+    });
+
+    const pct = (a, b) => P(Math.abs(b / a - 1));
+    const CAUSAS = [
+      { icon: 'ban', t: 'Se cortaron las transferencias nacionales', d: 'Pasaron de ' + M(r.nac_2023) + ' en 2023 a ' + M(r.nac_2024) + ' en 2024 y a cero desde 2025: programas, convenios y fondos para obras.' },
+      { icon: 'construction', t: 'Se paralizó la obra pública nacional', d: 'La inversión del municipio en obras y equipamiento cayó ' + pct(r.obra_2023, r.obra_2024) + ' en 2024, de ' + M(r.obra_2023) + ' a ' + M(r.obra_2024) + ', sin financiamiento nacional.' },
+      { icon: 'trending-down', t: 'La recesión redujo los fondos provinciales', d: 'Con menos actividad se recaudan menos impuestos y baja la coparticipación: lo que llegó de la Provincia cayó ' + pct(r.prov_2023, r.prov_2024) + ' en 2024, descontada la inflación.' },
+      { icon: 'flame', t: 'Devaluación e inflación', d: 'La devaluación de diciembre de 2023 llevó la inflación a ' + P(r.inflacion_dic_2023) + ' en ese mes y a ' + P(r.inflacion_2024) + ' en 2024, lo que achicó el valor real de todos los recursos.' },
+      { icon: 'zap', t: 'Quita de subsidios a la energía y el transporte', d: 'Encarece el alumbrado público, los edificios municipales y los servicios que presta el municipio.' },
+    ];
+    const ul = $('#mil-causas'); ul.replaceChildren();
+    CAUSAS.forEach((c) => { const li = el('li', null, null, ul); const b = el('b', null, null, li); ico(c.icon, b, 'ico-in'); b.append(c.t); el('p', null, c.d, li); });
+    const HIZO = [
+      { icon: 'hand-coins', t: 'Más recursos propios', d: 'Lo que aportan vecinos y empresas creció ' + pct(r.mun_2023, r.mun_2025) + ' entre 2023 y 2025, descontada la inflación.' },
+      { icon: 'scale', t: 'Cuentas en equilibrio', d: 'El ejercicio 2026 cierra sin gastar más de lo que ingresa, y el presupuesto 2027 también está equilibrado.' },
+    ];
+    const uh = $('#mil-hizo'); uh.replaceChildren();
+    HIZO.forEach((c) => { const li = el('li', null, null, uh); const b = el('b', null, null, li); ico(c.icon, b, 'ico-in'); b.append(c.t); el('p', null, c.d, li); });
+    $('#mil-metodo').textContent = 'Recursos percibidos según SIMCO, por origen, en pesos promedio de 2027 con el IPC de INDEC. * 2026: enero a octubre más la proyección de cierre. ** 2027: anteproyecto. La pérdida de cada año es la diferencia con los recursos de 2023, último año antes del cambio de gobierno nacional. Por vecino: población estimada de cada año a partir de los censos 2010 y 2022.';
   })();
 
   /* ---------- evolución en pesos de 2027 ---------- */
@@ -703,13 +742,13 @@
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) enlaces.forEach((a) => { const on = a.getAttribute('href') === '#' + e.target.id; a.classList.toggle('activo', on); if (on) { const nav = a.parentElement; nav.scrollTo({ left: Math.max(0, a.offsetLeft - nav.clientWidth / 2 + a.offsetWidth / 2), behavior: 'smooth' }); } });
     }), { rootMargin: '-35% 0px -60% 0px' });
-    ['calculadora', 'recursos', 'tasas', 'recorrido', 'gastos', 'programas', 'cambios', 'evolucion', 'municipios', 'seguimiento', 'personal', 'datos'].forEach((id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+    ['calculadora', 'recursos', 'tasas', 'recorrido', 'gastos', 'programas', 'cambios', 'evolucion', 'milei', 'municipios', 'personal', 'datos'].forEach((id) => { const s = document.getElementById(id); if (s) io.observe(s); });
   }
 
   const btnImp = $('#imprimir'); if (btnImp) btnImp.addEventListener('click', () => window.print());
 
   /* ---------- íconos de secciones y descargas ---------- */
-  const ICO_SEC = { recursos: 'landmark', tasas: 'receipt', recorrido: 'workflow', gastos: 'wallet', programas: 'layout-grid', cambios: 'git-compare-arrows', evolucion: 'trending-up', municipios: 'map', seguimiento: 'activity', personal: 'users', datos: 'database' };
+  const ICO_SEC = { recursos: 'landmark', tasas: 'receipt', recorrido: 'workflow', gastos: 'wallet', programas: 'layout-grid', cambios: 'git-compare-arrows', evolucion: 'trending-up', milei: 'trending-down', municipios: 'map', personal: 'users', datos: 'database' };
   Object.entries(ICO_SEC).forEach(([id, n]) => { const h2 = document.querySelector('#' + id + ' h2'); if (h2) ico(n, h2, 'ico-sec'); });
   $$('.descargas li').forEach((li, i, all) => ico(i === all.length - 1 ? 'printer' : (li.textContent.includes('QR') ? 'qr-code' : 'download'), li, 'ico-in'));
 
@@ -728,7 +767,7 @@
   }
   if (conMovimiento) {
     document.documentElement.classList.add('anim');
-    const CONTAR = '.bajada strong, .ph-cifra b, .cmp-v, .dp-v, .quien-cien b, .lg .n > span:first-child, .fila-top .vm, .ql-v, .ind-v, .tasa-m b, .pila-l b, .fl-v, .lp-m, #evo-grafico .val';
+    const CONTAR = '.bajada strong, .ph-cifra b, .cmp-v, .dp-v, .quien-cien b, .lg .n > span:first-child, .fila-top .vm, .ql-v, .ind-v, .tasa-m b, .pila-l b, .fl-v, .lp-m, #evo-grafico .val, .mil-v span:last-child, .mil-col-v';
     const ioA = new IntersectionObserver((es) => es.forEach((en) => {
       if (!en.isIntersecting) return;
       en.target.classList.add('visto'); ioA.unobserve(en.target);

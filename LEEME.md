@@ -11,7 +11,7 @@ Página web estática (HTML, CSS y JavaScript sin dependencias). Funciona en Git
 | `app.js` | Cálculos, gráficos, calculadora y filtros. |
 | `datos/datos.js` | Presupuesto 2027 (recursos, gastos por programa y cargos). |
 | `datos/serie.js` | Serie 2019–2027 en pesos de 2027. |
-| `datos/cambios.js` | Presupuesto aprobado 2026 contra anteproyecto 2027. |
+| `datos/cambios.js` | Proyección de cierre 2026 (en equilibrio) contra anteproyecto 2027, en pesos corrientes. |
 | `datos/*.csv` | Los mismos datos para descargar desde la página. |
 | `img/` | Logo e ícono. |
 
@@ -31,6 +31,7 @@ python 11_Tablero/generar_datos.py
 python 11_Tablero/generar_serie_real.py
 python 11_Tablero/generar_cambios_2026_2027.py
 python 11_Tablero/generar_comparacion_municipios.py
+python 11_Tablero/generar_era_milei.py
 python 11_Tablero/generar_ejecucion_2027.py
 ```
 
