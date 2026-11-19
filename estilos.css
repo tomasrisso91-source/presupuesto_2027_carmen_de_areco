@@ -479,13 +479,15 @@ svg.ico-sec { flex: none; width: 46px; height: 46px; padding: 10px; border-radiu
 
 /* =========== era Milei =========== */
 :root { --perdida: #C4472B; }
-.mil-cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
+.mil-cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
 .mil-c { padding: 22px 24px 22px 0; display: grid; gap: 4px; align-content: start; min-width: 0; }
 .mil-c + .mil-c { padding-left: 24px; border-left: 1px solid var(--linea); }
-.mil-v { font: 800 clamp(28px, 4.2vw, 48px) var(--f-cifra); letter-spacing: -.03em; line-height: 1; display: flex; align-items: center; gap: 8px; color: var(--perdida); }
+.mil-v { font: 800 clamp(26px, 2.7vw, 38px) var(--f-cifra); letter-spacing: -.04em; line-height: 1; display: flex; align-items: center; gap: 6px; color: var(--perdida); white-space: nowrap; }
+@media (max-width: 1080px) { .mil-v { font-size: clamp(26px, 5vw, 40px); } }
 .mil-n { font-weight: 700; font-size: 16px; }
 .mil-d { font-size: 13.5px; color: var(--tinta-2); max-width: 36ch; }
-@media (max-width: 760px) { .mil-cifras { grid-template-columns: 1fr; } .mil-c + .mil-c { padding-left: 0; border-left: 0; border-top: 1px solid var(--linea); } }
+@media (max-width: 1080px) { .mil-cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mil-c:nth-child(3) { padding-left: 0; border-left: 0; } .mil-c:nth-child(n+3) { border-top: 1px solid var(--linea); } }
+@media (max-width: 600px) { .mil-cifras { grid-template-columns: 1fr; } .mil-c + .mil-c { padding-left: 0; border-left: 0; border-top: 1px solid var(--linea); } }
 .mil-graf { margin-top: clamp(32px, 5vw, 56px); }
 .mil-sub { font-size: 14px; color: var(--tinta-2); margin: 4px 0 18px; }
 .mil-cols { position: relative; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); column-gap: clamp(4px, 1.2vw, 14px); height: clamp(260px, 34vw, 360px); padding-top: 24px; }

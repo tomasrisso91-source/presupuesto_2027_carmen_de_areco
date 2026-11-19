@@ -563,25 +563,26 @@
   /* ---------- los costos económicos de la era Milei ---------- */
   (function milei() {
     const D = window.MILEI; if (!D) return;
-    const r = D.resumen, F = D.filas, base = F.find((f) => f.anio === D.meta.base);
-    $('#milei-lectura').textContent = 'Desde 2024 el Gobierno nacional dejó de enviar fondos a los municipios, frenó la obra pública y la recesión redujo lo que llega desde la Provincia. Frente a 2023, Carmen de Areco cuenta con ' + M(r.perdida_promedio_anual) + ' menos por año. Sumados 2024 a 2027, son ' + M(r.perdida) + '.';
+    const r = D.resumen, F = D.filas, base = { total: D.meta.base_total };
+    $('#milei-lectura').textContent = 'Desde 2024 el Gobierno nacional dejó de enviar fondos a los municipios, frenó la obra pública y la recesión redujo lo que llega desde la Provincia. Frente al promedio de 2022 y 2023, Carmen de Areco cuenta con ' + M(r.perdida_promedio_anual) + ' menos por año. Sumados 2024 a 2027, son ' + M(r.perdida) + ': ' + nf1.format(r.presupuestos) + ' veces el presupuesto 2027 completo.';
     const cif = $('#mil-cifras'); cif.replaceChildren();
-    [[M(r.perdida), 'perdidos entre 2024 y 2027', 'Diferencia entre los recursos de cada año y los de 2023, en pesos de 2027.'],
+    [[M(r.perdida), 'perdidos entre 2024 y 2027', 'Diferencia entre los recursos de cada año y el promedio de 2022 y 2023, en pesos de 2027.'],
+     [nf1.format(r.presupuestos), 'presupuestos 2027 completos', 'Lo perdido alcanzaría para financiar ' + nf1.format(r.presupuestos) + ' veces todo el presupuesto 2027 (' + M(r.presupuesto_2027) + ').'],
      ['$' + nf0.format(r.perdida_vecino), 'por vecino', 'Lo que dejó de recibir el municipio por cada habitante en esos cuatro años.'],
      [M(r.nac_perdida), 'de transferencias nacionales', 'Promedio de ' + M(r.nac_base_anual) + ' por año entre 2020 y 2023; desde 2024, prácticamente cero.']].forEach(([v, n, d]) => {
       const c = el('div', 'mil-c', null, cif); const p = el('p', 'mil-v', null, c); el('span', 'cmp-flecha', '▼', p); el('span', null, v, p);
       el('p', 'mil-n', n, c); el('p', 'mil-d', d, c);
     });
 
-    // columnas apiladas por origen, con la pérdida frente a 2023
+    // columnas apiladas por origen, con la pérdida frente al promedio 2022-2023
     const cols = $('#mil-cols'); cols.replaceChildren();
     const mx = Math.max(...F.map((f) => Math.max(f.total, base.total)));
-    el('span', 'mil-ref', 'Nivel 2023 · ' + M(base.total), cols);
+    el('span', 'mil-ref', 'Promedio 2022–2023 · ' + M(base.total), cols);
     cols.setAttribute('aria-label', 'Recursos por año en pesos de 2027: ' + F.map((f) => f.anio + ' ' + M(f.total)).join('; '));
     F.forEach((f, i) => {
       const c = el('div', 'mil-col' + (D.meta.era.includes(f.anio) ? ' era' : ''), null, cols); c.style.animationDelay = (i * 70) + 'ms';
       const pila = el('div', 'mil-pila', null, c); pila.style.setProperty('--ref', (base.total / mx) * 100 + '%'); el('span', 'mil-ref-l', null, pila);
-      if (f.perdida > 0) { const p = el('i', 'mk-perd', null, pila); p.style.height = (f.perdida / mx) * 100 + '%'; p.title = 'Pérdida frente a 2023: ' + M(f.perdida); }
+      if (f.perdida > 0) { const p = el('i', 'mk-perd', null, pila); p.style.height = (f.perdida / mx) * 100 + '%'; p.title = 'Pérdida frente al promedio 2022–2023: ' + M(f.perdida); }
       [['mun', 'mk-mun'], ['prov', 'mk-prov'], ['nac', 'mk-nac']].forEach(([k, cls]) => { if (f[k] > 0) { const s = el('i', cls, null, pila); s.style.height = (f[k] / mx) * 100 + '%'; } });
       el('b', 'mil-col-v', M(f.total), c);
       el('span', 'mil-col-a', String(f.anio) + (f.anio === 2026 ? '*' : f.anio === 2027 ? '**' : ''), c);
@@ -613,7 +614,7 @@
     ];
     const uh = $('#mil-hizo'); uh.replaceChildren();
     HIZO.forEach((c) => { const li = el('li', null, null, uh); const b = el('b', null, null, li); ico(c.icon, b, 'ico-in'); b.append(c.t); el('p', null, c.d, li); });
-    $('#mil-metodo').textContent = 'Recursos percibidos según SIMCO, por origen, en pesos promedio de 2027 con el IPC de INDEC. * 2026: enero a octubre más la proyección de cierre. ** 2027: anteproyecto. La pérdida de cada año es la diferencia con los recursos de 2023, último año antes del cambio de gobierno nacional. Por vecino: población estimada de cada año a partir de los censos 2010 y 2022.';
+    $('#mil-metodo').textContent = 'Recursos percibidos según SIMCO, por origen, en pesos promedio de 2027 con el IPC de INDEC. * 2026: enero a octubre más la proyección de cierre. ** 2027: anteproyecto. La pérdida de cada año es la diferencia con el promedio de los recursos de 2022 y 2023, los dos últimos años antes del cambio de gobierno nacional. Por vecino: población estimada de cada año a partir de los censos 2010 y 2022.';
   })();
 
   /* ---------- evolución en pesos de 2027 ---------- */
