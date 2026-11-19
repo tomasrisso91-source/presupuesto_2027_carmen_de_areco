@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
-  <link rel="stylesheet" href="estilos.css?v=42">
+  <link rel="stylesheet" href="estilos.css?v=47">
 </head>
 <body>
   <div class="fondo" aria-hidden="true"><i class="f1"></i><i class="f2"></i><i class="f3"></i></div>
@@ -50,6 +50,25 @@
   </header>
 
   <main id="contenido">
+
+    <!-- PORTADA SOLO PARA IMPRESIÓN -->
+    <section class="portada-print" aria-hidden="true">
+      <img class="pp-logo" src="img/logo-320.png" alt="" width="212" height="80">
+      <div class="pp-cuerpo">
+        <p class="pp-sup">Municipalidad de Carmen de Areco · Secretaría de Hacienda y Finanzas</p>
+        <p class="pp-titulo">Presupuesto <span>2027</span></p>
+        <p class="pp-sub">Anteproyecto del Departamento Ejecutivo, para su tratamiento en el Honorable Concejo Deliberante</p>
+        <div class="pp-cifras">
+          <div><b data-v="total">—</b><span>recursos y gastos previstos</span></div>
+          <div><b data-v="por_hab">—</b><span>por habitante en el año</span></div>
+          <div><b id="pp-var">—</b><span>frente al cierre proyectado de 2026</span></div>
+        </div>
+      </div>
+      <div class="pp-pie">
+        <img src="img/qr.svg" alt="" width="110" height="110">
+        <p><b>Versión interactiva</b><br>https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/<br><span>Datos al 18 de noviembre de 2026 · Fuentes: RAFAM y SIMCO</span></p>
+      </div>
+    </section>
 
     <!-- APERTURA + CALCULADORA -->
     <section class="apertura" id="inicio">
@@ -379,7 +398,8 @@
             <li><a href="datos/cargos.csv" download>Cargos por área</a> <span>CSV</span></li>
             <li><a href="datos/serie_real.csv" download>Serie 2019–2027 en pesos de 2027</a> <span>CSV</span></li>
             <li><a href="img/qr.png" download="QR-presupuesto-2027-carmen-de-areco.png">Código QR al sitio</a> <span>PNG · también en <a href="img/qr.svg" download>SVG</a></span></li>
-            <li><button type="button" class="enlace" id="imprimir">Imprimir o guardar en PDF</button> <span>Versión para el HCD</span></li>
+            <li><a href="descargas/presupuesto-2027-carmen-de-areco.pdf" download>Versión para imprimir</a> <span>PDF · para el HCD</span></li>
+            <li><a href="descargas/invitacion-presupuesto-2027.pdf" download>Invitación con código QR</a> <span>PDF A4 · también en <a href="descargas/invitacion-presupuesto-2027.png" download>imagen</a></span></li>
           </ul>
         </div>
         <div>
@@ -400,19 +420,20 @@
   <footer class="pie">
     <picture><source srcset="img/logo-oscuro.webp" type="image/webp" media="(prefers-color-scheme: dark)"><source srcset="img/logo-oscuro-320.png" media="(prefers-color-scheme: dark)"><source srcset="img/logo.webp" type="image/webp"><img src="img/logo-320.png" alt="" width="106" height="40"></picture>
     <img class="pie-qr" src="img/qr.svg" alt="Código QR al sitio del presupuesto" width="96" height="96">
+    <img class="logo-print" src="img/logo-320.png" alt="" width="106" height="40">
     <p>Municipalidad de Carmen de Areco · Secretaría de Hacienda y Finanzas.<br>Anteproyecto de presupuesto 2027. Importes en pesos.</p>
   </footer>
 
   <div class="globo" id="globo" role="tooltip" hidden></div>
   <a href="#inicio" class="arriba" id="arriba" aria-label="Volver arriba"><i data-lucide="arrow-up" aria-hidden="true"></i></a>
 
-  <script src="datos/datos.js?v=41"></script>
-  <script src="datos/serie.js?v=41"></script>
-  <script src="datos/cambios.js?v=41"></script>
-  <script src="datos/municipios.js?v=41"></script>
-  <script src="datos/milei.js?v=41"></script>
-  <script src="iconos.js?v=41"></script>
-  <script src="app.js?v=41"></script>
+  <script src="datos/datos.js?v=46"></script>
+  <script src="datos/serie.js?v=46"></script>
+  <script src="datos/cambios.js?v=46"></script>
+  <script src="datos/municipios.js?v=46"></script>
+  <script src="datos/milei.js?v=46"></script>
+  <script src="iconos.js?v=46"></script>
+  <script src="app.js?v=46"></script>
   <!-- Contador de visitas (GoatCounter, sin publicidad ni seguimiento de personas).
        Para activarlo: crear una cuenta gratuita en https://www.goatcounter.com, elegir un código
        (por ejemplo "presupuesto-cda") y reemplazar CODIGO abajo; después quitar las marcas de comentario.

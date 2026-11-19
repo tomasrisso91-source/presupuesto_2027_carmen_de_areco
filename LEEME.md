@@ -33,7 +33,10 @@ python 11_Tablero/generar_serie_real.py
 python 11_Tablero/generar_comparacion_municipios.py
 python 11_Tablero/generar_era_milei.py
 python 11_Tablero/generar_ejecucion_2027.py
+python 11_Tablero/generar_pdfs.py
 ```
+
+`generar_pdfs.py` arma, con el sitio local abierto en http://localhost:8027, la versión para imprimir (`descargas/presupuesto-2027-carmen-de-areco.pdf`) y la invitación con el código QR (`descargas/invitacion-presupuesto-2027.pdf` y `.png`, a partir de `invitacion.html`). Necesita Google Chrome.
 
 `generar_ejecucion_2027.py` se corre cada trimestre después de descargar la ejecución 2027 de SIMCO en `07_Fuentes_SIMCO/Exportaciones/2027/`. Mientras no exista, la sección "Cómo va 2027" muestra cuándo sale el primer informe.
 

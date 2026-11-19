@@ -2219,7 +2219,13 @@
   });
   $$('.descargas li').forEach((li, i, all) =>
     ico(
-      i === all.length - 1 ? 'printer' : li.textContent.includes('QR') ? 'qr-code' : 'download',
+      li.textContent.includes('imprimir')
+        ? 'printer'
+        : li.textContent.includes('Invitación')
+          ? 'megaphone'
+          : li.textContent.includes('QR')
+            ? 'qr-code'
+            : 'download',
       li,
       'ico-in',
     ),
@@ -2336,6 +2342,12 @@
       $$('.apertura, .cap').forEach((s) => s.classList.add('visto')),
     );
   }
+  /* ---------- portada impresa ---------- */
+  if (window.CAMBIOS && $('#pp-var')) {
+    const v = window.CAMBIOS.total.rec_var;
+    $('#pp-var').textContent = (v >= 0 ? '+' : '−') + P(Math.abs(v));
+  }
+
   /* ---------- portada: brillo que sigue al mouse ---------- */
   (function luzPortada() {
     const ap = $('.apertura');

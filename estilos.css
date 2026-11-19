@@ -3438,3 +3438,251 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========== versión impresa (PDF para el HCD) =========== */
+.portada-print,
+.logo-print {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm 18mm;
+    @bottom-left {
+      content: 'Presupuesto 2027 · Municipalidad de Carmen de Areco';
+      font:
+        8pt 'Public Sans',
+        sans-serif;
+      color: #6b777d;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @bottom-left {
+      content: none;
+    }
+  }
+  html,
+  body {
+    background: #fff !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .fondo,
+  .barra,
+  .menu-btn,
+  .arriba,
+  .ver-mas,
+  .globo,
+  #ficha,
+  #imprimir,
+  .descargas,
+  #datos h3:has(+ .descargas),
+  .apertura::before,
+  .apertura::after,
+  .ticket-zona::before {
+    display: none !important;
+  }
+
+  /* portada */
+  .portada-print {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 297mm;
+    padding: 22mm 20mm 18mm;
+    box-sizing: border-box;
+    break-after: page;
+    background: linear-gradient(160deg, #14233a 0%, #1c3050 55%, #0a6a86 100%) !important;
+    color: #fff;
+  }
+  .pp-logo {
+    width: 64mm;
+    height: auto;
+    background: #fff;
+    border-radius: 4mm;
+    padding: 3mm 4mm;
+    box-sizing: content-box;
+  }
+  .pp-sup {
+    font: 600 11pt var(--f-texto);
+    color: #bcd2e6;
+    margin: 0 0 6mm;
+  }
+  .pp-titulo {
+    font: 800 54pt / 0.95 var(--f-titulo);
+    font-variation-settings: 'wdth' 118;
+    margin: 0;
+    color: #fff;
+  }
+  .pp-titulo span {
+    display: block;
+    color: #7fd3ee;
+  }
+  .pp-sub {
+    font-size: 13pt;
+    color: #e8eff5;
+    max-width: 120mm;
+    margin: 6mm 0 12mm;
+  }
+  .pp-cifras {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6mm;
+  }
+  .pp-cifras div {
+    border-top: 0.6mm solid #7fd3ee;
+    padding-top: 3mm;
+  }
+  .pp-cifras b {
+    display: block;
+    font: 800 20pt var(--f-cifra);
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .pp-cifras span {
+    font-size: 9.5pt;
+    color: #bcd2e6;
+  }
+  .pp-pie {
+    display: flex;
+    align-items: center;
+    gap: 6mm;
+  }
+  .pp-pie img {
+    width: 30mm;
+    height: 30mm;
+    background: #fff;
+    padding: 2mm;
+    border-radius: 2mm;
+  }
+  .pp-pie p {
+    margin: 0;
+    font-size: 9.5pt;
+    color: #e8eff5;
+    word-break: break-all;
+  }
+  .pp-pie span {
+    color: #bcd2e6;
+  }
+
+  /* apertura y calculadora en la página 2 */
+  .apertura {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10mm !important;
+    padding: 0 !important;
+    align-items: start;
+  }
+  .apertura h1 {
+    font-size: 34pt !important;
+  }
+
+  /* cada sección grande empieza en página nueva */
+  #recursos,
+  #recorrido,
+  #gastos,
+  #programas,
+  #cambios,
+  #evolucion,
+  #milei,
+  #municipios,
+  #personal,
+  #datos {
+    break-before: page;
+  }
+  .cap {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  .cap h2 {
+    font-size: 22pt !important;
+  }
+  h2,
+  h3,
+  .cap-cab,
+  .preg {
+    break-after: avoid;
+  }
+  .cap-cab,
+  .quien,
+  .quien-lista li,
+  .ad,
+  .fila,
+  .tasa,
+  .dp,
+  .cmp,
+  .ind,
+  .area-g,
+  .ph-cifra,
+  .por-hab,
+  .destino,
+  .ejemplos li,
+  .nov-lista li,
+  .mil-c,
+  .mil-graf,
+  .mil-causas li,
+  .mil-obras li,
+  .mil-frase,
+  .pers-servicios,
+  .gente > *,
+  .fig,
+  figure,
+  .flujo,
+  .glosario > div,
+  tr {
+    break-inside: avoid;
+  }
+  .por-hab {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* barras grandes con menos tinta */
+  .destino-barra > div:not(.trama),
+  .cien > div {
+    filter: saturate(0.9);
+  }
+  .destino-barra > div:not(.trama) {
+    background: var(--azul) !important;
+  }
+
+  /* pie: logo claro */
+  .pie picture {
+    display: none !important;
+  }
+  .logo-print {
+    display: block !important;
+  }
+}
+@media print {
+  /* las grillas que cruzan de página se imprimen en una columna para que no se superpongan */
+  .tasas,
+  .dos,
+  .quienes,
+  .mil-dos,
+  .cmp-rec .antes-despues {
+    display: block !important;
+  }
+  .dos > * + *,
+  .quienes > * + *,
+  .mil-dos > * + * {
+    margin-top: 8mm;
+  }
+  .quien {
+    break-inside: auto;
+  }
+  .tasa {
+    break-inside: avoid;
+  }
+}
+@media print {
+  .recortado > :nth-child(n),
+  .plegado {
+    display: revert !important;
+  }
+  #cambios-metodo,
+  .evo-notas,
+  #mil-metodo {
+    break-inside: avoid;
+  }
+}

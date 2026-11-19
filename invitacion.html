@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invitación · Presupuesto 2027 · Carmen de Areco</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:wght@400..700&display=swap">
+  <style>
+    /* Afiche A4 para imprimir o compartir. Colores del logo municipal. */
+    :root {
+      --azul: #3f6db3;
+      --turquesa: #0a93b6;
+      --verde: #449d41;
+      --marino: #14233a;
+      --tinta: #20282d;
+      --tinta-2: #55626a;
+      --papel: #ffffff;
+      color-scheme: light;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    html,
+    body {
+      margin: 0;
+      background: #e9eef1;
+      color: var(--tinta);
+      font: 400 16px/1.5 'Public Sans', system-ui, sans-serif;
+    }
+    .hoja {
+      width: 210mm;
+      height: 297mm;
+      margin: 24px auto;
+      background: var(--papel);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px -30px rgba(20, 35, 58, 0.45);
+    }
+    .cabecera {
+      position: relative;
+      padding: 13mm 16mm 11mm;
+      color: #fff;
+      background:
+        radial-gradient(120% 120% at 100% 0%, rgba(10, 147, 182, 0.55), transparent 55%),
+        linear-gradient(150deg, #14233a 0%, #1c3050 60%, #213654 100%);
+      overflow: hidden;
+    }
+    .cabecera::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      left: 55%;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.13) 1.2px, transparent 0);
+      background-size: 6mm 6mm;
+      pointer-events: none;
+    }
+    .logo {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      background: #fff;
+      border-radius: 3.5mm;
+      padding: 2.6mm 3.6mm;
+      line-height: 0;
+    }
+    .logo img {
+      height: 15mm;
+      width: auto;
+    }
+    .sello {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      margin: 7mm 0 3mm;
+      font: 700 9pt 'Martian Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #7fd3ee;
+      border: 0.4mm solid #7fd3ee;
+      border-radius: 99px;
+      padding: 1.2mm 3.2mm;
+    }
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font: 800 40pt/0.95 'Archivo', sans-serif;
+      font-variation-settings: 'wdth' 118;
+      letter-spacing: -0.01em;
+    }
+    h1 span {
+      display: block;
+      color: #7fd3ee;
+    }
+    .bajada {
+      position: relative;
+      z-index: 1;
+      margin: 5mm 0 0;
+      max-width: 160mm;
+      font-size: 12.5pt;
+      line-height: 1.4;
+      color: #e8eff5;
+    }
+    .cuerpo {
+      display: grid;
+      grid-template-columns: 1fr 74mm;
+      gap: 10mm;
+      padding: 9mm 16mm 4mm;
+      align-items: start;
+    }
+    .cuerpo h2 {
+      margin: 0 0 4mm;
+      font: 800 17pt 'Archivo', sans-serif;
+      font-variation-settings: 'wdth' 112;
+      color: var(--marino);
+    }
+    .lista {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 2.8mm;
+    }
+    .lista li {
+      display: grid;
+      grid-template-columns: 9mm 1fr;
+      gap: 3mm;
+      align-items: start;
+      font-size: 11pt;
+      line-height: 1.32;
+    }
+    .lista b {
+      display: block;
+      color: var(--marino);
+    }
+    .num {
+      display: grid;
+      place-items: center;
+      width: 9mm;
+      height: 9mm;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--turquesa), var(--azul));
+      color: #fff;
+      font: 700 10pt 'Martian Mono', monospace;
+    }
+    .qr {
+      text-align: center;
+      border-radius: 6mm;
+      padding: 6mm 5mm 5mm;
+      background: linear-gradient(180deg, #f2f8fb, #e6f1f6);
+      border: 0.5mm solid #cfe3ec;
+    }
+    .qr img {
+      display: block;
+      width: 58mm;
+      height: 58mm;
+      margin: 0 auto;
+      background: #fff;
+      padding: 3mm;
+      border-radius: 3mm;
+    }
+    .qr p {
+      margin: 4mm 0 0;
+      font-weight: 700;
+      font-size: 12.5pt;
+      line-height: 1.25;
+      color: var(--marino);
+    }
+    .qr small {
+      display: block;
+      margin-top: 2mm;
+      font: 400 7.6pt 'Martian Mono', monospace;
+      color: var(--tinta-2);
+      word-break: break-all;
+    }
+    .cifras {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5mm;
+      margin: 6mm 16mm 0;
+      padding-top: 5mm;
+      border-top: 0.4mm solid #d6dee2;
+    }
+    .cifras b {
+      display: block;
+      font: 800 19pt 'Martian Mono', monospace;
+      letter-spacing: -0.04em;
+      color: var(--azul);
+    }
+    .cifras span {
+      font-size: 9.5pt;
+      color: var(--tinta-2);
+      line-height: 1.3;
+      display: block;
+    }
+    .pie {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8mm;
+      padding: 6mm 16mm 9mm;
+      font-size: 9.5pt;
+      color: var(--tinta-2);
+    }
+    .pie b {
+      color: var(--marino);
+    }
+    .franja {
+      height: 3mm;
+      background: linear-gradient(90deg, var(--azul), var(--turquesa), var(--verde));
+    }
+    .acciones {
+      text-align: center;
+      margin: 0 auto 30px;
+    }
+    .acciones button {
+      font: 600 15px 'Public Sans', sans-serif;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--marino);
+      color: #fff;
+      cursor: pointer;
+    }
+    @media print {
+      html,
+      body {
+        background: #fff;
+      }
+      .hoja {
+        margin: 0;
+        box-shadow: none;
+      }
+      .acciones {
+        display: none;
+      }
+    }
+    @media (max-width: 820px) {
+      .hoja {
+        transform-origin: top left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="hoja">
+    <header class="cabecera">
+      <span class="logo"><img src="img/logo-320.png" alt="Municipio de Carmen de Areco" width="212" height="80"></span>
+      <div><span class="sello">Anteproyecto 2027</span></div>
+      <h1>Conocé el presupuesto <span>de tu municipio</span></h1>
+      <p class="bajada">De dónde provienen los recursos de Carmen de Areco, en qué se utilizan y cómo se comparan con años anteriores. Todo en un solo lugar, abierto a la comunidad.</p>
+    </header>
+
+    <div>
+      <section class="cuerpo">
+        <div>
+          <h2>Qué vas a encontrar</h2>
+          <ul class="lista">
+            <li><span class="num">1</span><span><b>Cuánto le toca a cada destino</b>Una calculadora muestra cómo se reparte cada $50.000 del presupuesto.</span></li>
+            <li><span class="num">2</span><span><b>De dónde vienen los recursos</b>Qué aporta la Provincia, qué aportan vecinos y empresas, y qué financia cada tasa.</span></li>
+            <li><span class="num">3</span><span><b>En qué se gasta</b>Cada área y cada programa municipal, con sus montos.</span></li>
+            <li><span class="num">4</span><span><b>Cómo cambió con los años</b>La comparación 2019–2027 descontando la inflación y el impacto del retiro de los fondos nacionales.</span></li>
+            <li><span class="num">5</span><span><b>Los datos completos</b>Planillas para descargar y revisar.</span></li>
+          </ul>
+        </div>
+        <div class="qr">
+          <img src="img/qr.svg" alt="Código QR al sitio del Presupuesto 2027" width="220" height="220">
+          <p>Escaneá el código con la cámara de tu celular</p>
+          <small>tomasrisso91-source.github.io/<wbr>presupuesto_2027_carmen_de_areco</small>
+        </div>
+      </section>
+
+      <div class="cifras">
+        <div><b>$18.032 M</b><span>recursos y gastos previstos para 2027</span></div>
+        <div><b>$1.030.459</b><span>por habitante en el año</span></div>
+        <div><b>7 de 10</b><span>pesos en sueldos van a servicios directos a los vecinos</span></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="pie">
+        <span><b>Municipalidad de Carmen de Areco</b><br>Secretaría de Hacienda y Finanzas</span>
+        <span style="text-align:right">Presupuesto 2027 · Propuesta del Departamento Ejecutivo<br>para su tratamiento en el Honorable Concejo Deliberante</span>
+      </div>
+      <div class="franja"></div>
+    </footer>
+  </article>
+  <p class="acciones"><button type="button" onclick="window.print()">Imprimir o guardar en PDF</button></p>
+</body>
+</html>
