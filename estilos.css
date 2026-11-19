@@ -3098,6 +3098,7 @@ svg.ico-sec {
 /* objetivos táctiles cómodos en pantallas de toque */
 @media (pointer: coarse) {
   .filtro button,
+  .seg button,
   .evo-controles label,
   #ficha-cerrar,
   .descargas a,
@@ -3106,10 +3107,6 @@ svg.ico-sec {
   }
   .filtro button {
     padding-inline: 14px;
-  }
-  .evo-controles input[type='checkbox'] {
-    width: 22px;
-    height: 22px;
   }
 }
 @media print {
@@ -3310,5 +3307,97 @@ body {
 @media (hover: none), (pointer: coarse) {
   .apertura::after {
     display: none;
+  }
+}
+
+/* =========== "¿Es mucho o poco?": ajustes de composición =========== */
+.evo-controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 28px;
+  margin-bottom: 8px;
+}
+.evo-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+}
+.columnas .periodo {
+  fill: rgba(232, 162, 58, 0.045);
+  stroke: rgba(232, 162, 58, 0.4);
+  stroke-dasharray: 4 5;
+}
+.columnas .periodo-t {
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+}
+.columnas .val {
+  font-size: 13px;
+}
+.columnas .col {
+  transition: filter 0.2s;
+}
+.columnas .col:hover {
+  filter: brightness(1.18);
+}
+.leyenda-evo {
+  margin-top: 16px;
+}
+.evo-notas {
+  margin-top: 28px;
+}
+
+/* =========== personal: a qué se dedica =========== */
+.pers-servicios {
+  margin: 4px 0 28px;
+}
+.ps-barra {
+  display: flex;
+  gap: 4px;
+  min-height: 64px;
+}
+.ps-barra > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: #fff;
+  overflow: hidden;
+}
+.ps-barra b {
+  font: 800 clamp(20px, 2.6vw, 28px) / 1 var(--f-cifra);
+  letter-spacing: -0.03em;
+}
+.ps-barra span {
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ps-a {
+  background: linear-gradient(120deg, var(--turquesa), var(--azul));
+}
+.ps-b {
+  background: var(--gris);
+}
+.ps-d {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--tinta-2);
+  max-width: 80ch;
+}
+@media (max-width: 600px) {
+  .ps-barra > div {
+    padding: 10px 12px;
+  }
+  .ps-barra span {
+    white-space: normal;
+    font-size: 12.5px;
   }
 }

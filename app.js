@@ -16,6 +16,10 @@
   /* ---------- formato ---------- */
   const nf0 = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
   const nf1 = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 1 });
+  const nf1fijo = new Intl.NumberFormat('es-AR', {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
   const M = (v) => {
     const m = v / 1e6;
     if (Math.abs(m) < 0.95) return '$' + nf0.format(v / 1000) + ' mil';
@@ -1890,13 +1894,6 @@
     );
     sv('rect', { width: 6, height: 6, fill: '#5E7FAE' }, pat);
     sv('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: css('--oscuro'), 'stroke-width': 2.2 }, pat);
-    [0.25, 0.5, 0.75].forEach((f) =>
-      sv(
-        'line',
-        { class: 'rej', x1: 0, x2: W, y1: yv((max / 1.08) * f), y2: yv((max / 1.08) * f) },
-        svg,
-      ),
-    );
     sv('line', { class: 'rej', x1: 0, x2: W, y1: yv(0), y2: yv(0) }, svg);
     // Períodos de contexto: franja detrás de las columnas, con su nombre arriba
     const PERIODOS = [
@@ -1916,7 +1913,12 @@
       );
       const t = sv('text', { class: 'periodo-t', x: x0 + 9, y: m.t - 12 }, svg);
       t.textContent = p.n;
-      if (t.getComputedTextLength() > x1 - x0 - 14) t.textContent = p.corto;
+      const libre = x1 - x0 - 14;
+      if (t.getComputedTextLength() > libre) t.textContent = p.corto;
+      if (t.getComputedTextLength() > libre) {
+        t.setAttribute('font-size', '10.5');
+        t.setAttribute('x', x0 + 6);
+      }
     });
     datos.forEach((d, i) => {
       const cx = m.l + paso * i + paso / 2;
@@ -1924,7 +1926,7 @@
       const fill =
         d.tipo === 'presupuesto'
           ? '#4FC3E6'
-          : d.tipo === 'presupuesto_2026'
+          : d.tipo === 'cierre_proyectado'
             ? 'url(#rayado)'
             : '#5E7FAE';
       const col = sv(
@@ -1935,7 +1937,7 @@
           width: ancho,
           y: yv(d.v),
           height: Math.max(0, yv(0) - yv(d.v)),
-          rx: 3,
+          rx: 5,
           fill,
         },
         svg,
@@ -1945,8 +1947,8 @@
         mostrarGlobo(
           e,
           String(d.anio) +
-            (d.tipo === 'presupuesto_2026'
-              ? ' (presupuesto aprobado)'
+            (d.tipo === 'cierre_proyectado'
+              ? ' (proyección de cierre)'
               : d.tipo === 'presupuesto'
                 ? ' (presupuesto)'
                 : ''),
@@ -1962,9 +1964,9 @@
       val.textContent = ph
         ? nf0.format(d.v / 1000)
         : corto
-          ? nf1.format(mm / 1000)
+          ? nf1fijo.format(mm / 1000)
           : nf0.format(mm);
-      if (corto) val.setAttribute('font-size', '11.5');
+      if (corto) val.setAttribute('font-size', W < 420 ? '10' : '11.5');
       const an = sv('text', { class: 'anio', x: cx, y: H - 8, 'text-anchor': 'middle' }, svg);
       an.textContent = W < 420 ? "'" + String(d.anio).slice(2) : d.anio;
     });
@@ -2009,7 +2011,7 @@
           (pl ? 'son ' : 'es '),
       );
       el('strong', null, cambio(v27, v26), lect);
-      lect.append(' que el presupuesto aprobado para 2026 y ');
+      lect.append(' que lo que se proyecta para el cierre de 2026 y ');
       el('strong', null, cambio(v27, v25), lect);
       lect.append(
         ' que lo ejecutado en 2025. El año más alto de la serie fue ' +
@@ -2027,7 +2029,12 @@
           MF(v27) +
           ' en 2027. Es casi todo inflación. ',
       );
-      el('strong', null, 'Desactivá el interruptor para ver la comparación real.', lect);
+      el(
+        'strong',
+        null,
+        'Al quitar la opción «Sin ajustar por inflación» se ve la comparación real.',
+        lect,
+      );
     }
   }
 
@@ -2050,16 +2057,73 @@
     C.filter((c) => c.tipo !== 'permanente'),
     (c) => c.cargos,
   );
-  $('#personal-lectura').textContent =
+  // personal según el destino de su trabajo (finalidad y función del clasificador)
+  const sinTilde = (x) =>
+    String(x || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  const destinoPers = (r) => {
+    const fin = sinTilde(r.finalidad);
+    return fin.includes('administracion') || fin.includes('deuda') ? 'gob' : 'servicios';
+  };
+  const persServ = sum(
+    G.filter((r) => r.inciso === 1 && destinoPers(r) === 'servicios'),
+    (r) => r.importe,
+  );
+  const indPers = ((window.MUNICIPIOS || {}).indicadores || []).find((i) => i.id === 'personal');
+  const lp = $('#personal-lectura');
+  lp.replaceChildren();
+  lp.append(
     'El presupuesto prevé ' +
-    nf0.format(totPerm) +
-    ' cargos permanentes y ' +
-    nf0.format(totTemp) +
-    ' temporarios. El personal se lleva ' +
-    P(pers / totGas) +
-    ' del gasto, ' +
-    M(pers) +
-    ' en el año.';
+      nf0.format(totPerm) +
+      ' cargos permanentes y ' +
+      nf0.format(totTemp) +
+      ' temporarios, con un costo de ' +
+      M(pers) +
+      ' en el año. ',
+  );
+  if (indPers) {
+    lp.append('El personal representa ');
+    el('strong', null, P(indPers.local2027) + ' del gasto corriente', lp);
+    lp.append(
+      ', por debajo del ' +
+        P(indPers.provincia2024) +
+        ' promedio de los municipios bonaerenses (último dato provincial, 2024). ',
+    );
+  }
+  lp.append('Y ');
+  el('strong', null, Math.round((persServ / pers) * 10) + ' de cada 10 pesos', lp);
+  lp.append(' en sueldos van a quienes prestan servicios directos a los vecinos.');
+
+  const ps = $('#pers-servicios');
+  if (ps) {
+    ps.replaceChildren();
+    const barra = el('div', 'ps-barra', null, ps);
+    barra.setAttribute(
+      'aria-label',
+      P(persServ / pers) +
+        ' del gasto en personal se destina a servicios a la comunidad y ' +
+        P(1 - persServ / pers) +
+        ' a gobierno y administración',
+    );
+    barra.setAttribute('role', 'img');
+    [
+      [persServ, 'ps-a', 'Servicios a la comunidad'],
+      [pers - persServ, 'ps-b', 'Gobierno y administración'],
+    ].forEach(([v, cls, n]) => {
+      const s = el('div', cls, null, barra);
+      s.style.flex = String(v);
+      el('b', null, P(v / pers), s);
+      el('span', null, n, s);
+    });
+    el(
+      'p',
+      'ps-d',
+      'Servicios a la comunidad: salud, educación, recolección y limpieza, mantenimiento de calles y espacios verdes, agua y cloacas, seguridad, asistencia social, cultura y deporte. Gobierno y administración: Intendencia, Concejo Deliberante, recaudación, administración y deuda.',
+      ps,
+    );
+  }
   const gente = $('#gente');
   [...persArea.values()]
     .sort((a, b) => b.perm + b.temp - (a.perm + a.temp))

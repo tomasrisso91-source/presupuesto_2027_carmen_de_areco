@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
-  <link rel="stylesheet" href="estilos.css?v=36">
+  <link rel="stylesheet" href="estilos.css?v=40">
 </head>
 <body>
   <div class="fondo" aria-hidden="true"><i class="f1"></i><i class="f2"></i><i class="f3"></i></div>
@@ -135,7 +135,7 @@
         <p class="cap-intro">Cada franja representa recursos que ingresan al municipio y se asignan a un área. Las franjas con rayas son recursos afectados: la norma que los crea obliga a gastarlos en un destino determinado.</p>
       </div>
       <figure class="fig flujo" id="flujo"></figure>
-      <p class="nota">Tocá un área para ver sus programas. Pasá el mouse sobre una franja para ver el monto.</p>
+      <p class="nota">Al tocar un área se ven sus programas. Al pasar el mouse sobre una franja se ve el monto.</p>
     </section>
 
     <!-- GASTOS -->
@@ -167,7 +167,7 @@
     <section class="cap" id="programas" aria-labelledby="t-programas">
       <div class="cap-cab">
         <h2 id="t-programas">Programa por programa</h2>
-        <p class="cap-intro">Cada rectángulo es un programa o servicio municipal, y su tamaño es proporcional a lo que recibe. Tocá uno para ver en qué se gasta y con qué se paga.</p>
+        <p class="cap-intro">Cada rectángulo es un programa o servicio municipal, y su tamaño es proporcional a lo que recibe. Al tocar uno se ve en qué se gasta y con qué se financia.</p>
       </div>
       <div class="filtro" role="group" aria-label="Filtrar programas por área" id="filtro-areas"></div>
       <figure class="fig mapa-zona">
@@ -257,26 +257,28 @@
           <button type="button" data-serie="i4">Obras y equipamiento</button>
           <button type="button" data-serie="i5">Transferencias</button>
         </div>
-        <label class="interruptor">
-          <input type="checkbox" id="evo-hab">
-          <span>Por habitante</span>
-        </label>
-        <label class="interruptor">
-          <input type="checkbox" id="evo-nominal">
-          <span>Ver en pesos de cada año, sin ajustar por inflación</span>
-        </label>
+        <div class="evo-opciones">
+          <label class="interruptor">
+            <input type="checkbox" id="evo-hab">
+            <span>Por habitante</span>
+          </label>
+          <label class="interruptor">
+            <input type="checkbox" id="evo-nominal">
+            <span>Sin ajustar por inflación</span>
+          </label>
+        </div>
       </div>
       <figure class="fig">
         <div class="columnas" id="evo-grafico"></div>
         <figcaption class="leyenda-evo">
           <span><i class="m m-ej"></i>Gasto ejecutado</span>
-          <span><i class="m m-est"></i>2026: presupuesto aprobado</span>
+          <span><i class="m m-est"></i>2026: proyección de cierre</span>
           <span><i class="m m-pre"></i>2027: presupuesto</span>
         </figcaption>
       </figure>
       <div class="evo-notas">
         <p><strong>Cómo se calcula.</strong> Cada año se lleva a pesos promedio de 2027 con el IPC nacional de INDEC, mes por mes. Para lo que falta publicar se supone 2,2&nbsp;% mensual en octubre, noviembre y diciembre de 2026, y 21,9&nbsp;% de inflación en 2027, según el Relevamiento de Expectativas de Mercado del BCRA. Por habitante: la población de cada año se estima con el ritmo de crecimiento entre los censos 2010 y 2022, y se proyecta igual hasta 2027.</p>
-        <p><strong>Para leerlo bien.</strong> De 2019 a 2025 se muestra lo que efectivamente se gastó. 2026 y 2027 son presupuestos: el de 2026 es el aprobado al inicio del año. Durante el año los presupuestos suelen ampliarse con nuevos recursos y modificaciones.</p>
+        <p><strong>Para leerlo bien.</strong> De 2019 a 2025 se muestra lo que efectivamente se gastó. 2026 es la proyección de cierre del ejercicio: lo ejecutado hasta octubre más lo estimado para noviembre y diciembre, en equilibrio con los recursos. 2027 es el presupuesto propuesto.</p>
       </div>
     </section>
 
@@ -352,6 +354,7 @@
         <h2 id="t-personal">Quiénes trabajan en el municipio</h2>
         <p class="cap-intro" id="personal-lectura">—</p>
       </div>
+      <div class="pers-servicios" id="pers-servicios"></div>
       <p class="clave"><span><i class="punto"></i>Cargo permanente</span><span><i class="punto hueco"></i>Cargo temporario</span></p>
       <div class="gente" id="gente"></div>
       <p class="nota">Cada punto es un cargo. El costo incluye sueldo, aguinaldo, adicionales, horas extras y aportes. No se publican datos individuales.</p>
@@ -365,7 +368,7 @@
     <section class="cap" id="datos" aria-labelledby="t-datos">
       <div class="cap-cab">
         <h2 id="t-datos">Los datos completos</h2>
-        <p class="cap-intro">Todas las cifras de esta página salen de las planillas finales del anteproyecto, cargadas en el sistema RAFAM, y de la ejecución publicada en SIMCO. Podés descargarlas y revisarlas.</p>
+        <p class="cap-intro">Todas las cifras de esta página salen de las planillas finales del anteproyecto, cargadas en el sistema RAFAM, y de la ejecución publicada en SIMCO. Pueden descargarse y revisarse.</p>
       </div>
       <div class="dos">
         <div>
@@ -403,13 +406,13 @@
   <div class="globo" id="globo" role="tooltip" hidden></div>
   <a href="#inicio" class="arriba" id="arriba" aria-label="Volver arriba"><i data-lucide="arrow-up" aria-hidden="true"></i></a>
 
-  <script src="datos/datos.js?v=36"></script>
-  <script src="datos/serie.js?v=36"></script>
-  <script src="datos/cambios.js?v=36"></script>
-  <script src="datos/municipios.js?v=36"></script>
-  <script src="datos/milei.js?v=36"></script>
-  <script src="iconos.js?v=36"></script>
-  <script src="app.js?v=36"></script>
+  <script src="datos/datos.js?v=40"></script>
+  <script src="datos/serie.js?v=40"></script>
+  <script src="datos/cambios.js?v=40"></script>
+  <script src="datos/municipios.js?v=40"></script>
+  <script src="datos/milei.js?v=40"></script>
+  <script src="iconos.js?v=40"></script>
+  <script src="app.js?v=40"></script>
   <!-- Contador de visitas (GoatCounter, sin publicidad ni seguimiento de personas).
        Para activarlo: crear una cuenta gratuita en https://www.goatcounter.com, elegir un código
        (por ejemplo "presupuesto-cda") y reemplazar CODIGO abajo; después quitar las marcas de comentario.

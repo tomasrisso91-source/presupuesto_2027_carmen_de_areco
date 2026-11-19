@@ -28,8 +28,8 @@ Desde la carpeta del proyecto:
 
 ```
 python 11_Tablero/generar_datos.py
-python 11_Tablero/generar_serie_real.py
 python 11_Tablero/generar_cambios_2026_2027.py
+python 11_Tablero/generar_serie_real.py
 python 11_Tablero/generar_comparacion_municipios.py
 python 11_Tablero/generar_era_milei.py
 python 11_Tablero/generar_ejecucion_2027.py
