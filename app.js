@@ -1539,12 +1539,10 @@
         }
       });
       el('b', 'mil-col-v', M(f.total), c);
-      el(
-        'span',
-        'mil-col-a',
-        String(f.anio) + (f.anio === 2026 ? '*' : f.anio === 2027 ? '**' : ''),
-        c,
-      );
+      const ast = f.anio === 2026 ? '*' : f.anio === 2027 ? '**' : '';
+      const ca = el('span', 'mil-col-a', null, c);
+      el('span', 'largo', String(f.anio) + ast, ca);
+      el('span', 'corto', "'" + String(f.anio).slice(2) + ast, ca);
       el('span', 'mil-col-p', f.perdida > 0 ? '−' + M(f.perdida) : '·', c);
     });
 
@@ -1621,6 +1619,93 @@
       b.append(c.t);
       el('p', null, c.d, li);
     });
+    const np = $('#mil-nac-pct');
+    np.replaceChildren();
+    el('b', null, P(r.nac_pct_2023), np);
+    np.append(' de los recursos del municipio venía de Nación en 2023. Desde 2024, ');
+    el('b', null, P(r.nac_pct_2025), np);
+    np.append('.');
+
+    const OBRAS = [
+      {
+        n: 'Ruta Nacional 7, tramo Carmen de Areco–Chacabuco',
+        d: '55 kilómetros de autopista.',
+        e: 'Paralizada',
+      },
+      {
+        n: 'Acceso a Gouin por la Ruta Nacional 7',
+        d: '2,7 kilómetros y un distribuidor de tránsito.',
+        e: 'Paralizada',
+      },
+      {
+        n: 'Avenida Mitre',
+        d: 'Repavimentación y bulevar, iniciada con un anticipo nacional.',
+        e: 'Paralizada',
+      },
+      {
+        n: 'Red cloacal, segunda etapa',
+        d: '1.500 metros de cañería, financiados por el ENOHSA.',
+        e: 'Paralizada',
+      },
+      {
+        n: 'Avenida Sarmiento',
+        d: 'Se hicieron 70 de los 530 metros previstos antes de que se cortara el financiamiento.',
+        e: 'Paralizada',
+      },
+      {
+        n: 'Centro de Desarrollo Infantil (CDI) 1',
+        d: 'Quedó paralizado por el corte de fondos nacionales.',
+        e: 'La termina el municipio',
+        ok: true,
+      },
+    ];
+    const uo = $('#mil-obras');
+    uo.replaceChildren();
+    OBRAS.forEach((o) => {
+      const li = el('li', null, null, uo);
+      const top = el('div', 'mil-obra-top', null, li);
+      el('b', null, o.n, top);
+      el('span', 'mil-estado' + (o.ok ? ' ok' : ''), o.e, top);
+      el(
+        'p',
+        null,
+        o.d + (o.ok ? ' El municipio lo está terminando con el Fondo Educativo.' : ''),
+        li,
+      );
+    });
+
+    const PROGRAMAS = [
+      {
+        icon: 'truck',
+        t: 'Municipios de Pie',
+        d: 'Entre 2020 y 2023 aportó 37 vehículos y equipos: el camión compactador, la motoniveladora y la aparatología del Centro de Diálisis, entre otros. Desde 2024 no hubo nuevas entregas.',
+      },
+      {
+        icon: 'droplets',
+        t: 'ENOHSA',
+        d: 'El organismo nacional que financiaba obras de agua y cloacas fue disuelto en 2024 (Decreto 1020/2024).',
+      },
+      {
+        icon: 'house-plus',
+        t: 'PROCREAR',
+        d: 'El programa de crédito y vivienda fue disuelto en 2024 (Decreto 1018/2024).',
+      },
+      {
+        icon: 'bus',
+        t: 'Fondo Compensador al Transporte',
+        d: 'El fondo que sostenía el transporte público del interior se discontinuó en 2024.',
+      },
+    ];
+    const upr = $('#mil-programas');
+    upr.replaceChildren();
+    PROGRAMAS.forEach((c) => {
+      const li = el('li', null, null, upr);
+      const b = el('b', null, null, li);
+      ico(c.icon, b, 'ico-in');
+      b.append(c.t);
+      el('p', null, c.d, li);
+    });
+
     const DEMANDAS = [
       {
         icon: 'pill',
@@ -2187,6 +2272,73 @@
       $$('.apertura, .cap').forEach((s) => s.classList.add('visto')),
     );
   }
+  /* ---------- celular: menú de secciones, volver arriba y bloques plegables ---------- */
+  (function navegacionCelular() {
+    const btn = $('#menu-btn');
+    const indice = $('#indice');
+    const cerrar = () => {
+      document.body.classList.remove('menu-abierto');
+      btn.setAttribute('aria-expanded', 'false');
+    };
+    btn.addEventListener('click', () => {
+      const abierto = document.body.classList.toggle('menu-abierto');
+      btn.setAttribute('aria-expanded', String(abierto));
+    });
+    indice.addEventListener('click', (e) => {
+      if (e.target.closest('a')) cerrar();
+    });
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrar();
+    });
+
+    const arriba = $('#arriba');
+    const verArriba = () => arriba.classList.toggle('visible', scrollY > 1400);
+    addEventListener('scroll', verArriba, { passive: true });
+    verArriba();
+
+    const celular = matchMedia('(max-width: 760px)');
+    // bloques enteros que se pliegan detrás de un botón
+    $$('[data-plegar]').forEach((b) => {
+      const t = el('button', 'ver-mas', null);
+      t.type = 'button';
+      el('span', null, b.dataset.plegar, t);
+      ico('chevron-down', t);
+      b.before(t);
+      t.addEventListener('click', () => {
+        b.classList.remove('plegado');
+        t.remove();
+      });
+      const aplicar = () => {
+        if (!t.isConnected) return;
+        b.classList.toggle('plegado', celular.matches);
+        t.hidden = !celular.matches;
+      };
+      celular.addEventListener('change', aplicar);
+      aplicar();
+    });
+    // listas que muestran solo los primeros elementos
+    $$('[data-recortar]').forEach((l) => {
+      const n = Number(l.dataset.recortar);
+      l.style.setProperty('--recorte', n);
+      const t = el('button', 'ver-mas', null);
+      t.type = 'button';
+      el('span', null, l.dataset.recortarTxt, t);
+      ico('chevron-down', t);
+      l.after(t);
+      t.addEventListener('click', () => {
+        l.classList.remove('recortado');
+        t.remove();
+      });
+      const aplicar = () => {
+        if (!t.isConnected) return;
+        const sobra = l.children.length > n;
+        l.classList.toggle('recortado', celular.matches && sobra);
+        t.hidden = !(celular.matches && sobra);
+      };
+      celular.addEventListener('change', aplicar);
+      aplicar();
+    });
+  })();
   iconos();
 
   /* ---------- dibujo inicial y al cambiar el ancho ---------- */

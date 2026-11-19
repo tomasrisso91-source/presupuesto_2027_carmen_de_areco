@@ -2514,6 +2514,102 @@ svg.ico-sec {
 .mil-causas.mil-demandas b svg {
   color: var(--turquesa);
 }
+.mil-nac-pct {
+  font-size: 15px;
+  color: var(--tinta-2);
+  margin: 4px 0 14px;
+}
+.mil-nac-pct b {
+  color: var(--tinta);
+  font-family: var(--f-cifra);
+}
+.mil-obras {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.mil-obra-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.mil-obra-top b {
+  font-size: 16px;
+}
+.mil-obras p {
+  font-size: 14.5px;
+  color: var(--tinta-2);
+  margin-top: 3px;
+}
+.mil-estado {
+  flex: none;
+  font: 700 11.5px var(--f-cifra);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--perdida);
+  border: 1.5px solid var(--perdida);
+  border-radius: 999px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+.mil-estado.ok {
+  color: var(--azul);
+  border-color: var(--azul);
+}
+.mil-causas.mil-programas b svg {
+  color: var(--perdida);
+}
+.mil-frase {
+  position: relative;
+  margin: clamp(44px, 6vw, 80px) 0 0;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 5vw, 72px);
+  border-radius: 20px;
+  background: radial-gradient(120% 140% at 100% 0%, rgba(10, 147, 182, 0.35), transparent 55%),
+    linear-gradient(125deg, #14233a 0%, #1c3050 60%, #213654 100%);
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -30px rgba(10, 30, 60, 0.6);
+}
+.mil-frase::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.18em;
+  left: 0.12em;
+  font: 800 clamp(140px, 18vw, 260px) / 1 var(--f-titulo);
+  color: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+.mil-frase::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(180deg, #ff7a59, #c4472b);
+}
+.mil-frase p {
+  position: relative;
+  margin: 0;
+  max-width: 22ch;
+  font: 800 clamp(30px, 4.6vw, 58px) / 1.08 var(--f-titulo);
+  letter-spacing: -0.02em;
+}
+.mil-frase-a {
+  color: #e8eff5;
+}
+.mil-frase-b {
+  display: block;
+  margin-top: 0.25em;
+  color: #ff7a59;
+}
+
+.mil-dos.mil-dos-cerca {
+  margin-top: clamp(24px, 3vw, 36px);
+}
 .mil-h-mun {
   margin-top: 32px;
 }
@@ -2837,5 +2933,257 @@ svg.ico-sec {
     transform: none !important;
     clip-path: none !important;
     transition: none !important;
+  }
+}
+@media print {
+  .mil-frase {
+    background: none;
+    color: #111;
+    box-shadow: none;
+    border: 2px solid #111;
+  }
+  .mil-frase-a {
+    color: #111;
+  }
+  .mil-frase-b {
+    color: #c4472b;
+  }
+}
+
+/* =========== mejoras de navegación, legibilidad y toque =========== */
+:root {
+  --perdida: #c4472b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --perdida: #ff8a6b;
+  }
+}
+:root[data-theme='dark'] {
+  --perdida: #ff8a6b;
+}
+
+/* menú de secciones en celular */
+.menu-btn {
+  display: none;
+  margin-left: auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 600 15px var(--f-texto);
+  cursor: pointer;
+}
+.menu-btn svg {
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 760px) {
+  .menu-btn {
+    display: inline-flex;
+  }
+  .barra-in {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .indice {
+    display: none;
+    order: 3;
+    flex-basis: 100%;
+    margin: 0;
+    padding: 6px 0 12px;
+    mask-image: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+  }
+  .menu-abierto .indice {
+    display: grid;
+  }
+  .indice a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 14px;
+    background: var(--papel-2);
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--tinta);
+  }
+}
+
+/* volver arriba */
+.arriba {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  z-index: 25;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--tinta);
+  color: var(--papel);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+}
+.arriba.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.arriba svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* bloques plegables y listas recortadas (solo celular) */
+.plegado {
+  display: none !important;
+}
+.recortado > :nth-child(n + 5) {
+  display: none !important;
+}
+.ver-mas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  margin: 18px 0 0;
+  padding: 10px 16px;
+  border: 1.5px solid var(--linea);
+  border-radius: 12px;
+  background: var(--papel-2);
+  color: var(--tinta);
+  font: 600 15px var(--f-texto);
+  cursor: pointer;
+}
+.ver-mas[hidden] {
+  display: none;
+}
+.ver-mas svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* años del gráfico de la era Milei */
+.mil-col-a .corto {
+  display: none;
+}
+@media (max-width: 600px) {
+  .mil-col-a {
+    font-size: 12px;
+  }
+  .mil-col-a .largo {
+    display: none;
+  }
+  .mil-col-a .corto {
+    display: inline;
+  }
+}
+
+/* objetivos táctiles cómodos en pantallas de toque */
+@media (pointer: coarse) {
+  .filtro button,
+  .evo-controles label,
+  #ficha-cerrar,
+  .descargas a,
+  .descargas button {
+    min-height: 44px;
+  }
+  .filtro button {
+    padding-inline: 14px;
+  }
+  .evo-controles input[type='checkbox'] {
+    width: 22px;
+    height: 22px;
+  }
+}
+@media print {
+  .menu-btn,
+  .arriba,
+  .ver-mas {
+    display: none !important;
+  }
+  .plegado,
+  .recortado > * {
+    display: revert !important;
+  }
+}
+
+/* =========== efecto vidrio (liquid glass) en elementos flotantes =========== */
+:root {
+  --vidrio-fondo: rgba(255, 255, 255, 0.55);
+  --vidrio-borde: rgba(255, 255, 255, 0.7);
+  --vidrio-brillo: rgba(255, 255, 255, 0.85);
+  --vidrio-sombra: 0 8px 32px -12px rgba(20, 35, 58, 0.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --vidrio-fondo: rgba(28, 40, 52, 0.5);
+    --vidrio-borde: rgba(255, 255, 255, 0.14);
+    --vidrio-brillo: rgba(255, 255, 255, 0.18);
+    --vidrio-sombra: 0 8px 32px -12px rgba(0, 0, 0, 0.6);
+  }
+}
+:root[data-theme='dark'] {
+  --vidrio-fondo: rgba(28, 40, 52, 0.5);
+  --vidrio-borde: rgba(255, 255, 255, 0.14);
+  --vidrio-brillo: rgba(255, 255, 255, 0.18);
+  --vidrio-sombra: 0 8px 32px -12px rgba(0, 0, 0, 0.6);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .barra {
+    background: var(--vidrio-fondo);
+    -webkit-backdrop-filter: blur(18px) saturate(1.8);
+    backdrop-filter: blur(18px) saturate(1.8);
+    border-bottom-color: var(--vidrio-borde);
+    box-shadow:
+      inset 0 -1px 0 var(--vidrio-brillo),
+      var(--vidrio-sombra);
+  }
+  .menu-btn,
+  .arriba {
+    background: var(--vidrio-fondo);
+    color: var(--tinta);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+    backdrop-filter: blur(16px) saturate(1.8);
+    border: 1px solid var(--vidrio-borde);
+    box-shadow:
+      inset 0 1px 0 var(--vidrio-brillo),
+      var(--vidrio-sombra);
+  }
+  .indice a.activo,
+  .indice a[aria-current] {
+    box-shadow: inset 0 1px 0 var(--vidrio-brillo);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .barra,
+  .menu-btn,
+  .arriba {
+    background: var(--papel);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .arriba {
+    background: rgba(20, 35, 58, 0.62);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.28);
   }
 }

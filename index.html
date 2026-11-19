@@ -22,15 +22,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@87.5,400..700&family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
-  <link rel="stylesheet" href="estilos.css?v=29">
+  <link rel="stylesheet" href="estilos.css?v=34">
 </head>
 <body>
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
   <header class="barra">
     <div class="barra-in">
-      <a href="#inicio" class="marca" aria-label="Inicio"><picture><source srcset="img/logo-oscuro.png" media="(prefers-color-scheme: dark)"><img src="img/logo.png" alt="Municipio de Carmen de Areco" width="106" height="40"></picture></a>
-      <nav class="indice" aria-label="Secciones">
+      <a href="#inicio" class="marca" aria-label="Inicio"><picture><source srcset="img/logo-oscuro.webp" type="image/webp" media="(prefers-color-scheme: dark)"><source srcset="img/logo-oscuro-320.png" media="(prefers-color-scheme: dark)"><source srcset="img/logo.webp" type="image/webp"><img src="img/logo-320.png" alt="Municipio de Carmen de Areco" width="106" height="40"></picture></a>
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="indice"><i data-lucide="menu" aria-hidden="true"></i><span>Secciones</span></button>
+      <nav class="indice" id="indice" aria-label="Secciones">
         <a href="#calculadora">Tu aporte</a>
         <a href="#recursos">Recursos</a>
         <a href="#tasas">Tasas</a>
@@ -122,7 +123,7 @@
         <h2 id="t-tasas">¿Qué financian las tasas?</h2>
         <p class="cap-intro">Las tasas municipales son los tributos que abonan vecinos y empresas como contraprestación de un servicio. Algunas son de libre uso; otras, por ordenanza, solo pueden destinarse al servicio que las origina.</p>
       </div>
-      <div class="tasas" id="lista-tasas"></div>
+      <div class="tasas" id="lista-tasas" data-recortar="4" data-recortar-txt="Ver todas las tasas"></div>
       <p class="nota">Descripciones según la Ordenanza Fiscal 3318/2025, vigente al armar el presupuesto. Montos: recaudación prevista para 2027.</p>
     </section>
 
@@ -222,7 +223,7 @@
 
       <div class="cmp-rec">
         <h3>Recursos, por origen</h3>
-        <div class="antes-despues" id="cmp-recursos"></div>
+        <div class="antes-despues" id="cmp-recursos" data-recortar="4" data-recortar-txt="Ver todos los recursos"></div>
       </div>
 
       <div class="dos">
@@ -300,11 +301,27 @@
         </div>
         <div>
           <h3>Transferencias de Nación, por año</h3>
+          <p class="mil-nac-pct" id="mil-nac-pct"></p>
           <div class="mil-nac" id="mil-nac" role="img"></div>
         </div>
       </div>
 
-      <div class="dos mil-dos">
+      <div class="dos mil-dos" data-plegar="Ver obras y programas que se frenaron">
+        <div>
+          <h3>Obras nacionales que se frenaron en Carmen de Areco</h3>
+          <ul class="mil-obras" id="mil-obras"></ul>
+        </div>
+        <div>
+          <h3>Programas nacionales que dejaron de existir</h3>
+          <ul class="mil-causas mil-programas" id="mil-programas"></ul>
+        </div>
+      </div>
+
+      <blockquote class="mil-frase">
+        <p><span class="mil-frase-a">El ajuste nacional no eliminó las necesidades de los vecinos.</span> <span class="mil-frase-b">Cambió quién las paga.</span></p>
+      </blockquote>
+
+      <div class="dos mil-dos mil-dos-cerca" data-plegar="Ver las nuevas demandas y lo que hizo el municipio">
         <div>
           <h3>Demandas que antes no tenía el municipio</h3>
           <ul class="mil-causas mil-demandas" id="mil-demandas"></ul>
@@ -377,20 +394,21 @@
   </main>
 
   <footer class="pie">
-    <picture><source srcset="img/logo-oscuro.png" media="(prefers-color-scheme: dark)"><img src="img/logo.png" alt="" width="106" height="40"></picture>
+    <picture><source srcset="img/logo-oscuro.webp" type="image/webp" media="(prefers-color-scheme: dark)"><source srcset="img/logo-oscuro-320.png" media="(prefers-color-scheme: dark)"><source srcset="img/logo.webp" type="image/webp"><img src="img/logo-320.png" alt="" width="106" height="40"></picture>
     <img class="pie-qr" src="img/qr.svg" alt="Código QR al sitio del presupuesto" width="96" height="96">
     <p>Municipalidad de Carmen de Areco · Secretaría de Hacienda y Finanzas.<br>Anteproyecto de presupuesto 2027. Importes en pesos.</p>
   </footer>
 
   <div class="globo" id="globo" role="tooltip" hidden></div>
+  <a href="#inicio" class="arriba" id="arriba" aria-label="Volver arriba"><i data-lucide="arrow-up" aria-hidden="true"></i></a>
 
-  <script src="datos/datos.js?v=29"></script>
-  <script src="datos/serie.js?v=29"></script>
-  <script src="datos/cambios.js?v=29"></script>
-  <script src="datos/municipios.js?v=29"></script>
-  <script src="datos/milei.js?v=29"></script>
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=29"></script>
+  <script src="datos/datos.js?v=32"></script>
+  <script src="datos/serie.js?v=32"></script>
+  <script src="datos/cambios.js?v=32"></script>
+  <script src="datos/municipios.js?v=32"></script>
+  <script src="datos/milei.js?v=32"></script>
+  <script src="iconos.js?v=32"></script>
+  <script src="app.js?v=32"></script>
   <!-- Contador de visitas (GoatCounter, sin publicidad ni seguimiento de personas).
        Para activarlo: crear una cuenta gratuita en https://www.goatcounter.com, elegir un código
        (por ejemplo "presupuesto-cda") y reemplazar CODIGO abajo; después quitar las marcas de comentario.
