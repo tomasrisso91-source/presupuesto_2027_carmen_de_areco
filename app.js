@@ -2272,6 +2272,27 @@
       $$('.apertura, .cap').forEach((s) => s.classList.add('visto')),
     );
   }
+  /* ---------- portada: brillo que sigue al mouse ---------- */
+  (function luzPortada() {
+    const ap = $('.apertura');
+    if (!ap || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    let pendiente = false;
+    let ev = null;
+    ap.addEventListener('pointermove', (e) => {
+      ev = e;
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(() => {
+        const r = ap.getBoundingClientRect();
+        ap.style.setProperty('--mx', ev.clientX - r.left + 40 + 'px');
+        ap.style.setProperty('--my', ev.clientY - r.top + 'px');
+        ap.classList.add('con-luz');
+        pendiente = false;
+      });
+    });
+    ap.addEventListener('pointerleave', () => ap.classList.remove('con-luz'));
+  })();
+
   /* ---------- celular: menú de secciones, volver arriba y bloques plegables ---------- */
   (function navegacionCelular() {
     const btn = $('#menu-btn');

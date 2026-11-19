@@ -3187,3 +3187,128 @@ svg.ico-sec {
     border-color: rgba(255, 255, 255, 0.28);
   }
 }
+
+/* =========== fondo vivo: luces suaves con los colores del logo =========== */
+:root {
+  --fondo-op: 0.55;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fondo-op: 0.42;
+  }
+}
+:root[data-theme='dark'] {
+  --fondo-op: 0.42;
+}
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--fondo-op);
+}
+body {
+  position: relative;
+  isolation: isolate;
+}
+.fondo i {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.fondo .f1 {
+  top: -30vmax;
+  left: -20vmax;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--azul) 45%, transparent) 0,
+    transparent 62%
+  );
+  animation: deriva-1 46s ease-in-out infinite alternate;
+}
+.fondo .f2 {
+  top: 10vh;
+  right: -30vmax;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--turquesa) 40%, transparent) 0,
+    transparent 62%
+  );
+  animation: deriva-2 58s ease-in-out infinite alternate;
+}
+.fondo .f3 {
+  bottom: -35vmax;
+  left: 20vw;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--verde) 32%, transparent) 0,
+    transparent 62%
+  );
+  animation: deriva-3 70s ease-in-out infinite alternate;
+}
+@keyframes deriva-1 {
+  to {
+    transform: translate(18vw, 22vh) scale(1.15);
+  }
+}
+@keyframes deriva-2 {
+  to {
+    transform: translate(-22vw, 30vh) scale(0.9);
+  }
+}
+@keyframes deriva-3 {
+  to {
+    transform: translate(-16vw, -26vh) scale(1.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not(.anim) .fondo i {
+    animation: none;
+  }
+}
+/* los bloques de datos quedan sobre fondo sólido para no perder legibilidad */
+.cap-oscuro {
+  position: relative;
+}
+@media print {
+  .fondo {
+    display: none;
+  }
+}
+
+/* =========== portada: brillo que sigue al mouse sobre la grilla de puntos =========== */
+.apertura::after {
+  content: '';
+  position: absolute;
+  inset: 0 -40px;
+  z-index: -2;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, var(--turquesa) 1.6px, transparent 0),
+    radial-gradient(circle, color-mix(in srgb, var(--turquesa) 14%, transparent), transparent 70%);
+  background-size:
+    24px 24px,
+    100% 100%;
+  -webkit-mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    #000 0,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    #000 0,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.apertura.con-luz::after {
+  opacity: 1;
+}
+@media (hover: none), (pointer: coarse) {
+  .apertura::after {
+    display: none;
+  }
+}
