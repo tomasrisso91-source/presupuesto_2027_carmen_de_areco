@@ -2511,6 +2511,9 @@ svg.ico-sec {
 .mil-hizo b svg {
   color: var(--azul);
 }
+.mil-causas.mil-demandas b svg {
+  color: var(--turquesa);
+}
 .mil-h-mun {
   margin-top: 32px;
 }

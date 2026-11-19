@@ -1621,19 +1621,77 @@
       b.append(c.t);
       el('p', null, c.d, li);
     });
-    const HIZO = [
+    const DEMANDAS = [
       {
-        icon: 'hand-coins',
-        t: 'Más recursos propios',
-        d:
-          'Lo que aportan vecinos y empresas creció ' +
-          pct(r.mun_2023, r.mun_2025) +
-          ' entre 2023 y 2025, descontada la inflación.',
+        icon: 'pill',
+        t: 'Medicamentos',
+        d: 'PAMI redujo la cobertura de medicamentos y se recortaron Remediar y la entrega de remedios para enfermedades crónicas y oncológicas. Más vecinos recurren al municipio para conseguirlos.',
       },
       {
+        icon: 'utensils',
+        t: 'Alimentos',
+        d: 'Con la caída de los ingresos y el retiro de la asistencia alimentaria nacional, más familias recurren al municipio en busca de ayuda.',
+      },
+      {
+        icon: 'plug-zap',
+        t: 'Luz y gas',
+        d: 'Con la quita de subsidios, las facturas aumentaron y llegan más pedidos de ayuda para pagarlas.',
+      },
+      {
+        icon: 'house',
+        t: 'Alquileres',
+        d: 'Familias que no llegan a cubrir el alquiler buscan apoyo en el municipio, como ocurre en otros distritos bonaerenses.',
+      },
+    ];
+    const ud = $('#mil-demandas');
+    ud.replaceChildren();
+    DEMANDAS.forEach((c) => {
+      const li = el('li', null, null, ud);
+      const b = el('b', null, null, li);
+      ico(c.icon, b, 'ico-in');
+      b.append(c.t);
+      el('p', null, c.d, li);
+    });
+    const HIZO = [
+      {
         icon: 'scale',
-        t: 'Cuentas en equilibrio',
-        d: 'El ejercicio 2026 cierra sin gastar más de lo que ingresa, y el presupuesto 2027 también está equilibrado.',
+        t: 'Cuentas en equilibrio, sin endeudarse',
+        d:
+          'El ejercicio 2026 cierra sin gastar más de lo que ingresa y el presupuesto 2027 también está equilibrado. La deuda representa apenas ' +
+          P(r.deuda_pct_2027) +
+          ' del presupuesto.',
+      },
+      {
+        icon: 'badge-check',
+        t: 'Sueldos dentro de la pauta',
+        d:
+          'El gasto en personal de 2027 crece ' +
+          P(r.personal_var_2027) +
+          ', por debajo de la inflación estimada del ' +
+          P(r.inflacion_2027) +
+          '.',
+      },
+      {
+        icon: 'heart-handshake',
+        t: 'Más asistencia social con fondos propios',
+        d:
+          'Lo que el municipio destina de sus propios fondos a promoción y asistencia social creció ' +
+          pct(r.social_propios_2024, r.social_propios_2026) +
+          ' entre 2024 y 2026, descontada la inflación: de ' +
+          M(r.social_propios_2024) +
+          ' a ' +
+          M(r.social_propios_2026) +
+          '.',
+      },
+      {
+        icon: 'stethoscope',
+        t: 'La salud se sostuvo pese al corte de fondos',
+        d:
+          'Los fondos de otros niveles de gobierno para salud cayeron ' +
+          pct(r.salud_otros_2023, r.salud_otros_2026) +
+          ' entre 2023 y 2026. El municipio sostiene la atención con ' +
+          M(r.salud_propios_2026) +
+          ' de recursos propios.',
       },
     ];
     const uh = $('#mil-hizo');
@@ -1646,7 +1704,7 @@
       el('p', null, c.d, li);
     });
     $('#mil-metodo').textContent =
-      'Recursos percibidos según SIMCO, por origen, en pesos promedio de 2027 con el IPC de INDEC. * 2026: enero a octubre más la proyección de cierre. ** 2027: anteproyecto. La pérdida de cada año es la diferencia con el promedio de los recursos de 2022 y 2023, los dos últimos años antes del cambio de gobierno nacional. Por vecino: población estimada de cada año a partir de los censos 2010 y 2022.';
+      'Recursos percibidos según SIMCO, por origen, en pesos promedio de 2027 con el IPC de INDEC. * 2026: enero a octubre más la proyección de cierre. ** 2027: anteproyecto. La pérdida de cada año es la diferencia con el promedio de los recursos de 2022 y 2023, los dos últimos años antes del cambio de gobierno nacional. Por vecino: población estimada de cada año a partir de los censos 2010 y 2022. Asistencia social y salud: enero a octubre de cada año, para comparar con 2026.';
   })();
 
   /* ---------- evolución en pesos de 2027 ---------- */
