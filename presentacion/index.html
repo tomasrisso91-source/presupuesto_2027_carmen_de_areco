@@ -163,12 +163,12 @@ h2{color:var(--marino);padding-bottom:.06em}
 .leyenda{display:flex;align-items:center;gap:20px;padding:16px 24px!important;cursor:pointer;transition:transform .25s}
 .leyenda:hover{transform:translateX(6px)}
 .leyenda .sw{width:26px;height:26px;border-radius:50%;flex:none;box-shadow:0 0 14px var(--c)}
-#mp-tm{position:relative;height:540px;border-radius:16px;overflow:hidden;background:rgba(33,54,84,.06)}
+#mp-tm{position:relative;height:585px;border-radius:16px;overflow:hidden;background:rgba(33,54,84,.06)}
 .tl{position:absolute;color:#fff;overflow:hidden;border-radius:8px;border:2px solid rgba(255,255,255,.55);transition:left .75s cubic-bezier(.2,.8,.2,1),top .75s cubic-bezier(.2,.8,.2,1),width .75s cubic-bezier(.2,.8,.2,1),height .75s cubic-bezier(.2,.8,.2,1),opacity .5s,filter .3s;cursor:pointer;padding:8px 10px;line-height:1.12}
 .tl:hover{filter:brightness(1.18) saturate(1.1);z-index:2;box-shadow:0 0 0 3px #fff inset}
 .tl.dim{opacity:.18}
 .tl .tn{font-weight:700;font-size:21px;display:block}.tl .tv{font-weight:600;font-size:18px;opacity:.92}
-.tl.peq .tn{display:none}.tl.min .tv{display:none}
+.tl.med{padding:6px 8px}.tl.med .tn{font-size:16px;line-height:1.1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tl.med .tv{font-size:15px}.tl.peq .tn{display:none}.tl.min .tv{display:none}
 .bcl{cursor:pointer;color:var(--turquesa);font-weight:700}.bcl:hover{text-decoration:underline}
 
 .rcard{flex:1;cursor:pointer;padding:26px 30px!important;transition:transform .25s,outline-color .25s,box-shadow .25s;outline:3px solid transparent;outline-offset:3px}
@@ -263,11 +263,16 @@ table.t td:last-child{white-space:nowrap}
 .qr-dl.qrp .qr-img{width:150px;height:150px}.qr-dl.qrp .qr-txt{font-size:23px;max-width:210px}.qr-dl.qrp .qr-txt span{font-size:17px}
 /* imprimible (A4 horizontal, tema claro, ahorra tinta) */
 body.imp #stage{width:1062px!important}
-body.imp .pg{break-after:page;page-break-after:always;width:1062px}
-body.imp .hoja{position:relative;width:1062px;height:597px;overflow:hidden;border:1px solid #cfd8dc;background:#fff}
+body.imp .pg{break-after:page;page-break-after:always;width:1062px;height:728px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+body.imp .hoja{position:relative;width:1062px;height:597px;overflow:hidden;border:1px solid #c9d6dc;border-radius:12px;background:#fff;flex:none}
+body.imp .hoja-cab{display:flex;justify-content:space-between;align-items:center;height:46px;padding:0 4px 8px;border-bottom:3px solid #0a93b6;border-image:linear-gradient(90deg,#0a93b6,#24997f 60%,#a5c63b) 1;flex:none}
+body.imp .hoja-cab img{height:34px;display:block}
+body.imp .hoja-cab span{font:700 11px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#0a7f9c}
+body.imp .hoja-cab em{font:600 11px Arial,sans-serif;color:#5d6c74;font-style:normal;letter-spacing:.04em;text-transform:none;margin-left:10px}
 body.imp .hoja .slide{position:relative!important;inset:auto!important;transform:none!important;width:1920px!important;height:1080px!important;background:#fff!important;break-after:auto!important;page-break-after:auto!important}
 body.imp.zoomed .hoja .slide{zoom:.5531}
-body.imp .hoja-pie{display:flex;justify-content:space-between;font:600 11px Arial,sans-serif;color:#5d6c74;padding:6px 2px 0}
+body.imp .hoja-pie{display:flex;justify-content:space-between;align-items:center;font:600 11px Arial,sans-serif;color:#5d6c74;padding:0 2px;height:34px;flex:none;border-top:1px solid #dbe4e8}
+body.imp .hoja-pie b{background:#213654;color:#fff;border-radius:99px;padding:3px 12px;font-weight:700;letter-spacing:.04em}
 body.imp .card{background:#fff!important;border:1px solid #cfd8dc!important;box-shadow:none!important}
 body.imp .num,body.imp .oscuro .num{text-shadow:none!important}
 body.imp h2{background:none!important;-webkit-text-fill-color:var(--marino);color:var(--marino)!important}
@@ -601,7 +606,7 @@ body.orad{overflow-x:hidden!important}
   <h2>¿Es mucho o poco? La serie 2019–2027</h2>
   <div style="display:flex;gap:30px;align-items:center;margin-top:20px"><div class="tabs" id="tabs-serie"></div></div>
   <p id="serie-lectura" style="font-size:23px;line-height:1.35;margin-top:12px;min-height:62px"></p>
-  <div class="cuerpo" style="margin-top:8px"><div class="col" style="flex:1;min-height:0"><div class="card" style="flex:1;min-height:0;overflow:hidden;padding:14px 20px"><svg id="svg-serie" viewBox="0 0 1600 560" style="width:100%;height:100%"></svg></div></div></div>
+  <div class="cuerpo" style="margin-top:8px"><div class="col" style="flex:1;min-height:0"><div class="card" style="flex:1;min-height:0;overflow:hidden;padding:14px 20px"><svg id="svg-serie" viewBox="0 0 1600 640" style="width:100%;height:100%"></svg></div></div></div>
   <p class="nota">Todo en pesos promedio de 2027 (IPC INDEC; 2026 y 2027 con inflación esperada). 2019–2025 es ejecución; 2026, cierre proyectado; 2027, presupuesto. En pesos constantes, el gasto 2027 es 0,1 % menor que el cierre 2026 y 3,5 % menor que el de 2025.</p>
 </section>
 
@@ -767,7 +772,7 @@ body.orad{overflow-x:hidden!important}
   <h2>Cómo se controla durante 2027</h2>
   <div class="cuerpo" style="gap:30px">
     <div class="card col" style="flex:1" data-f="1"><div class="num" style="font-size:70px;color:var(--turquesa)">01</div><h3><i data-i="shield-check"></i>Ejecución a la vista</h3><p>En Cuentas Claras, los informes económico-financieros, la ejecución presupuestaria y un tablero interactivo de recursos y gastos permiten contrastarla con este presupuesto.</p></div>
-    <div class="card col" style="flex:1" data-f="2"><div class="num" style="font-size:70px;color:var(--azul)">02</div><h3><i data-i="gavel"></i>Cambios, con el Concejo</h3><p>Todo gasto fuera de lo presupuestado requiere recursos que lo financien y, en general, ordenanza de modificación (arts. 119 y 124).</p></div>
+    <div class="card col" style="flex:1" data-f="2"><div class="num" style="font-size:70px;color:var(--azul)">02</div><h3><i data-i="gavel"></i>Reglas de la ordenanza</h3><p>Todo gasto requiere recursos que lo financien. La ordenanza complementaria faculta al Ejecutivo a adecuar partidas (art. 30) e incorporar saldos (art. 29): los cambios se reflejan en la ejecución publicada.</p></div>
     <div class="card col" style="flex:1" data-f="3"><div class="num" style="font-size:70px;color:var(--agua)">03</div><h3><i data-i="database"></i>Datos abiertos</h3><p>Datasets exportados de RAFAM en Cuentas Claras y un sitio del presupuesto 2027 con recursos, gastos por programa y cargos descargables.</p></div>
   </div>
   <p class="nota" style="font-size:25px;margin-top:26px"><a href="https://carmendeareco.gob.ar/transparencia/" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--turquesa);font-weight:700">carmendeareco.gob.ar/transparencia</a> · <a href="https://tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco/" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--turquesa);font-weight:700">tomasrisso91-source.github.io/presupuesto_2027_carmen_de_areco</a></p>
@@ -856,7 +861,7 @@ const NOTAS={
 's-acciones':'<b>Líneas de acción.</b> Cada una potencia una fortaleza o atiende un riesgo del FODA: transparencia (Cuentas Claras), servicios esenciales protegidos, cobrabilidad con equidad y más financiamiento para la comunidad.',
 's-cuentas':'<b>Cuentas Claras.</b> Portal de transparencia del Municipio (carmendeareco.gob.ar/transparencia). Secciones: tablero interactivo de recursos y gastos (Power BI), cuentas públicas (informes económico-financieros, ejecución presupuestaria y balances), normativa fiscal (ordenanza fiscal, impositiva y presupuesto), contrataciones (licitaciones y concursos), recursos humanos (información salarial), funcionarios (declaraciones juradas patrimoniales) y datasets (exportaciones de RAFAM). Cada tarjeta es un enlace. Idea fuerza: confianza y transparencia como marca de la gestión.',
 's-riesgo':'<b>Simulador.</b> Tres controles (recaudación, precios de bienes y servicios, costo adicional de personal), cuatro escenarios predefinidos y dos alcances para el desvío de recaudación: sobre todos los recursos o sólo sobre los de libre disponibilidad (el afectado se ajusta solo). La regla de ajuste recorta, en este orden, bienes de uso con recursos libres, transferencias no comprometidas, bienes de consumo, servicios y el convenio APACA, sin tocar personal. Los porcentajes máximos (100 %, 50 %, 5 %, 5 %, 10 %) son supuestos de la simulación a validar con Hacienda. 1 % de recursos = $180,3 M.',
-'s-control':'<b>Seguimiento.</b> La ejecución se registra en RAFAM/SIMCO y se publica en Cuentas Claras (informes económico-financieros, ejecución presupuestaria, tablero interactivo y datasets). No se promete un informe trimestral nuevo: esa sección se retiró del sitio del presupuesto.',
+'s-control':'<b>Seguimiento.</b> Según la ordenanza complementaria 2027: art. 8 (salarios hasta la variación del IPC), art. 29 (incorporación de saldos) y art. 30 (adecuaciones de partidas por el Ejecutivo, con arts. 119 y 120 de la LOM); art. 21 fija 357 cargos. La ejecución se registra en RAFAM/SIMCO y se publica en Cuentas Claras (informes económico-financieros, ejecución presupuestaria, tablero interactivo y datasets). No se promete un informe trimestral nuevo: esa sección se retiró del sitio del presupuesto.',
 's-faq':'<b>Preguntas frecuentes.</b> Diez preguntas con su respuesta, tres cifras clave y un botón para ir a la diapositiva de respaldo. Las cifras se calculan desde los datos. Sobre el Concejo (+40 %): el componente de personal sigue pendiente de revisión interna; tenerlo a mano antes de la sesión.',
 's-ejec':'<b>Ejecución 2026.</b> La transferencia a APACA equivale a 43 % de las transferencias. Devengado enero–octubre (SIMCO) frente al aprobado 2026 por inciso. El total lleva 88,9 % del aprobado con 83 % del año transcurrido: el aprobado 2026 quedó por debajo de lo que se ejecuta. Transferencias ya duplican lo aprobado ($1.103 M contra $589 M, con $540 M del convenio de caminos rurales), mientras bienes de uso lleva menos de la mitad. Fuente: informe integral del 13/11/2026.',
 's-cierre':'<b>Cierre.</b> Volver a las cuatro cifras. Abrir a preguntas.'
@@ -926,7 +931,7 @@ function wfRender(el,items,primera){
     if(C[i]){C[i].style.left=(x+bw)+'px';C[i].style.width=(cw-bw)+'px';C[i].style.top=y(c.b)+'px';C[i].style.opacity=1}
     if(primera){[b,V[i],C[i]].forEach(e=>{if(e)e.style.transitionDelay=(i*0.5)+'s'});}
   });
-  if(primera){const h0=cols.map(c=>0);B.forEach(b=>{const t=b.style.top,h=b.style.height;b.style.height='0px';b.style.opacity=0;requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.height=h;b.style.opacity=1}))});
+  if(primera&&!document.body.classList.contains('pdf')){const h0=cols.map(c=>0);B.forEach(b=>{const t=b.style.top,h=b.style.height;b.style.height='0px';b.style.opacity=0;requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.height=h;b.style.opacity=1}))});
     setTimeout(()=>el.querySelectorAll('.wb,.wv,.wc').forEach(e=>e.style.transitionDelay='0s'),n*500+1000)}
   return cols;
 }
@@ -1193,12 +1198,12 @@ const INIT={
   function layout(){
     const W=el.clientWidth||1100,H=el.clientHeight||540,rects=[];
     if(S.drill){const p=S.drill,acts=p.acts.filter(a=>a.v>0).map((a,i)=>({id:'a:'+p.cod+a.n,n:a.n.replace(/^\d+ /,''),val:a.v,v:a.v,col:JC[p.jur],br:1+(i%3)*.1,tipo:'a',p}));
-      squarify(acts,0,0,W,H).forEach(r=>rects.push(r))}
+      squarify(acts,4,4,W-8,H-8).forEach(r=>rects.push(r))}
     else{
       const ps=D.programas.filter(p=>(!S.area||p.jur===S.area)&&val(p)>0).map(p=>({id:'p:'+p.jur+p.cod,n:p.cod+' '+p.n,val:val(p),v:val(p),col:JC[p.jur],br:1,tipo:'p',p}));
       const gr={};ps.forEach(p=>(gr[p.p.jur]=gr[p.p.jur]||[]).push(p));
       const grupos=Object.entries(gr).map(([j,arr])=>({j,arr,val:arr.reduce((a,b)=>a+b.val,0)}));
-      squarify(grupos,0,0,W,H).forEach(g=>{squarify(g.it.arr,g.x+3,g.y+3,g.w-6,g.h-6).forEach(r=>rects.push(r))});
+      squarify(grupos,4,4,W-8,H-8).forEach(g=>{squarify(g.it.arr,g.x+3,g.y+3,g.w-6,g.h-6).forEach(r=>rects.push(r))});
     }
     const vivos=new Set();
     rects.forEach(r=>{const it=r.it;vivos.add(it.id);let d=tiles.get(it.id);if(d)d.dataset.vivo='1';
@@ -1208,7 +1213,7 @@ const INIT={
         d.onmousemove=e=>mostrarTip(e,'<b>'+it.n+'</b><br>'+M(it.v)+' · '+P1(it.v/TOT)+' del total');d.addEventListener('mouseleave',ocultarTip)}
       d.style.left=r.x+'px';d.style.top=r.y+'px';d.style.width=r.w+'px';d.style.height=r.h+'px';d.style.background=it.col;d.style.filter='brightness('+it.br+')';
       d.firstChild.textContent=it.n;d.lastChild.textContent=M(it.v);
-      d.classList.toggle('peq',r.w<150||r.h<62);d.classList.toggle('min',r.w<90||r.h<44);
+      d.classList.toggle('med',(r.w<190||r.h<90)&&r.w>=100&&r.h>=56);d.classList.toggle('peq',r.w<100||r.h<56);d.classList.toggle('min',r.w<70||r.h<40);
       requestAnimationFrame(()=>{d.style.opacity=1});
       d.classList.toggle('dim',!!S.q&&!(it.n+' '+it.p.jur).toLowerCase().includes(S.q));});
     tiles.forEach((d,id)=>{if(!vivos.has(id)){d.dataset.vivo='0';d.style.opacity=0;d.style.pointerEvents='none';setTimeout(()=>{if(d.dataset.vivo==='0'&&tiles.get(id)===d){d.remove();tiles.delete(id)}},650)}});
@@ -1333,13 +1338,13 @@ const INIT={
    {n:'Gasto total',ser:[{n:'Gasto total',c:'#0a93b6',v:S.map(x=>x.gasto),w:7}]},
    {n:'Personal',ser:[{n:'Personal',c:'#0a93b6',v:S.map(x=>x.pers),w:7}]},
    {n:'Inversión directa',ser:[{n:'Inversión directa',c:'#0a93b6',v:S.map(x=>x.inv),w:7}]}];
-  const dibujar=(i)=>{const m=modos[i],multi=m.ser.length>1,all=m.ser.flatMap(x=>x.v),st=nice(Math.max(...all)*1.05),mx=st*4,W=1600,H=560,px=100,py=40,ph=H-100,pw=W-px-(multi?230:60);
+  const dibujar=(i)=>{const m=modos[i],multi=m.ser.length>1,all=m.ser.flatMap(x=>x.v),raw=Math.max(...all)*1.04/4,mag=Math.pow(10,Math.floor(Math.log10(raw))),st=[1,1.2,1.5,2,2.5,3,4,5,6,8,10].map(k=>k*mag).find(v=>raw<=v),mx=st*4,W=1600,H=640,px=100,py=30,ph=H-100,pw=W-px-(multi?230:60);
     const X=j=>px+60+j*(pw-60)/(S.length-1),Y=v=>py+ph-v/mx*ph;let g='';
     for(let t=0;t<=4;t++){const v=st*t,y=Y(v);g+='<line x1="'+px+'" x2="'+(W-(multi?200:50))+'" y1="'+y+'" y2="'+y+'" stroke="#e1e8eb"/><text x="'+(px-12)+'" y="'+(y+7)+'" text-anchor="end" font-size="22" fill="#5d6c74">'+n0.format(v/1e6)+'</text>'}
     m.ser.forEach((se,si)=>{g+='<path class="lin" data-dash="'+(se.dash?1:0)+'" d="'+se.v.map((v,j)=>(j?'L':'M')+X(j)+' '+Y(v)).join(' ')+'" fill="none" stroke="'+se.c+'" stroke-width="'+se.w+'" stroke-linejoin="round" stroke-linecap="round"'+(se.dash?' stroke-dasharray="'+se.dash+'"':'')+'/>';
       se.v.forEach((v,j)=>{g+='<circle cx="'+X(j)+'" cy="'+Y(v)+'" r="'+(se.dash?7:10)+'" fill="#fff" stroke="'+se.c+'" stroke-width="'+(se.dash?4:5)+'" class="pt" data-s="'+si+'" data-j="'+j+'" style="cursor:pointer"/>'});
       if(multi)g+='<text x="'+(X(S.length-1)+22)+'" y="'+(Y(se.v[S.length-1])+8)+'" font-size="25" font-weight="800" fill="'+se.c+'">'+se.n+'</text>'});
-    S.forEach((x,j)=>{g+='<text x="'+X(j)+'" y="'+(H-30)+'" text-anchor="middle" font-size="24" fill="#5d6c74">'+x.anio+'</text>'});
+    S.forEach((x,j)=>{g+='<text x="'+X(j)+'" y="'+(H-26)+'" text-anchor="middle" font-size="24" fill="#5d6c74">'+x.anio+'</text>'});
     $('#svg-serie').innerHTML=g;
     $$('#svg-serie .lin').forEach((L,k)=>{if(L.dataset.dash==='1')return;const len=L.getTotalLength();L.style.strokeDasharray=len;L.style.strokeDashoffset=len;L.getBoundingClientRect();L.style.transition='stroke-dashoffset 1.6s ease '+(k*.15)+'s';L.style.strokeDashoffset=0});
     $$('#svg-serie .pt').forEach(p=>{const se=m.ser[+p.dataset.s],j=+p.dataset.j,x=S[j];p.onmousemove=e=>mostrarTip(e,'<b>'+x.anio+'</b> · '+(x.tipo==='ejecutado'?'ejecución':x.tipo.startsWith('cierre')?'cierre proyectado':'presupuesto')+'<br>'+se.n+': <b>'+(se.v[j]<1e6?'$0':M(se.v[j]))+'</b>');p.onmouseleave=ocultarTip});
@@ -1400,7 +1405,7 @@ const INIT={
 's-m6'(){
   const r=D.milei.resumen,pc=(a,b)=>P1(Math.abs(b/a-1));
   const H=[['Equilibrio y bajo endeudamiento','El ejercicio 2026 cierra en equilibrio y el presupuesto 2027 también. El servicio de la deuda es apenas el '+P1(r.deuda_pct_2027)+' del presupuesto y no se prevén recursos por endeudamiento.'],
-   ['El personal es una inversión','Como durante toda la gestión, los salarios acompañan la inflación proyectada ('+P1(r.inflacion_2027)+'). El 70,9 % de los sueldos corresponde a servicios directos a los vecinos.'],
+   ['El personal es una inversión','Como durante toda la gestión, los salarios acompañan la inflación: la ordenanza complementaria autoriza ajustarlos hasta la variación del IPC (art. 8). El 70,9 % de los sueldos va a servicios directos a los vecinos.'],
    ['Más asistencia social con fondos propios','Lo que el municipio destina de sus propios fondos a promoción y asistencia social creció '+pc(r.social_propios_2024,r.social_propios_2026)+' entre 2024 y 2026, descontada la inflación: de '+M(r.social_propios_2024)+' a '+M(r.social_propios_2026)+'.'],
    ['La salud se sostuvo pese al corte de fondos','Los fondos de otros niveles de gobierno para salud cayeron '+pc(r.salud_otros_2023,r.salud_otros_2026)+' entre 2023 y 2026. El municipio sostiene la atención con '+M(r.salud_propios_2026)+' de recursos propios.']];
   $('#m6-hizo').innerHTML=H.map((h,i)=>'<div class="card" data-f="'+(i+1)+'" style="border-top:8px solid '+COL[(i+2)%7]+'"><h3 style="font-size:36px">'+ic(['scale','users','heart-handshake','stethoscope'][i])+h[0]+'</h3><p style="font-size:32px;line-height:1.35">'+h[1]+'</p></div>').join('');
@@ -1527,17 +1532,25 @@ function ir(n,fin=false){
   fxSlide(s,n);contadores();
   $('#notas').innerHTML=NOTAS[s.id]||'';
   history.replaceState(null,'',location.search+'#'+(n+1));
+  limpiarRev();if(!fin)autoRev();
 }
 let ORADV=null;
 function enviarEstado(){if(ORADV&&!ORADV.closed)ORADV.postMessage({t:'estado',cur,paso,fr:frags(slides[cur]).length,ruta:RUTA},'*')}
-function sig(){const F=frags(slides[cur]);if(paso<F.length){const g=F.filter(f=>f.dataset.f==F[paso].dataset.f);g.forEach(f=>f.classList.add('on'));paso+=g.length;enviarEstado()}else{const nx=idxRuta().find(i=>i>cur);if(nx!==undefined)ir(nx)}}
-function ant(){const F=frags(slides[cur]);if(paso>0){const last=F[paso-1].dataset.f;const grp=F.filter(f=>f.dataset.f==last);grp.forEach(f=>f.classList.remove('on'));paso-=grp.length;enviarEstado()}else{const L=idxRuta().filter(i=>i<cur);if(L.length)ir(L[L.length-1],true)}}
+let MANUAL=false,revT=[];
+function limpiarRev(){revT.forEach(clearTimeout);revT=[]}
+function revelar(){const F=frags(slides[cur]);if(paso<F.length){const g=F.filter(f=>f.dataset.f==F[paso].dataset.f);g.forEach(f=>f.classList.add('on'));paso+=g.length;enviarEstado();return true}return false}
+function autoRev(){limpiarRev();if(MANUAL)return;const n=new Set(frags(slides[cur]).map(f=>f.dataset.f)).size;if(!n)return;for(let k=0;k<n;k++)revT.push(setTimeout(revelar,600+k*550));revT.push(setTimeout(()=>{revT=[]},600+n*550))}
+function aviso(t){let a=$('#aviso');if(!a){a=document.createElement('div');a.id='aviso';a.style.cssText='position:fixed;left:50%;bottom:7%;transform:translateX(-50%);background:#14233a;color:#fff;padding:10px 22px;border-radius:99px;font:600 18px Arial,sans-serif;z-index:2000;opacity:0;transition:opacity .25s;pointer-events:none';document.body.appendChild(a)}a.textContent=t;a.style.opacity=1;clearTimeout(a._t);a._t=setTimeout(()=>a.style.opacity=0,2200)}
+function sig(){if(revT.length){limpiarRev();while(revelar());return}if(MANUAL&&revelar())return;const nx=idxRuta().find(i=>i>cur);if(nx!==undefined)ir(nx)}
+function ant(){limpiarRev();const F=frags(slides[cur]);if(MANUAL&&paso>0){const last=F[paso-1].dataset.f;const grp=F.filter(f=>f.dataset.f==last);grp.forEach(f=>f.classList.remove('on'));paso-=grp.length;enviarEstado()}else{const L=idxRuta().filter(i=>i<cur);if(L.length)ir(L[L.length-1],true)}}
 function abrirOrador(){const base=location.href.split('#')[0].split('?')[0];ORADV=window.open(base+'?orador','orador','width=1180,height=800');setTimeout(enviarEstado,800)}
 document.addEventListener('keydown',e=>{
   if(e.target.matches&&e.target.matches('input'))return;
   const k=e.key;
+  if(e.repeat&&['ArrowRight','ArrowDown','PageDown',' ','Enter','ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){e.preventDefault();const t=performance.now();if(t-(window._kr||0)<420)return;window._kr=t}
   if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(k)){e.preventDefault();sig()}
   else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){e.preventDefault();ant()}
+  else if(k==='m'||k==='M'){MANUAL=!MANUAL;limpiarRev();aviso(MANUAL?'Revelado manual: una flecha por elemento':'Revelado automático: una flecha por diapositiva')}
   else if(k==='Home')ir(idxRuta()[0]);else if(k==='End'){const L=idxRuta();ir(L[L.length-1])}
   else if(k==='1')setRuta('corta');else if(k==='2')setRuta('media');else if(k==='3')setRuta('completa');
   else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
@@ -1558,8 +1571,9 @@ function iniciarPDF(){
   if(/[?&]imp/.test(location.search)){document.body.classList.add('imp');
     slides.forEach((sl,i)=>{sl.classList.remove('oscuro');$$('.logo',sl).forEach(g=>g.src=LOGO_CLARO);
       const pg=document.createElement('div');pg.className='pg';const h=document.createElement('div');h.className='hoja';
-      sl.parentNode.insertBefore(pg,sl);h.appendChild(sl);pg.appendChild(h);
-      const pie=document.createElement('div');pie.className='hoja-pie';pie.innerHTML='<span>Presupuesto 2027 · Municipalidad de Carmen de Areco · Honorable Concejo Deliberante</span><span>'+(SECDE[sl.id]||'')+' · '+(i+1)+' / '+slides.length+'</span>';pg.appendChild(pie)})}
+      const cab=document.createElement('div');cab.className='hoja-cab';cab.innerHTML='<img src="'+LOGO_CLARO+'" alt=""><span>'+(SECDE[sl.id]||'Presupuesto 2027')+'<em>Presupuesto 2027 · Presentación al Honorable Concejo Deliberante</em></span>';
+      sl.parentNode.insertBefore(pg,sl);pg.appendChild(cab);h.appendChild(sl);pg.appendChild(h);
+      const pie=document.createElement('div');pie.className='hoja-pie';pie.innerHTML='<span>Municipalidad de Carmen de Areco · carmendeareco.gob.ar/transparencia</span><b>'+(i+1)+' / '+slides.length+'</b>';pg.appendChild(pie)})}
   const so=(location.search.match(/solo=([0-9]+)/)||[])[1];if(so!==undefined)slides.forEach((sl,i)=>{if(i!==+so)(sl.closest(".pg")||sl).style.display="none"});
   slides.forEach(sl=>{if((sl.closest('.pg')||sl).style.display==="none")return;const fn=INIT[sl.id];if(fn){try{fn()}catch(err){console.error(sl.id,err)}}$$('[data-f]',sl).forEach(x=>x.classList.add('on'));$$('[data-count]',sl).forEach(el=>{const d=+(el.dataset.dec||0);el.textContent=(el.dataset.pre||'')+nf(d).format(parseFloat(el.dataset.count))+(el.dataset.suf||'')})});
   const finalizar=()=>{
