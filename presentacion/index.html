@@ -495,8 +495,8 @@ html,body{height:100dvh;overscroll-behavior:none;touch-action:manipulation}
 <!-- 9 ÁREAS -->
 <section class="slide" id="s-areas" data-titulo="Por área de gobierno">
   <div class="kicker">Gastos · por área de gobierno</div>
-  <h2>Qué área gasta cuánto</h2>
-  <p class="lead" style="font-size:28px;margin-top:10px">Hacé clic en un área para ver sus programas.</p>
+  <h2>Cuánto gasta cada área de gobierno</h2>
+  <p class="lead" style="font-size:28px;margin-top:10px">Hacé clic en un área para ver cuánto destina a cada uno de sus programas.</p>
   <div class="cuerpo" style="gap:44px">
     <div class="col" style="flex:1.05"><div class="hb" id="hb-areas" style="--lw:380px;--vw:210px"></div></div>
     <div class="col" style="flex:.95"><div class="card" id="areas-det" style="flex:1"></div></div>
@@ -910,7 +910,8 @@ function hbars(el,items,o={}){
   el.innerHTML='';
   items.forEach((it,k)=>{
     const f=document.createElement('div');f.className='fila'+(it.click?' click':'');
-    f.innerHTML=`<div class="et">${it.n}${it.chip||''}</div><div class="pista"><div class="barra" style="background:${it.c||COL[0]}" data-w="${it.v/max*100}"></div>${it.v2!=null?`<div class="barra b2" data-w="${it.v2/max*100}"></div>`:''}</div><div class="val">${it.txt||M(it.v)}${it.sub?`<small>${it.sub}</small>`:''}</div>`;
+    const rj=it.rojo?'color:#b5453a;font-weight:800':'';
+    f.innerHTML=`<div class="et" style="${rj}">${it.n}${it.chip||''}</div><div class="pista"><div class="barra" style="background:${it.c||COL[0]}" data-w="${it.rojo?1.2:it.v/max*100}"></div>${it.v2!=null?`<div class="barra b2" data-w="${it.v2/max*100}"></div>`:''}</div><div class="val" style="${rj}">${it.txt||M(it.v)}${it.sub?`<small>${it.sub}</small>`:''}</div>`;
     if(it.click){f.onclick=()=>{$$('.fila',el).forEach(x=>x.classList.remove('sel'));f.classList.add('sel');it.click(it)}}
     el.appendChild(f);
   });
@@ -1265,8 +1266,8 @@ const INIT={
 's-recursos'(){
   const sets=[
    ()=>{const p=sumR(r=>r.origen==='Provincial'),m=sumR(r=>r.origen==='Municipal'),o=sumR(r=>r.origen!=='Provincial'&&r.origen!=='Municipal');
-     $('#rec-lectura').innerHTML=`<h3>Seis de cada diez pesos vienen de la Provincia</h3><p>La coparticipación y los fondos provinciales dependen de decisiones y distribuciones que el municipio no controla. Los recursos municipales (tasas, derechos y multas) sí dependen de la gestión y de la cobrabilidad.</p>`;
-     return [{n:'Provincial',v:p,c:COL[1],sub:P1(p/TOT)},{n:'Municipal',v:m,c:COL[2],sub:P1(m/TOT)},{n:'Otros orígenes',v:o,c:COL[6],sub:P1(o/TOT)}]},
+     $('#rec-lectura').innerHTML=`<h3>Seis de cada diez pesos vienen de la Provincia</h3><p><b style="color:#b5453a">La Nación no aporta ningún recurso en 2027: la fuente nacional está en cero.</b> La coparticipación y los fondos provinciales dependen de decisiones y distribuciones que el municipio no controla. Los recursos municipales (tasas, derechos y multas) sí dependen de la gestión y de la cobrabilidad.</p>`;
+     return [{n:'Provincial',v:p,c:COL[1],sub:P1(p/TOT)},{n:'Municipal',v:m,c:COL[2],sub:P1(m/TOT)},{n:'Otros orígenes',v:o,c:COL[6],sub:P1(o/TOT)},{n:'Nacional',v:0,c:'#b5453a',rojo:true,txt:'$0',sub:'0,0 % · sin fondos nacionales'}]},
    ()=>{const a=sumR(r=>r.afectado),l=TOT-a;
      $('#rec-lectura').innerHTML=`<h3>Una cuarta parte tiene destino obligado</h3><p>El 25,1 % son recursos <b>afectados</b>: sólo pueden gastarse en lo que establece su norma (educación, alumbrado, seguridad, vialidad…). Por eso el equilibrio se controla fuente por fuente.</p>`;
      return [{n:'Libre disponibilidad',v:l,c:COL[0],sub:P1(l/TOT)},{n:'Afectado',v:a,c:COL[5],sub:P1(a/TOT)}]},
