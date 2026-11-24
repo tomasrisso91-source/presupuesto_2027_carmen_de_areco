@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Presupuesto 2027 · Presentación al HCD</title>
 <style>
 :root{
@@ -1520,7 +1520,7 @@ const slides=$$('.slide');let cur=-1,paso=0;
 const frags=s=>$$('[data-f]',s).sort((a,b)=>a.dataset.f-b.dataset.f);
 function escalar(){const k=Math.min(innerWidth/1920,innerHeight/1080);const st=$('#stage');st.style.transform=`scale(${k}) translate(-50%,-50%)`;st.style.left='50%';st.style.top='50%';st.style.transformOrigin='0 0';}
 // El escalado se centra con la traslación posterior: left/top 50% + translate(-50%,-50%) en coordenadas escaladas
-function escalar2(){const k=Math.min(innerWidth/1920,innerHeight/1080);const st=$('#stage');st.style.transform=`translate(-50%,-50%) scale(${k})`;st.style.transformOrigin='50% 50%'}
+function escalar2(){const W=document.documentElement.clientWidth||innerWidth,H=document.documentElement.clientHeight||innerHeight;const k=Math.min(W/1920,H/1080);const st=$('#stage');st.style.transform=`translate(-50%,-50%) scale(${k})`;st.style.transformOrigin='50% 50%'}
 const SECC=[['Apertura',['s-portada','s-agenda','s-leer','s-glos']],['El presupuesto en cifras',['s-total','s-ticket']],['Recursos',['s-monedas','s-recursos','s-top','s-tasas','s-reccambio','s-flujo']],['Gastos',['s-tipo','s-ejec','s-nov','s-areas','s-ficha','s-mapa','s-fin','s-prog','s-personal','s-inv']],['Equilibrio y contexto fiscal',['s-casc1','s-casc2','s-serie','s-comp','s-hcd','s-riesgo']],['Contexto nacional',['s-m1','s-m2','s-m3','s-m4','s-m5','s-m6']],['Diagnóstico y cierre',['s-foda','s-acciones','s-cuentas','s-control','s-faq','s-cierre']]];
 const SECDE={};SECC.forEach(([n,ids])=>ids.forEach(i=>SECDE[i]=n));
 const CORTA=['s-portada','s-agenda','s-total','s-monedas','s-flujo','s-areas','s-mapa','s-casc1','s-casc2','s-hcd','s-m1','s-m2','s-m6','s-foda','s-acciones','s-cuentas','s-cierre'];
@@ -1587,7 +1587,7 @@ document.addEventListener('keydown',e=>{
 });
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX);addEventListener('touchend',e=>{if(tx==null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)d<0?sig():ant();tx=null});
 $('#b-sig').onclick=sig;$('#b-ant').onclick=ant;
-addEventListener('resize',escalar2);addEventListener('orientationchange',()=>setTimeout(escalar2,150));escalar2();
+addEventListener('resize',escalar2);addEventListener('orientationchange',()=>setTimeout(escalar2,150));if(window.visualViewport){visualViewport.addEventListener('resize',escalar2);visualViewport.addEventListener('scroll',()=>{if(visualViewport.scale>1.01)scrollTo(0,0)})}escalar2();
 if(!/[?&]pdf/.test(location.search)&&matchMedia('(pointer:coarse)').matches)$('#giro').classList.add('on');
 const ORADOR=/[?&]orador/.test(location.search),PDFM=/[?&]pdf/.test(location.search);
 addEventListener('message',e=>{const m=e.data;if(!m||!m.t||ORADOR)return;if(m.t==='listo')enviarEstado();else if(m.t==='cmd'){if(m.c==='sig')sig();else if(m.c==='ant')ant();else if(String(m.c).startsWith('ruta:'))setRuta(m.c.slice(5))}});
