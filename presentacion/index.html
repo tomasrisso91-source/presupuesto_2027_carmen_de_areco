@@ -294,6 +294,29 @@ body.orad{overflow-x:hidden!important}
   #grilla.on{padding:18px 14px!important}
   .gr-items{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 }
+/* tablet y celular */
+html,body{height:100dvh;overscroll-behavior:none;touch-action:manipulation}
+#pie{padding-bottom:max(10px,env(safe-area-inset-bottom));padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+#pie button{pointer-events:auto}
+#giro{display:none;position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:60;background:#14233a;color:#fff;border-radius:99px;padding:9px 18px;font:600 14px Arial,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);align-items:center;gap:10px;max-width:92vw}
+#giro button{background:none;border:0;color:#7fd3ea;font:700 16px Arial,sans-serif;padding:2px 6px;cursor:pointer}
+@media (max-width:1100px){
+  #pie{font-size:13px}
+  #pie button{min-width:52px;height:46px;font-size:26px;border-radius:12px}
+  #pie .ayuda{display:none}
+  #notas{max-height:46vh;font-size:16px;padding:12px 16px 40px}
+  #grilla.on{padding:18px 18px!important}
+  #grilla .mini{font-size:15px}
+}
+@media (max-width:700px){
+  #pie button{min-width:58px;height:52px}
+  #grilla.on{padding:14px 10px!important}
+  .gr-items{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important}
+  #tip{max-width:80vw;font-size:14px}
+}
+@media (orientation:portrait) and (max-width:800px){#giro.on{display:flex}}
+@media (orientation:landscape) and (max-height:480px){#pie{padding-top:4px;padding-bottom:max(4px,env(safe-area-inset-bottom))}#pie button{height:38px}#notas{max-height:60vh}}
+@media (hover:none){.mon:hover{transform:none}}
 .mr{display:grid;grid-template-columns:150px 1fr 84px;gap:12px;align-items:center;font-size:21px;margin:6px 0}.mr .p{height:15px;background:#e6edf0;border-radius:6px;overflow:hidden}.mr .p i{display:block;height:100%;border-radius:6px}.mr b{text-align:right;color:var(--marino);font-variant-numeric:tabular-nums}
 </style>
 </head>
@@ -820,6 +843,7 @@ body.orad{overflow-x:hidden!important}
 <div id="tip"></div>
 <div id="notas"></div>
 <div id="grilla"></div>
+<div id="giro"><span>Para ver mejor, girá el dispositivo ↻</span><button type="button" aria-label="Cerrar aviso" onclick="this.parentNode.classList.remove('on');this.parentNode.style.display='none'">✕</button></div>
 <div id="pie"><span id="cont"></span><span><span class="ayuda">← → avanzar · G índice · N notas · E efectos · P orador · L puntero · F pantalla completa</span><button id="b-ant">‹</button><button id="b-sig">›</button></span></div>
 
 <script>
@@ -1562,7 +1586,8 @@ document.addEventListener('keydown',e=>{
 });
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX);addEventListener('touchend',e=>{if(tx==null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)d<0?sig():ant();tx=null});
 $('#b-sig').onclick=sig;$('#b-ant').onclick=ant;
-addEventListener('resize',escalar2);escalar2();
+addEventListener('resize',escalar2);addEventListener('orientationchange',()=>setTimeout(escalar2,150));escalar2();
+if(!/[?&]pdf/.test(location.search)&&matchMedia('(pointer:coarse)').matches)$('#giro').classList.add('on');
 const ORADOR=/[?&]orador/.test(location.search),PDFM=/[?&]pdf/.test(location.search);
 addEventListener('message',e=>{const m=e.data;if(!m||!m.t||ORADOR)return;if(m.t==='listo')enviarEstado();else if(m.t==='cmd'){if(m.c==='sig')sig();else if(m.c==='ant')ant();else if(String(m.c).startsWith('ruta:'))setRuta(m.c.slice(5))}});
 function iniciarPDF(){
