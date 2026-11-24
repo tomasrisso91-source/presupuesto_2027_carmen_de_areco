@@ -227,9 +227,7 @@ body.orad #orador{display:block;color:#e4edf4;font-family:var(--f);padding:22px 
 .or-sig{font-size:20px;line-height:1.4}
 .or-bt{display:flex;gap:8px;flex-wrap:wrap}.or-bt button{flex:1;font:700 17px var(--f);padding:10px 14px;border-radius:10px;border:2px solid #3d5a80;background:#18304f;color:#e4edf4;cursor:pointer}.or-bt button:hover{border-color:#7fd3ea}.or-bt button.on{background:#7fd3ea;color:#0e1b2c}
 .or-ayuda{font-size:14px;color:#8aa0b2;margin-top:10px}
-@page pdf{size:1920px 1080px;margin:0}
-@page imp{size:A4 landscape;margin:9mm 10mm}
-body.pdf .slide{page:pdf}
+
 body.pdf{overflow:visible!important;background:#fff;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body.pdf *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body.pdf #stage{position:static!important;transform:none!important;width:1920px;height:auto;overflow:visible;background:none}
@@ -263,9 +261,11 @@ table.t td:last-child{white-space:nowrap}
 .qr-dl.qrc{bottom:52px}.qr-dl.qrc .qr-img{width:168px;height:168px}
 .qr-dl.qrp .qr-img{width:150px;height:150px}.qr-dl.qrp .qr-txt{font-size:23px;max-width:210px}.qr-dl.qrp .qr-txt span{font-size:17px}
 /* imprimible (A4 horizontal, tema claro, ahorra tinta) */
-body.imp .pg{page:imp;break-after:page;page-break-after:always;width:1047px}
-body.imp .hoja{position:relative;width:1047px;height:589px;overflow:hidden;border:1px solid #cfd8dc;background:#fff}
-body.imp .hoja .slide{position:absolute!important;left:0!important;top:0!important;transform:scale(.5453)!important;transform-origin:0 0!important;width:1920px!important;height:1080px!important;background:#fff!important;break-after:auto!important;page-break-after:auto!important}
+body.imp #stage{width:1062px!important}
+body.imp .pg{break-after:page;page-break-after:always;width:1062px}
+body.imp .hoja{position:relative;width:1062px;height:597px;overflow:hidden;border:1px solid #cfd8dc;background:#fff}
+body.imp .hoja .slide{position:relative!important;inset:auto!important;transform:none!important;width:1920px!important;height:1080px!important;background:#fff!important;break-after:auto!important;page-break-after:auto!important}
+body.imp.zoomed .hoja .slide{zoom:.5531}
 body.imp .hoja-pie{display:flex;justify-content:space-between;font:600 11px Arial,sans-serif;color:#5d6c74;padding:6px 2px 0}
 body.imp .card{background:#fff!important;border:1px solid #cfd8dc!important;box-shadow:none!important}
 body.imp .num,body.imp .oscuro .num{text-shadow:none!important}
@@ -1548,7 +1548,8 @@ addEventListener('resize',escalar2);escalar2();
 const ORADOR=/[?&]orador/.test(location.search),PDFM=/[?&]pdf/.test(location.search);
 addEventListener('message',e=>{const m=e.data;if(!m||!m.t||ORADOR)return;if(m.t==='listo')enviarEstado();else if(m.t==='cmd'){if(m.c==='sig')sig();else if(m.c==='ant')ant();else if(String(m.c).startsWith('ruta:'))setRuta(m.c.slice(5))}});
 function iniciarPDF(){
-  document.body.classList.add('pdf');iniciarIconos();
+  document.body.classList.add('pdf');document.documentElement.style.background=/[?&]imp/.test(location.search)?'#fff':'#14233a';iniciarIconos();
+  {const st=document.createElement('style');st.textContent=/[?&]imp/.test(location.search)?'@page{size:A4 landscape;margin:7mm 8mm}':'@page{size:1920px 1080px;margin:0}';document.head.appendChild(st)}
   if(/[?&]imp/.test(location.search)){document.body.classList.add('imp');
     slides.forEach((sl,i)=>{sl.classList.remove('oscuro');$$('.logo',sl).forEach(g=>g.src=LOGO_CLARO);
       const pg=document.createElement('div');pg.className='pg';const h=document.createElement('div');h.className='hoja';
@@ -1556,6 +1557,16 @@ function iniciarPDF(){
       const pie=document.createElement('div');pie.className='hoja-pie';pie.innerHTML='<span>Presupuesto 2027 · Municipalidad de Carmen de Areco · Honorable Concejo Deliberante</span><span>'+(SECDE[sl.id]||'')+' · '+(i+1)+' / '+slides.length+'</span>';pg.appendChild(pie)})}
   const so=(location.search.match(/solo=([0-9]+)/)||[])[1];if(so!==undefined)slides.forEach((sl,i)=>{if(i!==+so)(sl.closest(".pg")||sl).style.display="none"});
   slides.forEach(sl=>{if((sl.closest('.pg')||sl).style.display==="none")return;const fn=INIT[sl.id];if(fn){try{fn()}catch(err){console.error(sl.id,err)}}$$('[data-f]',sl).forEach(x=>x.classList.add('on'));$$('[data-count]',sl).forEach(el=>{const d=+(el.dataset.dec||0);el.textContent=(el.dataset.pre||'')+nf(d).format(parseFloat(el.dataset.count))+(el.dataset.suf||'')})});
+  const finalizar=()=>{
+    $$('.barra[data-w],.br[data-w]').forEach(b=>b.style.width=b.dataset.w+'%');
+    $$('.sg').forEach(r=>{r.style.transition='none';r.style.transform='scaleY(1)';r.style.opacity=1});
+    $$('.ba').forEach(r=>{r.setAttribute('y',r.dataset.y);r.setAttribute('height',r.dataset.h)});
+    $$('.bt').forEach(t=>t.setAttribute('opacity',1));
+    const c=$('#clr');if(c)c.setAttribute('width',1600);$$('#svg-flujo g[clip-path]').forEach(g=>g.removeAttribute('clip-path'));
+    $$('.wb,.wv,.wc').forEach(e=>{e.style.opacity=1;e.style.transitionDelay='0s'});
+  };
+  setTimeout(finalizar,1200);setTimeout(finalizar,5000);setTimeout(()=>document.body.classList.add('zoomed'),7000);
+  setTimeout(()=>{const d=document.documentElement;const anchos=[...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect(),cs=getComputedStyle(e);return cs.display!=='none'&&r.right>1060&&!e.closest('.hoja')}).slice(0,6).map(e=>e.tagName+'#'+e.id+'.'+String(e.className).slice(0,20)+' '+Math.round(e.getBoundingClientRect().right));document.body.setAttribute('data-dim',d.scrollWidth+'x'+d.scrollHeight+' | fuera de hoja: '+anchos.join(' ; '))},6000);
   document.title='Presupuesto 2027 · HCD';
 }
 function iniciarOrador(){
